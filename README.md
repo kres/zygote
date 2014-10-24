@@ -12,3 +12,6 @@ Zygote is a physical-web framework, for the internet of things. It is a perfect 
 [Zygote][5], in biological terms, is the entity derived by the perfect fusion of two complementry beings, in this case the hardware and the web. 
 
 [5]: http://en.wikipedia.org/wiki/Zygote
+
+##Architecture overview
+![](https://raw.githubusercontent.com/wiki/kres/zygote/zygote-architecture.png)
