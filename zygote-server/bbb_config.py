@@ -88,19 +88,36 @@ config = {
 	},
 		
 	'UART' : {
-
+		'1' : 'Serial1',
+		'2' : 'Serial2',
+		'3' : 'Serial3',
+		'4' : 'Serial4',
+		'5' : 'Serial5'
 	},
 
 	'AI' : {
-	
+		#rest endpoint to name mapping
+		'0' : 'AIN0',
+		'2' : 'AIN2',
+		'3' : 'AIN3',
+		'4' : 'AIN4',
+		'5' : 'AIN5',
+		'6' : 'AIN6'
 	},
 	
 	'PWM' : {
-
+		'0' : 'PWM1A',
+		'1' : 'PWM1B',
+		'2' : 'PWM2A',
+		'3' : 'PWM2B',
 	},
-
+	
+	#servo channels are the same as PWM in this case
 	'SERVO' : {
-
+		'0' : 'PWM1A',
+		'1' : 'PWM1B',
+		'2' : 'PWM2A',
+		'3' : 'PWM2B',
 	},
 
 	'I2C' : {
