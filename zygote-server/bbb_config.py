@@ -48,6 +48,22 @@ board_config = {
 
 	'GPIO' : {
 		#rest endpoint to name mapping'GPIO0_2',
+		#NOTE : a better way to extend this is (not only for GPIO, but other resources too)
+		# 'rest-endpoint' : {	'name' : 'internal-mapping',
+		#			'mode-allowed' : ['input', 'output'],
+		#			'current-mode' : None,
+		#			'pin-name' : 'P8_17',
+		#			'other-info' : '***'
+		#		}
+		#'MODES' : { 'INPUT' : ['read'], 'OUTPUT' : ['write'], 
+		#				'INOUT' :[ 'read', 'write'] }
+		#
+		# This way, if there is a request to write to a pin, 
+		# Flask can handle all the filtering work. check if a mode is allowed for a pin,
+		# and also check weather the action is allowed for the mode.
+		#XXX : not being implemented to keep things simple
+		#plus the solution to pin conflict still remains. i.e. 2 resource taking same pin.
+
 
 		#GPIO bank 0
 		'GPIO0_2' : 'GPIO0_2',
@@ -128,10 +144,10 @@ board_config = {
 		'GPIO3_21' : 'GPIO3_21',
 
 		#the user led on the board
-		'USR0' : 'USR0',
-		'USR1' : 'USR1',
-		'USR2' : 'USR2',
-		'USR3' : 'USR3'
+		'USR0' : 'USR0', #GPIO1_21
+		'USR1' : 'USR1', #GPIO1_22
+		'USR2' : 'USR2', #GPIO1_23
+		'USR3' : 'USR3'  #GPIO1_24
 	},
 		
 	#UART pins, endpoints under the uart subsystem
@@ -307,8 +323,20 @@ def config_serial():
 #All the resource endpoint's status is to be maintained
 	# non-init, input or output
 	#the flask code does the checking
+#XXX: this is a temporary solution. go with the dict based method in board_config['GPIO'] 
+#or is that solution an overkill? If i try to move too much logic into flask part, may become board dependent
 
+ep_status = {}
+for feature in board_config['features']:
+	ep_status[feature] = {}
+
+#ep_status['GPIO']['ep'] = 'xyz'
 
 ###################
 #need to keep track of which pins are being used by which resource
 ###################
+
+#pins_res = {
+#		'pin1' : 'feature' #feature as defined in board_config
+#	}
+#
