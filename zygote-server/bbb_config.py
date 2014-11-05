@@ -228,6 +228,78 @@ board_config = {
 #i2cRead(streamObj, num_bytes)
 	#well, you know what it does.
 
+#*** what about custom URLs?
+
+##GPIO##
+def configure_gpio(pin, mode, **kwargs):
+	'''
+	pin (str) 	: the value GPIO['rest-endpoint'], eg 'GPIO1_22'
+	mode (str) 	: '1' for INPUT, '0' for OUTPUT
+	kwargs (dict)	: extra information such as pull up/down etc.
+	'''
+	modes = {
+		'INPUT'	 : 1, 
+		'OUTPUT' : 0
+		#IN_OUT mode available?
+	}
+	#should the modes be part of another config dictionary??
+	if mode.upper() in modes:
+		bbio.pinMode(pin, modes[mode])
+		return 200, "OK"
+
+	else :
+		return 404, "Invalid mode"
+
+def write_gpio(pin, state, **kwargs):
+	'''
+	pin (str) 	: the value GPIO['rest-endpoint'], eg 'GPIO1_22'
+	state (str) 	: '1' for HIGH, '0' for LOW
+	kwargs (dict)	: extra information (just in case)
+	'''
+
+	states = {
+		'HIGH'	: 1, 
+		'LOW'	: 0
+	}
+
+	if state.upper() in states:
+		bbio.digitalWrite(pin, states[state])
+		return 200, "OK"
+
+	else:
+		return 404, "Invalid state"
+
+
+def read_gpio(pin, **kwargs):
+	'''
+	pin (str) 	: the value GPIO['rest-endpoint'], eg 'GPIO1_22'
+	kwargs (dict)	: extra information (just in case)
+	'''
+	if pin in ['USR0', 'USR1','USR2','USR3']
+		return "403", "No permission to read"
+	res = bbio.digitalRead(pin)
+	return 200, res
+
+
+## PWM ##
+def config_pwm(pin, **kwargs):
+	pass
+
+def write_pwm(pin, value, **kwargs):
+	pass
+
+## AIN ##
+def config_ain(pin, **kwargs):
+	pass
+
+def read_ain(pin, **kwargs):
+	pass
+
+## Serial ##
+def config_serial():
+	pass
+
+
 ####################
 #status of all pins#
 ####################
@@ -235,3 +307,8 @@ board_config = {
 #All the resource endpoint's status is to be maintained
 	# non-init, input or output
 	#the flask code does the checking
+
+
+###################
+#need to keep track of which pins are being used by which resource
+###################
