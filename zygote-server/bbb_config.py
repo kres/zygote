@@ -20,14 +20,15 @@
 #
 # and the corresponding mapping function will be :  func(doo_obj, other_info)
 
-from bbio import *
-from Servo import *
+# The REST-name to internal-name mapping is very useful as say I want to change GPIO url
+# from GET /gpio/GPIO1_22  => GET /gpio/P8_14 ; then we need to only change the entry in the dictionary
+# It makes things very portable and easy to use. 
 
-import atexit
-atexit.register(bbio.bbio_cleanup)
+import bbio
+#print dir(bbio)
+import Servo
 
-bbio.bbio_init()
-
+#print dir(bbio)
 ###################
 #config dictionary#
 ###################
@@ -139,23 +140,22 @@ board_config = {
 	# PUT /uart/1?baud=9600 ;initialize serial1
 	# POST /uart/2 "data-in-post-body"
 	'UART' : {
-		'1', # : Serial1 stream object
-		'2',
-		'3',
-		'4',
-		'5'
+		'1' : bbio.Serial1, 
+		'2' : bbio.Serial2,
+		'4' : bbio.Serial4,
+		'5' : bbio.Serial5
 	},
 
 	#analog-in channels, endpoints for the AI resource
 	#see : https://github.com/alexanderhiam/PyBBIO/wiki/Analog-to-digital-converter
-	# GET /adc/AIN0 ;returns value at channel 0
+	# GET /adc/0 ;returns value at channel 0
 	'AI' : {
-		'AIN0', # :to analog object or string itself
-		'AIN2',
-		'AIN3',
-		'AIN4',
-		'AIN5',
-		'AIN6'
+		'0': 'AIN0', # :to analog object or string itself
+		'2': 'AIN2',
+		'3': 'AIN3',
+		'4': 'AIN4',
+		'5': 'AIN5',
+		'6': 'AIN6'
 	},
 	
 	#pwm modules, endpoints under the pwm resource
@@ -163,22 +163,31 @@ board_config = {
 	# POST /pwm/1A "value=120" ; set pwm value as 120
 	# PUT /pwm/1A ; initializes PWM1A
 	'PWM' : {
-		'1A', # :to pwm object
-		'1B',
-		'2A',
-		'2B'
+		'1A' : 'PWM1A', # :to pwm object
+		'1B' : 'PWM1B',
+		'2A' : 'PWM2A',
+		'2B' : 'PWM2B'
 	},
 	
 	#servo channels, endpoints under the servo resource
 	#see : https://github.com/alexanderhiam/PyBBIO/wiki/Servo
-	# PUT /servo/PWM1A "config=enable"	; enables this module
-	# POST /servo/PWM1A "angle=50" 		; moves servo to 50 deg
-	# PUT /servo/PWM1A "config=disable"	; disables this module
-	'SERVO' = {
-		'PWM1A', # : servo object
-		'PWM1B',
-		'PWM2A',
-		'PWM2B'
+	# PUT /servo/1A "config=enable"	; enables this module
+	# POST /servo/1A "angle=50" 		; moves servo to 50 deg
+	# PUT /servo/1A "config=disable"	; disables this module
+	'SERVO' : {	
+		'1A' : ('PWM1A', Servo.Servo()), # (channel, object)
+		'1B' : ('PWM1B', Servo.Servo()),
+		'2A' : ('PWM2A', Servo.Servo()),
+		'2B' : ('PWM2B', Servo.Servo())
+
+		#in init, s = SERVO['1A'][0]
+			#SERVO['1A'][1].attach(s) 
+		#again on disable, SERVO['1A'][1].detatch() 
+
+		#This is why we need a tuple. tuple not necessary in case of UART, I2C, SPI 
+		#as creating the object for the stream does not initialize it. here, Servo('PWM1A') 
+		#automatically initializes the port by calling servo.attach(), 
+		#hence making pins unavailable for other applications
 	},
 
 	#i2c streams, endpoints under the i2c resource
@@ -186,15 +195,15 @@ board_config = {
 	# PUT /i2c/1 ; initialize i2c
 	# GET /i2c/1?read=12 ;read 12 bytes of i2c stream
 	'I2C' : {
-		'1', # : i2c object
-		'2'
+		'1' : bbio.Wire1, # : i2c object
+		'2' : bbio.Wire2
 	},
 	
 	#SPI streams, endpoint for SPI resource
 	# see : https://github.com/alexanderhiam/PyBBIO/wiki/SPI
 	'SPI' : {
-		'0', # : SPI object
-		'1'
+		'0' : bbio.SPI0, # : SPI object
+		'1' : bbio.SPI1
 	}
 
 	#anything else? temp sensor, web cam, what else?
