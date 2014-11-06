@@ -61,8 +61,10 @@ board_config = {
 		# This way, if there is a request to write to a pin, 
 		# Flask can handle all the filtering work. check if a mode is allowed for a pin,
 		# and also check weather the action is allowed for the mode.
+		#and when the mapping function is called, instead of passing the pin obj, it'll pass the dictionary,
+		#this is so that the mapping function can manupilate the state of 'current-mode',etc.
 		#XXX : not being implemented to keep things simple
-		#plus the solution to pin conflict still remains. i.e. 2 resource taking same pin.
+		#plus the solution to pin conflict still remains. i.e. 2 resource taking same pin.i
 
 
 		#GPIO bank 0
@@ -232,7 +234,6 @@ board_config = {
 
 #configure_gpio(pin_str, state)
 	
-#TODO : make sure that no namespace conflict happens due to bbio
 #digitalWrite(pin_str, state)
 	#this will recieve ('GPIOx_y', '0'/'1')
 
@@ -241,10 +242,8 @@ board_config = {
 	#in another implementation, say RPi, serial_obj could be a string identifier!!
 	#thats the best part, the implementation can vary, but 
 
-#i2cRead(streamObj, num_bytes)
-	#well, you know what it does.
-
 #*** what about custom URLs?
+
 
 ##GPIO##
 def config_gpio(pin, **kwargs):
@@ -262,9 +261,11 @@ def config_gpio(pin, **kwargs):
 		if pin in ['USR0', 'USR1', 'USR2', 'USR3'] and kwargs[mode] == 'INPUT':
 			return 403, "cannot set resource to desired mode"
 
-		#should the modes be part of another config dictionary??
 		if mode.upper() in modes:
+			#set the pin mode
 			bbio.pinMode(pin, modes[mode])
+			#record the change in the ep_modes dict
+			ep_modes['GPIO'][pin] = mode.upper()
 			return 200, "OK"
 
 		else :
@@ -278,6 +279,9 @@ def write_gpio(pin, state, **kwargs):
 	state (str) 	: '1' for HIGH, '0' for LOW
 	kwargs (dict)	: extra information (just in case)
 	'''
+	if 'OUT' not in ep_modes['GPIO'][pin]:
+		return 403, "Resource mode error"
+		#i.e. OUTPUT, INOUT is OK
 
 	states = {
 		'HIGH'	: 1, 
@@ -297,7 +301,11 @@ def read_gpio(pin, **kwargs):
 	pin (str) 	: the value GPIO['rest-endpoint'], eg 'GPIO1_22'
 	kwargs (dict)	: extra information (just in case)
 	'''
-	if pin in ['USR0', 'USR1','USR2','USR3']
+	if 'IN' not in ep_modes['GPIO'][pin]:
+		return 403, "Resource mode error"
+		#i.e. INPUT, INOUT is OK
+
+	if pin in ['USR0', 'USR1','USR2','USR3']:
 		return "403", "No permission to read"
 	res = bbio.digitalRead(pin)
 	return 200, res
@@ -328,15 +336,18 @@ def config_serial():
 
 #All the resource endpoint's status is to be maintained
 	# non-init, input or output
-	#the flask code does the checking
+	# the internal-pin-mapping to state dictionary.
+	# this dict is to be used internally by mapping functions
+	# flask code does not touch this in this implementation
+
 #XXX: this is a temporary solution. go with the dict based method in board_config['GPIO'] 
 #or is that solution an overkill? If i try to move too much logic into flask part, may become board dependent
 
-ep_status = {}
+ep_modes = {}
 for feature in board_config['features']:
-	ep_status[feature] = {}
+	ep_modes[feature] = {}
 
-#ep_status['GPIO']['ep'] = 'xyz'
+#ep_modes['GPIO']['ep'] = 'xyz'
 
 ###################
 #need to keep track of which pins are being used by which resource
@@ -344,5 +355,6 @@ for feature in board_config['features']:
 
 #pins_res = {
 #		'pin1' : 'feature' #feature as defined in board_config
+#		'P8_12' : 'UART'
 #	}
 #
