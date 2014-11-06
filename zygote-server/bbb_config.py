@@ -247,24 +247,30 @@ board_config = {
 #*** what about custom URLs?
 
 ##GPIO##
-def configure_gpio(pin, mode, **kwargs):
+def config_gpio(pin, **kwargs):
 	'''
 	pin (str) 	: the value GPIO['rest-endpoint'], eg 'GPIO1_22'
-	mode (str) 	: '1' for INPUT, '0' for OUTPUT
 	kwargs (dict)	: extra information such as pull up/down etc.
 	'''
-	modes = {
-		'INPUT'	 : 1, 
-		'OUTPUT' : 0
-		#IN_OUT mode available?
-	}
-	#should the modes be part of another config dictionary??
-	if mode.upper() in modes:
-		bbio.pinMode(pin, modes[mode])
-		return 200, "OK"
+	#we are configuring the mode
+	if 'mode' in kwargs:
+		modes = {
+			'INPUT'	 : 1, 
+			'OUTPUT' : 0
+			#IN_OUT mode available?
+		}
+		if pin in ['USR0', 'USR1', 'USR2', 'USR3'] and kwargs[mode] == 'INPUT':
+			return 403, "cannot set resource to desired mode"
 
-	else :
-		return 404, "Invalid mode"
+		#should the modes be part of another config dictionary??
+		if mode.upper() in modes:
+			bbio.pinMode(pin, modes[mode])
+			return 200, "OK"
+
+		else :
+			return 404, "Invalid mode"
+	else:
+		return 404, "invalid config paramater"
 
 def write_gpio(pin, state, **kwargs):
 	'''
