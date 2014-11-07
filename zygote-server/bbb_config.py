@@ -256,14 +256,17 @@ def config_gpio(pin, **kwargs):
 			'OUTPUT' : 0
 			#IN_OUT mode available?
 		}
-		if pin in ['USR0', 'USR1', 'USR2', 'USR3'] and kwargs[mode] == 'INPUT':
-			return "cannot set resource to desired mode", 403
+		
+		mode = kwargs['mode'].upper()
 
-		if mode.upper() in modes:
+		if pin in ['USR0', 'USR1', 'USR2', 'USR3'] and mode == 'INPUT':
+			return "cannot set resource to desired mode", 403
+		
+		if mode in modes:
 			#set the pin mode
 			bbio.pinMode(pin, modes[mode])
 			#record the change in the ep_modes dict
-			ep_modes['GPIO'][pin] = mode.upper()
+			ep_modes['GPIO'][pin] = mode
 			return "OK", 200
 
 		else :
@@ -277,17 +280,18 @@ def write_gpio(pin, state, **kwargs):
 	state (str) 	: '1' for HIGH, '0' for LOW
 	kwargs (dict)	: extra information (just in case)
 	'''
-
+	print "in write_gpio"
+	print "ep_modes", ep_modes
+	print pin, state, kwargs
 	if 'OUT' not in ep_modes['GPIO'][pin]:
 		return "Resource mode error", 403
 		#i.e. OUTPUT, INOUT is OK
-
 	states = {
 		'HIGH'	: 1, 
 		'LOW'	: 0
 	}
-
-	if state.upper() in states:
+	state = state.upper()
+	if state in states:
 		bbio.digitalWrite(pin, states[state])
 		return "OK", 200
 
