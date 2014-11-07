@@ -21,33 +21,69 @@ def get_dict(immu_dict):
 			data[key] = str(val[0])
 		else:
 			data[key] = map(str, val)
+	#now data: {'hello2':world2', 'hello':['world1','another-world']}
 	return data
+
 
 class GPIO(restful.Resource):
 	
 	#to configure a gpio pin
 	def put(self, pin):
+		print "call to GPIO put"
+		pin = pin.upper()
+
 		pin_val = board.board_config['GPIO'].get(pin, None)
 
 		#invalid resource point
 		if not pin_val:
 			return "Non existing resource", 404
 
-		args = dict(request.form)
+		data = get_dict(request.form)
+		
+		print "return from GPIO put"
 		#if the pin exists configure it
-		board.config_gpio(pin_val, args)
-		pass
-
+		return board.config_gpio(pin_val, data)
+		
+	#read the pin
 	def get(self, pin):
-		#read the pin
-		pass
+		print "call to GPIO get"
+		pin = pin.upper()
+		pin_val = board.board_config['GPIO'].get(pin, None)
 
+		#invalid resource point
+		if not pin_val:
+			return "Non existing resource", 404
+
+		data = get_dict(request.form)
+
+		print "return from GPIO get"
+		#if the pin exists configure it
+		return board.config_gpio(pin_val, data)
+
+	#write to the pin	
 	def post(self, pin):
-		#write to the pin
-		pass
+		print "call to GPIO post"
+		pin = pin.upper()
+		pin_val = board.board_config['GPIO'].get(pin, None)
+		#invalid resource point
+		if not pin_val:
+			return "Non existing resource", 404
+
+		data = get_dict(request.form)
+
+		state = data.get(state,None)
+		if not state:
+			return "no state info", 404
+
+		print "return from GPIO post"
+		return board.write_gpio(pin_val, state, data)
 
 
+#TODO : rather than adding resource manually, add it by reading the 
+	#features list in the board_config dictionary
 api.add_resource(GPIO, '/gpio/<string:pin>')
 
+
 if __name__ == '__main__':
-	app.run(debug=True)
+#	app.run('0.0.0.0')
+	pass

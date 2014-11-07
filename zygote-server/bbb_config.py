@@ -277,6 +277,7 @@ def write_gpio(pin, state, **kwargs):
 	state (str) 	: '1' for HIGH, '0' for LOW
 	kwargs (dict)	: extra information (just in case)
 	'''
+
 	if 'OUT' not in ep_modes['GPIO'][pin]:
 		return "Resource mode error", 403
 		#i.e. OUTPUT, INOUT is OK
