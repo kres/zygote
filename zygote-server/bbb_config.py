@@ -257,19 +257,19 @@ def config_gpio(pin, **kwargs):
 			#IN_OUT mode available?
 		}
 		if pin in ['USR0', 'USR1', 'USR2', 'USR3'] and kwargs[mode] == 'INPUT':
-			return 403, "cannot set resource to desired mode"
+			return "cannot set resource to desired mode", 403
 
 		if mode.upper() in modes:
 			#set the pin mode
 			bbio.pinMode(pin, modes[mode])
 			#record the change in the ep_modes dict
 			ep_modes['GPIO'][pin] = mode.upper()
-			return 200, "OK"
+			return "OK", 200
 
 		else :
-			return 404, "Invalid mode"
+			return "Invalid mode", 404
 	else:
-		return 404, "invalid config paramater"
+		return "invalid config paramater", 404
 
 def write_gpio(pin, state, **kwargs):
 	'''
@@ -278,7 +278,7 @@ def write_gpio(pin, state, **kwargs):
 	kwargs (dict)	: extra information (just in case)
 	'''
 	if 'OUT' not in ep_modes['GPIO'][pin]:
-		return 403, "Resource mode error"
+		return "Resource mode error", 403
 		#i.e. OUTPUT, INOUT is OK
 
 	states = {
@@ -288,10 +288,10 @@ def write_gpio(pin, state, **kwargs):
 
 	if state.upper() in states:
 		bbio.digitalWrite(pin, states[state])
-		return 200, "OK"
+		return "OK", 200
 
 	else:
-		return 404, "Invalid state"
+		return "Invalid state", 404
 
 
 def read_gpio(pin, **kwargs):
@@ -300,13 +300,13 @@ def read_gpio(pin, **kwargs):
 	kwargs (dict)	: extra information (just in case)
 	'''
 	if 'IN' not in ep_modes['GPIO'][pin]:
-		return 403, "Resource mode error"
+		return "Resource mode error", 403
 		#i.e. INPUT, INOUT is OK
 
 	if pin in ['USR0', 'USR1','USR2','USR3']:
-		return "403", "No permission to read"
+		return "No permission to read", 403
 	res = bbio.digitalRead(pin)
-	return 200, res
+	return str(res), 200
 
 
 ## PWM ##
