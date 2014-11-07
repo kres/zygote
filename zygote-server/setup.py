@@ -1,2 +1,2 @@
-conf_file = "bbb_config.py"
-#anything else here
+#conf_file = "bbb_config.py"; rather
+from bbb_config import *
