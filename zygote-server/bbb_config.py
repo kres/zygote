@@ -25,10 +25,8 @@
 # It makes things very portable and easy to use. 
 
 import bbio
-#print dir(bbio)
 import Servo
 
-#print dir(bbio)
 ###################
 #config dictionary#
 ###################
