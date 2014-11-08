@@ -53,9 +53,8 @@ class GPIO(restful.Resource):
 		if not pin_val:
 			return "Non existing resource", 404
 
-		data = get_dict(request.form)
+		data = get_dict(request.args)
 		
-		#if the pin exists configure it
 		return board.read_gpio(pin_val, data)
 
 	#write to the pin	
