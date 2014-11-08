@@ -41,7 +41,7 @@ class GPIO(restful.Resource):
 		data = get_dict(request.form)
 		print "return from GPIO put"
 		#if the pin exists configure it
-		return  board.config_gpio(pin_val, **data)
+		return  board.config_gpio(pin_val, data)
 		
 	#read the pin
 	def get(self, pin):
@@ -55,9 +55,8 @@ class GPIO(restful.Resource):
 
 		data = get_dict(request.form)
 		
-		print "return from GPIO get"
 		#if the pin exists configure it
-		return board.read_gpio(pin_val, **data)
+		return board.read_gpio(pin_val, data)
 
 	#write to the pin	
 	def post(self, pin):
@@ -70,14 +69,12 @@ class GPIO(restful.Resource):
 
 		data = get_dict(request.form)
 
-		state = data.pop('state',None)
+		state = data.get('state',None)
 		if not state:
 			return "no state info", 404
 		
 		print pin_val, state, data
-		print "return from GPIO post"
-		print board.write_gpio
-		return board.write_gpio(pin_val, state, **data)
+		return board.write_gpio(pin_val, state, data)
 
 
 #TODO : rather than adding resource manually, add it by reading the 

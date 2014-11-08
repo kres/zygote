@@ -244,20 +244,20 @@ board_config = {
 
 
 ##GPIO##
-def config_gpio(pin, **kwargs):
+def config_gpio(pin, data):
 	'''
 	pin (str) 	: the value GPIO['rest-endpoint'], eg 'GPIO1_22'
-	kwargs (dict)	: extra information such as pull up/down etc.
+	data (dict)	: extra information such as pull up/down etc.
 	'''
 	#we are configuring the mode
-	if 'mode' in kwargs:
+	if 'mode' in data:
 		modes = {
 			'INPUT'	 : 1, 
 			'OUTPUT' : 0
 			#IN_OUT mode available?
 		}
 		
-		mode = kwargs['mode'].upper()
+		mode = data['mode'].upper()
 
 		if pin in ['USR0', 'USR1', 'USR2', 'USR3'] and mode == 'INPUT':
 			return "cannot set resource to desired mode", 403
@@ -274,18 +274,17 @@ def config_gpio(pin, **kwargs):
 	else:
 		return "invalid config paramater", 404
 
-def write_gpio(pin, state, **kwargs):
+def write_gpio(pin, state, data):
 	'''
 	pin (str) 	: the value GPIO['rest-endpoint'], eg 'GPIO1_22'
 	state (str) 	: '1' for HIGH, '0' for LOW
-	kwargs (dict)	: extra information (just in case)
+	data (dict)	: extra information (just in case)
 	'''
-	print "in write_gpio"
-	print "ep_modes", ep_modes
-	print pin, state, kwargs
+
 	if 'OUT' not in ep_modes['GPIO'][pin]:
 		return "Resource mode error", 403
 		#i.e. OUTPUT, INOUT is OK
+
 	states = {
 		'HIGH'	: 1, 
 		'LOW'	: 0
@@ -299,10 +298,10 @@ def write_gpio(pin, state, **kwargs):
 		return "Invalid state", 404
 
 
-def read_gpio(pin, **kwargs):
+def read_gpio(pin, data):
 	'''
 	pin (str) 	: the value GPIO['rest-endpoint'], eg 'GPIO1_22'
-	kwargs (dict)	: extra information (just in case)
+	data (dict)	: extra information (just in case)
 	'''
 	if 'IN' not in ep_modes['GPIO'][pin]:
 		return "Resource mode error", 403
