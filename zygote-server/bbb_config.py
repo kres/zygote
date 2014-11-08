@@ -253,8 +253,10 @@ def config_gpio(pin, data):
 	if 'mode' in data:
 		modes = {
 			'INPUT'	 : 1, 
-			'OUTPUT' : 0
-			#IN_OUT mode available?
+			'OUTPUT' : 0,
+			'INOUT'	 : 0
+			#INOUT => you can write and read the state written.
+			#PyBBIO lets you read the output pin.
 		}
 		
 		mode = data['mode'].upper()
@@ -307,8 +309,6 @@ def read_gpio(pin, data):
 		return "Resource mode error", 403
 		#i.e. INPUT, INOUT is OK
 
-	if pin in ['USR0', 'USR1','USR2','USR3']:
-		return "No permission to read", 403
 	res = bbio.digitalRead(pin)
 	return str(res), 200
 
