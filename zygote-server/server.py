@@ -75,12 +75,45 @@ class GPIO(restful.Resource):
 		print pin_val, state, data
 		return board.write_gpio(pin_val, state, data)
 
+class PWM(restful.Resource):
+	
+	def put(self, pin):
+		print "call to pwm put"
+		pin = pin.upper()
+		pin_val = board.board_config['PWM'].get(pin, None)
+
+		if not pin_val:
+			return "Non existing resource", 404
+
+		data = get_dict(request.form)
+		return board.config_pwm(pin_val, data)
+
+	def get(self, pin):
+		print "call to pwm get"
+		return "not supposed to happen", 404
+
+	def post(self, pin):
+		print "call to pwm post"
+
+		pin = pin.upper()
+
+		pin_val = board.board_config['PWM'].get(pin, None)
+		if not pin_val:
+			return "Non existing resource", 404
+
+		data = get_dict(request.form)
+
+		if 'value' in data:
+			return board.write_pwm(pin_val, data['value'], data)
+		else:
+			return "no value provided", 403
+
 
 #TODO : rather than adding resource manually, add it by reading the 
 	#features list in the board_config dictionary
 api.add_resource(GPIO, '/gpio/<string:pin>')
-
+api.add_resource(PWM, '/pwm/<string:pin>')
 
 if __name__ == '__main__':
-	app.run('0.0.0.0')
+	app.run('0.0.0.0', debug=True)
 

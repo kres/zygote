@@ -282,6 +282,9 @@ def write_gpio(pin, state, data):
 	state (str) 	: '1' for HIGH, '0' for LOW
 	data (dict)	: extra information (just in case)
 	'''
+	
+	if pin not in ep_modes['GPIO']:
+		return "resource not instantiated"
 
 	if 'OUT' not in ep_modes['GPIO'][pin]:
 		return "Resource mode error", 403
@@ -305,6 +308,10 @@ def read_gpio(pin, data):
 	pin (str) 	: the value GPIO['rest-endpoint'], eg 'GPIO1_22'
 	data (dict)	: extra information (just in case)
 	'''
+
+	if pin not in ep_modes['GPIO']:
+		return "resource not instantiated"
+
 	if 'IN' not in ep_modes['GPIO'][pin]:
 		return "Resource mode error", 403
 		#i.e. INPUT, INOUT is OK
@@ -314,11 +321,52 @@ def read_gpio(pin, data):
 
 
 ## PWM ##
-def config_pwm(pin, **kwargs):
-	pass
+def config_pwm(pin, data):
+	'''
+	pin (str) 	: the value PWM['rest-endpoint'], eg 'PWM1A'
+	data (dict)	: the configuration information (freq) etc
+	'''
+	#config the freq
+	if 'freq' in data:
+		pwmFrequency(pin, int(data['freq']))
+		
+	#enable/disable
+	if 'enable' in data:
+		if data['enable'].upper() == 'TRUE':
+			bbio.pwmEnable(pin)
+			ep_modes['PWM'][pin] = 'INOUT' 
+			#basically, it is a resource which can be written to and read from
+		else:
+			#assume disable stuff
+			res = ep_modes['PWM'].pop(pin, None)
+			if res : 
+				bbio.pwmDisable(pin)
+			else:
+				return "freeing unacquired resource", 404
 
-def write_pwm(pin, value, **kwargs):
-	pass
+	return "OK", 200
+
+
+def write_pwm(pin, value, data):
+	
+	if pin not in ep_modes['PWM']:
+		return "resource not instantiated"
+
+	if 'OUT' not in ep_modes['PWM'][pin]:
+		return "Resource mode error", 404
+	#TODO : take resolution from data, and use it.
+
+	bbio.analogWrite(pin, int(value))
+	return "OK", 200
+	
+
+def read_pwm(pin, data):
+
+	if 'IN' not in ep_modes['PWM'].get(pin, None):
+		return "Resource mode error", 404
+
+	pass 
+	#no read property for now
 
 ## AIN ##
 def config_ain(pin, **kwargs):
