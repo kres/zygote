@@ -364,9 +364,55 @@ def read_pwm(pin, data):
 
 	if 'IN' not in ep_modes['PWM'].get(pin, None):
 		return "Resource mode error", 404
-
+	#XXX : this is problem waiting to happen
 	pass 
 	#no read property for now
+
+## SERVO ##
+
+def config_servo(pin, data):
+	print "call to config servo"
+	#pin is a tuple (pin_name, servo_obj)
+	if 'enable' in data:
+		if data['enable'].upper() == 'TRUE':
+			ep_modes['SERVO'][pin] = 'INOUT'
+			pin[1].attach(pin[0])
+		else:
+			res = ep_modes['SERVO'].pop(pin, None)
+			#res was the current mode : INOUT
+			if not res:
+				return "resource not initialized", 404
+			else:
+				pin[1].detach()
+	
+	return "OK", 200
+
+
+def read_servo(pin, data):
+	print "call to read servo"
+	if pin not in ep_modes['SERVO']:
+		return "resource not instantiated"
+
+	if 'IN' not in ep_modes['SERVO'][pin]:
+		return "Resource mode error", 404
+	
+	res = pin[1].read()
+
+	return str(res), 200
+
+
+def write_servo(pin, angle, data):
+	print "call to write servo"
+	if pin not in ep_modes['SERVO']:
+		return "resource not instantiated"
+
+	if 'OUT' not in ep_modes['SERVO'][pin]:
+		return "Resource mode error", 404
+	
+	pin[1].write(int(angle))
+
+	return "OK", 200
+
 
 ## AIN ##
 def config_ain(pin, **kwargs):

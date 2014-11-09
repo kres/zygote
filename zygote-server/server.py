@@ -108,11 +108,51 @@ class PWM(restful.Resource):
 		else:
 			return "no value provided", 403
 
+class SERVO(restful.Resource):
+	def put(self, pin):
+		print "call to put"
+		pin = pin.upper()
+		pin_val = board.board_config['SERVO'].get(pin, None)
+
+		if not pin_val:
+			return "Non existing resource", 404
+
+		data = get_dict(request.form)
+		return board.config_servo(pin_val, data)
+
+	def get(self, pin):
+		print "call to get"
+
+		pin = pin.upper()
+		pin_val = board.board_config['SERVO'].get(pin, None)
+
+		if not pin_val:
+			return "Non existing resource", 404
+
+		data = get_dict(request.form)
+		return board.read_servo(pin_val, data)
+	
+	def post(self, pin):
+		print "call to post"
+
+		pin = pin.upper()
+		pin_val = board.board_config['SERVO'].get(pin, None)
+
+		if not pin_val:
+			return "Non existing resource", 404
+
+		data = get_dict(request.form)
+
+		if 'angle' in data:
+			return board.write_servo(pin_val, data['angle'], data)
+		else:
+			return "no angle provided", 403
 
 #TODO : rather than adding resource manually, add it by reading the 
 	#features list in the board_config dictionary
 api.add_resource(GPIO, '/gpio/<string:pin>')
 api.add_resource(PWM, '/pwm/<string:pin>')
+api.add_resource(SERVO, '/servo/<string:pin>')
 
 if __name__ == '__main__':
 	app.run('0.0.0.0', debug=True)
