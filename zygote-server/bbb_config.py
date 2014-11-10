@@ -166,12 +166,12 @@ board_config = {
 	#see : https://github.com/alexanderhiam/PyBBIO/wiki/Analog-to-digital-converter
 	# GET /adc/0 ;returns value at channel 0
 	'AI' : {
-		'0': 'AIN0', # :to analog object or string itself
-		'2': 'AIN2',
-		'3': 'AIN3',
-		'4': 'AIN4',
-		'5': 'AIN5',
-		'6': 'AIN6'
+		'0': bbio.A0, # :to analog object or string itself
+		'2': bbio.A2,
+		'3': bbio.A3,
+		'4': bbio.A4,
+		'5': bbio.A5,
+		'6': bbio.A6
 	},
 	
 	#pwm modules, endpoints under the pwm resource
@@ -415,11 +415,15 @@ def write_servo(pin, angle, data):
 
 
 ## AIN ##
-def config_ain(pin, **kwargs):
+def config_ain(pin, data):
 	pass
 
-def read_ain(pin, **kwargs):
+def read_ain(pin, data):
 	pass
+
+def write_ain(pin, data):
+	pass
+
 
 ## Serial ##
 def config_serial():

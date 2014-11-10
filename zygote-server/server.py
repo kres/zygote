@@ -148,11 +148,24 @@ class SERVO(restful.Resource):
 		else:
 			return "no angle provided", 403
 
+class ADC(restful.Resource):
+	
+	def put(self, pin):
+		pass
+
+	def get(self, pin):
+		pass
+
+	def post(self, pin):
+		pass
+
+
 #TODO : rather than adding resource manually, add it by reading the 
 	#features list in the board_config dictionary
 api.add_resource(GPIO, '/gpio/<string:pin>')
 api.add_resource(PWM, '/pwm/<string:pin>')
 api.add_resource(SERVO, '/servo/<string:pin>')
+api.add_resource(ADC, '/adc/<string:pin>') #rather should it be int?
 
 if __name__ == '__main__':
 	app.run('0.0.0.0', debug=True)
