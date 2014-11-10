@@ -36,7 +36,7 @@ board_config = {
 	'name' : 'Beaglebone Black',
 
 	#if a feature is not available in the set, the rest api for the same is not configured
-	'features' : set(['GPIO', 'AI', 'PWM', 'SERVO', 'UART', 'SPI', 'I2C']),
+	'features' : set(['GPIO', 'AIN', 'PWM', 'SERVO', 'UART', 'SPI', 'I2C']),
 
 	#the gpio pins, endpoints under the GPIO subsystem
 	#see : https://github.com/alexanderhiam/PyBBIO/wiki/Digital-IO
@@ -164,8 +164,8 @@ board_config = {
 
 	#analog-in channels, endpoints for the AI resource
 	#see : https://github.com/alexanderhiam/PyBBIO/wiki/Analog-to-digital-converter
-	# GET /adc/0 ;returns value at channel 0
-	'AI' : {
+	# GET /ain/0 ;returns value at channel 0
+	'AIN' : {
 		'0': bbio.A0, # :to analog object or string itself
 		'2': bbio.A2,
 		'3': bbio.A3,
@@ -416,13 +416,36 @@ def write_servo(pin, angle, data):
 
 ## AIN ##
 def config_ain(pin, data):
-	pass
+	print "call to config ain", pin
+
+	if 'enable' in data:
+
+		if data['enable'].upper() == 'TRUE':
+			ep_modes['AIN'][pin] = 'IN'
+
+		else:#assume disable
+			res = ep_modes['AIN'].pop(pin, None)
+			#res was the current mode : IN
+			if not res:
+				return "resource not initialized", 404
+	return "OK", 200
 
 def read_ain(pin, data):
-	pass
+	print "call to read ain"
+	if pin not in ep_modes['AIN']:
+		return "resource not instantiated"
 
-def write_ain(pin, data):
-	pass
+	if 'IN' not in ep_modes['AIN'][pin]:
+		#this should and can never happen
+		return "Resource mode error", 404
+
+	res = bbio.analogRead(pin)
+
+	return str(res), 200
+
+def write_ain(pin, none_val, data):
+	#none_val is None. Always.
+	return "no write allowed", 404
 
 
 ## Serial ##
