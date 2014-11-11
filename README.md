@@ -9,9 +9,40 @@ Zygote is a physical-web framework, for the internet of things. It is a perfect 
 [4]: http://www.raspberrypi.org/
 
 ##Why the name?
-[Zygote][5], in biological terms, is the entity derived by the perfect fusion of two complementry beings, in this case the hardware and the web. 
+[Zygote][5], in biological terms, is the entity derived by the perfect fusion of two complementry beings, in this case the hardware and the web.
 
 [5]: http://en.wikipedia.org/wiki/Zygote
+
+
+##The REST interface
+###1. GPIO
+```
+GET /gpio/pin_name
+  get the value the specified pin (either Input or Output mode)
+  
+PUT /gpio/pin_name?mode=output
+  configure the specified pin (mode = input or output)
+  
+POST /gpio/pin_name "status=1"
+  status=1; sets pin to high
+  status=0; sets pin to low
+  can only be used when pin configured as output.
+  
+pin_name => GPIO0_1, GPIO1_22, USR1 etc.
+```
+###2. PWM
+```
+
+```
+###3. Servo
+```
+
+```
+
+###4. AIN
+```
+
+```
 
 ##Architecture overview
 ![](https://raw.githubusercontent.com/wiki/kres/zygote/zygote-architecture.png)
