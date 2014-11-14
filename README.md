@@ -32,16 +32,40 @@ pin_name => GPIO0_1, GPIO1_22, USR1 etc.
 ```
 ###2. PWM
 ```
+PUT /pwm/pin_name?enable=true
+  to initialize the pwm. enable=false, to disable the pwm module.
+  
+POST /pwm/pin_name?value=50
+  sets the pwm value for pin_name to 50. (min: 0, max:255)
+  
+pin_name = ['1A', '1B', '2A', '2B']
 
+NOTE: there is no get request for this resource.
 ```
+
 ###3. Servo
 ```
+GET /servo/pin_name
+  returns the current angle of the servo motor
 
+PUT /servo/pin_name?enable=true
+  enables the servo. To disable : enable=false
+
+POST /servo/pin_name?angle=50
+  sets the angle of the servo motor to what is specified.
+  
+pin_name  = ['1A', '1B', '2A', '2B']
 ```
 
 ###4. AIN
 ```
-
+GET /ain/pin_name
+  returns the analog value on the pin
+  
+PUT /ain/pin_name?enable=true
+  enables the analog input pins
+  
+NOTE : no post request for this resource
 ```
 
 ##Architecture overview
