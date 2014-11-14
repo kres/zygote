@@ -68,5 +68,58 @@ PUT /ain/pin_name?enable=true
 NOTE : no post request for this resource
 ```
 
+##The JavaScript API
+(Still to be done - will be very similar to the arduino API)
+
+###1. Digital IO
+
+* ####pinMode 
+  Sets the mode of the GPIO pin, to either INPUT or OUTPUT.
+  ```javascript
+  pinMode(pin_name, mode,[ other_params, [callback]])
+  
+    pin_name: name of the pin ('USR1', 'GPIO1_22' etc)
+    mode : 'input' or 'output'
+    other_params : a json obj. extra key value pairs 
+    to be sent to server as a part of the HTTP body.
+    callback : function to be called when server responds.
+  ```
+    **REST url** : PUT host/gpio/pin_name  "mode=\<mode>&k=v" <br>
+    where \<mode> is the value of the parameter passed to this function.
+    k,v are key value pairs of the other_param object
+        
+    **returns** 'OK'
+
+
+* ####digitalWrite 
+  Drive the output of the pin to either high or low.
+  ```javascript
+  digitalWrite(pin_name, state, [other_params, [callback]])
+  
+    pin_name : name of the pin
+    state : 'high' or 'low'
+    other_params : a json obj. extra key value pairs 
+    to be sent to server as a part of the HTTP body.
+    callback : function to be called when server responds.
+  ```
+    **REST url** : POST /host/gpio/pin_name "state=\<state>&k=v" <br>
+    **returns** 'OK'
+  
+  
+* ####digitalRead : 
+  Read the input value being fed to the pin (if pin mode is input)
+                  or read last written value (if pin mode is output)
+  ```javascript
+  digitalRead(pin_name, [other_params, [callback]])
+  
+    pin_name : name of the pin
+    other_params : a json obj. extra key value pairs 
+    to be sent to server as a part of the HTTP body.
+    callback : function to be called when server responds.
+  ```
+    **REST url** : GET /host/gpio/pin_name <br>
+    **returns** '1' if high, '0' if low
+  
+  
 ##Architecture overview
 ![](https://raw.githubusercontent.com/wiki/kres/zygote/zygote-architecture.png)
