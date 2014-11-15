@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask.ext import restful
 import setup as board
+import inspect
 
 app = Flask(__name__)
 api = restful.Api(app)
@@ -191,6 +192,15 @@ api.add_resource(GPIO, '/gpio/<string:pin>')
 api.add_resource(PWM, '/pwm/<string:pin>')
 api.add_resource(SERVO, '/servo/<string:pin>')
 api.add_resource(AIN, '/ain/<string:pin>') #rather should it be int?
+
+import plugins
+valid = plugins.plugin_set
+
+other_routes = filter(lambda x : x[0] in valid, inspect.getmembers(plugins, inspect.isclass))
+print other_routes
+for r in other_routes:
+	#r => ['class-name', class-ref]
+	api.add_resource(r[1], '/plugins/'+r[0].lower())
 
 if __name__ == '__main__':
 	app.run('0.0.0.0', debug=True)
