@@ -1,0 +1,22 @@
+<!--This is a test page for the JS functions. Type the function call in the textbox.-->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> JS Functions Test Page </title>
+		<script src="jquery-2.1.1.min.js" type="text/javascript"></script>
+		<script src="functions.js" type="text/javascript"></script>
+		
+		<script type="text/javascript">
+			function executeCall() {
+				eval("(" + $("#funcCall").val() + ")")
+			}
+		</script>
+		
+	</head>
+	
+	<body>
+		<label>Enter the function: <input type="text" id="funcCall" /></label>
+		<button onclick="executeCall();">GO</button>
+	</body>
+</html>
