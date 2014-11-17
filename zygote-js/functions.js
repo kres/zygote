@@ -2,27 +2,28 @@
 //The users call these functions in their webpage and the functions will access the appropriate resources through the Flask server.
 //IMPORTANT: This module uses jQuery so include that in your scripts before using this.
 
+zygote = {}
 //For testing purposes, use testServer.php it just prints the URL on the console.
-server = "testServer.php"
+zygote.server = "testServer.php"
 
 //Uncomment this when required.
-//server = "server.py"
+//zygote.server = "server.py"
 
 //---------------GPIO---------------
-function GPIOconfig(pinName, mode, params, callback) {
+zygote.GPIOconfig = function (pinName, mode, params, callback) {
 
 	var configPin = "/gpio/" + pinName;
-	var configMode = "mode=" + mode;
 	
-	params = (typeof params === "undefined") ? {} : params;
-	var paramData = ($.isEmptyObject(params)) ? "" : $.param(params);
-		
-	callback = (typeof callback === "undefined") ? function() {} : callback;
+	params = params || {};
+	params['mode'] = mode;
+	var paramData = $.param(params);
+	
+	callback = callback || function() {};
 	
 	$.ajax({
 		url : server + configPin,
 		type : "PUT",
-		data : configMode + "&" + paramData,
+		data : paramData,
 		success : function (response) {
 			console.log(response);
 		},
@@ -34,14 +35,14 @@ function GPIOconfig(pinName, mode, params, callback) {
 	
 }
 
-function GPIOread(pinName, params, callback) {
+zygote.GPIOread = function (pinName, params, callback) {
 
 	var readPin = "/gpio/" + pinName;
 	
-	params = (typeof params === "undefined") ? {} : params;
+	params = params || {};
 	var paramData = ($.isEmptyObject(params)) ? "" : $.param(params);
-		
-	callback = (typeof callback === "undefined") ? function() {} : callback;
+	
+	callback = callback || function() {};
 	 
 	$.ajax({
 		url : server + readPin,
@@ -58,20 +59,20 @@ function GPIOread(pinName, params, callback) {
 	
 }
 
-function GPIOwrite(pinName, status, params, callback) {
+zygote.GPIOwrite = function (pinName, status, params, callback) {
 
 	var writePin = "/gpio/" + pinName;
-	var writeData = "status=" + status;
 	
-	params = (typeof params === "undefined") ? {} : params;
-	var paramData = ($.isEmptyObject(params)) ? "" : $.param(params);
-		
-	callback = (typeof callback === "undefined") ? function() {} : callback;
+	params = params || {};
+	params['status'] = status;
+	var paramData = $.param(params);
+	
+	callback = callback || function() {};
 	 
 	$.ajax({
 		url : server + writePin,
 		type : "POST",
-		data : writeData + "&" + paramData,
+		data : paramData,
 		success : function (response) {
 			console.log(response);
 		},
@@ -83,20 +84,20 @@ function GPIOwrite(pinName, status, params, callback) {
 }
 
 //---------------PWM---------------
-function PWMconfig(pinName, enable, params, callback) {
+zygote.PWMconfig = function (pinName, enable, params, callback) {
 
 	var configPin = "/pwm/" + pinName;
-	var configMode = "enable=" + enable;
 	
-	params = (typeof params === "undefined") ? {} : params;
-	var paramData = ($.isEmptyObject(params)) ? "" : $.param(params);
-		
-	callback = (typeof callback === "undefined") ? function() {} : callback;
+	params = params || {};
+	params['status'] = status;
+	var paramData = $.param(params);
+	
+	callback = callback || function() {};
 	 
 	$.ajax({
 		url : server + configPin,
 		type : "PUT",
-		data : configMode + "&" + paramData,
+		data : paramData,
 		success : function (response) {
 			console.log(response);
 		},
@@ -108,15 +109,15 @@ function PWMconfig(pinName, enable, params, callback) {
 	
 }
 
-function PWMwrite(pinName, value, params, callback) {
+zygote.PWMwrite = function (pinName, value, params, callback) {
 
 	var writePin = "/pwm/" + pinName;
-	var writeData = "value=" + value;
 	
-	params = (typeof params === "undefined") ? {} : params;
-	var paramData = ($.isEmptyObject(params)) ? "" : $.param(params);
-		
-	callback = (typeof callback === "undefined") ? function() {} : callback;
+	params = params || {};
+	params['value'] = value;
+	var paramData = $.param(params);
+	
+	callback = callback || function() {};
 	 
 	$.ajax({
 		url : server + writePin,
@@ -133,21 +134,20 @@ function PWMwrite(pinName, value, params, callback) {
 }
 
 //---------------SERVO---------------
-function SERVOconfig(pinName, enable, params, callback) {
+zygote.SERVOconfig = function (pinName, enable, params, callback) {
 
-	var configMode = "enable=" + enable;
 	var configPin = "/servo/" + pinName;
 	
+	params = params || {};
+	params['enable'] = enable;
+	var paramData = $.param(params);
 	
-	params = (typeof params === "undefined") ? {} : params;
-	var paramData = ($.isEmptyObject(params)) ? "" : $.param(params);
-		
-	callback = (typeof callback === "undefined") ? function() {} : callback;
+	callback = callback || function() {};
 	
 	$.ajax({
 		url : server + configPin,
 		type : "PUT",
-		data : configMode + "&" + paramData,
+		data : paramData,
 		success : function (response) {
 			console.log(response);
 		},
@@ -159,14 +159,14 @@ function SERVOconfig(pinName, enable, params, callback) {
 	
 }
 
-function SERVOread(pinName, params, callback) {
+zygote.SERVOread = function (pinName, params, callback) {
 
 	var readPin = "/servo/" + pinName;
 	
-	params = (typeof params === "undefined") ? {} : params;
+	params = params || {};
 	var paramData = ($.isEmptyObject(params)) ? "" : $.param(params);
-		
-	callback = (typeof callback === "undefined") ? function() {} : callback;
+	
+	callback = callback || function() {};
 	 
 	$.ajax({
 		url : server + readPin,
@@ -183,20 +183,20 @@ function SERVOread(pinName, params, callback) {
 	
 }
 
-function SERVOwrite(pinName, angle, params, callback) {
+zygote.SERVOwrite = function (pinName, angle, params, callback) {
 
 	var writePin = "/servo/" + pinName;
-	var writeData = "angle=" + angle;
 	
-	params = (typeof params === "undefined") ? {} : params;
-	var paramData = ($.isEmptyObject(params)) ? "" : $.param(params);
-		
-	callback = (typeof callback === "undefined") ? function() {} : callback;
+	params = params || {};
+	params['angle'] = angle;
+	var paramData = $.param(params);
+	
+	callback = callback || function() {};
 	 
 	$.ajax({
 		url : server + writePin,
 		type : "POST",
-		data : writeData + "&" + paramData,
+		data : paramData,
 		success : function (response) {
 			console.log(response);
 		},
