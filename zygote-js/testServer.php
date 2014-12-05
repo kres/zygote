@@ -1,4 +1,5 @@
 <?php
+//use request_test.py instead, gives more detailed o/p + does not require apache
 	
 	echo $_SERVER[REQUEST_METHOD];
 	echo " "; 
