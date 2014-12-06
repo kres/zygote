@@ -9,14 +9,47 @@
 		
 		<script type="text/javascript">
 			function executeCall() {
-				eval("(" + $("#funcCall").val() + ")")
+				code = document.getElementById("funcCall");
+				//alert(code.innerHTML);
+				scr = document.createElement("script");
+				scr.innerHTML =  code.innerHTML;
+				scr.id = 'exe'
+				document.body.appendChild(scr);
+				document.getElementById('but').onclick = stopCall;
+				document.getElementById('but').innerHTML = "stop";
+			}
+			
+			function stopCall(){
+				alert("stopping code");
+				for (var i = 1; i < 99999; i++)
+        				window.clearInterval(i);
+        				
+				scr = document.getElementById('exe');
+				scr.parentNode.removeChild(scr);
+				document.getElementById('but').onclick = executeCall;
+				document.getElementById('but').innerHTML = "start";
 			}
 		</script>
 		
 	</head>
 	
 	<body>
-		<label>Enter the function: <input type="text" id="funcCall" /></label>
-		<button onclick="executeCall();">GO</button>
+	<h3> Write code in the text area, and see it execute </h3>
+		<div style="border:solid" style="width:50px">Enter the function</div> <br><textarea id="funcCall" rows="10" cols="50" style="resize:none;border:solid"/>
+alert("executing code");
+zygote.gpio.config('GPIO1_22', 'OUTPUT');
+states = ['HIGH', 'LOW'];
+counter = 0;
+			
+function blink(){
+	zygote.gpio.write('GPIO1_22', states[counter%2]);
+	counter++;
+	setTimeout(blink, 1000);
+}
+
+blink();
+		</textarea>
+		<button id='but' onclick="executeCall();">GO</button>
+		<br>
 	</body>
 </html>
