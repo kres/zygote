@@ -184,14 +184,17 @@ class AIN(restful.Resource):
 		#no real data to be written
 		return board.write_servo(pin_val, None, data)
 
+@app.route('/app/<path:filename>')
+def serve_app(filename):
+	return send_from_directory('/web-interface', filename)
 
 
 #TODO : rather than adding resource manually, add it by reading the 
 	#features list in the board_config dictionary
-api.add_resource(GPIO, '/gpio/<string:pin>')
-api.add_resource(PWM, '/pwm/<string:pin>')
-api.add_resource(SERVO, '/servo/<string:pin>')
-api.add_resource(AIN, '/ain/<string:pin>') #rather should it be int?
+api.add_resource(GPIO, '/board/gpio/<string:pin>')
+api.add_resource(PWM, '/board/pwm/<string:pin>')
+api.add_resource(SERVO, '/board/servo/<string:pin>')
+api.add_resource(AIN, '/board/ain/<string:pin>') #rather should it be int?
 
 import plugins
 valid = plugins.plugin_set
