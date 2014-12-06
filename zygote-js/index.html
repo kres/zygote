@@ -37,12 +37,12 @@
 	<h3> Write code in the text area, and see it execute </h3>
 		<div style="border:solid" style="width:50px">Enter the function</div> <br><textarea id="funcCall" rows="10" cols="50" style="resize:none;border:solid"/>
 alert("executing code");
-zygote.gpio.config('GPIO1_22', 'OUTPUT');
+zygote.gpio.config('USR1', 'OUTPUT');
 states = ['HIGH', 'LOW'];
 counter = 0;
 			
 function blink(){
-	zygote.gpio.write('GPIO1_22', states[counter%2]);
+	zygote.gpio.write('USR1', states[counter%2]);
 	counter++;
 	setTimeout(blink, 1000);
 }
