@@ -17,25 +17,25 @@ Zygote is a physical-web framework, for the internet of things. It is a perfect 
 ##The REST interface
 ###1. GPIO
 ```
-GET /gpio/pin_name
+GET /board/gpio/pin_name
   get the value the specified pin (either Input or Output mode)
   
-PUT /gpio/pin_name?mode=output
+PUT /board/gpio/pin_name?mode=output
   configure the specified pin (mode = input or output)
   
-POST /gpio/pin_name "status=1"
-  status=1; sets pin to high
-  status=0; sets pin to low
+POST /board/gpio/pin_name "state=high"
+  status=high; sets pin to logic 0
+  status=low; sets pin to logic 1
   can only be used when pin configured as output.
   
 pin_name => GPIO0_1, GPIO1_22, USR1 etc.
 ```
 ###2. PWM
 ```
-PUT /pwm/pin_name?enable=true
+PUT /board/pwm/pin_name?enable=true
   to initialize the pwm. enable=false, to disable the pwm module.
   
-POST /pwm/pin_name?value=50
+POST /board/pwm/pin_name?value=50
   sets the pwm value for pin_name to 50. (min: 0, max:255)
   
 pin_name = ['1A', '1B', '2A', '2B']
@@ -45,13 +45,13 @@ NOTE: there is no get request for this resource.
 
 ###3. Servo
 ```
-GET /servo/pin_name
+GET /board/servo/pin_name
   returns the current angle of the servo motor
 
-PUT /servo/pin_name?enable=true
+PUT /board/servo/pin_name?enable=true
   enables the servo. To disable : enable=false
 
-POST /servo/pin_name?angle=50
+POST /board/servo/pin_name?angle=50
   sets the angle of the servo motor to what is specified.
   
 pin_name  = ['1A', '1B', '2A', '2B']
@@ -59,24 +59,24 @@ pin_name  = ['1A', '1B', '2A', '2B']
 
 ###4. AIN
 ```
-GET /ain/pin_name
+GET /board/ain/pin_name
   returns the analog value on the pin
   
-PUT /ain/pin_name?enable=true
+PUT /board/ain/pin_name?enable=true
   enables the analog input pins
   
 NOTE : no post request for this resource
 ```
 
 ##The JavaScript API
-(Still to be done - will be very similar to the arduino API)
+(This part of doc needs to be updated)
 
 ###1. Digital IO
 
-* ####pinMode 
+* ####config
   Sets the mode of the GPIO pin, to either INPUT or OUTPUT.
   ```javascript
-  pinMode(pin_name, mode,[ other_params, [callback]])
+  zygote.gpio.config(pin_name, mode,[ other_params, [callback]])
   
     pin_name: name of the pin ('USR1', 'GPIO1_22' etc)
     mode : 'input' or 'output'
@@ -84,40 +84,40 @@ NOTE : no post request for this resource
     to be sent to server as a part of the HTTP body.
     callback : function to be called when server responds.
   ```
-    **REST url** : PUT host/gpio/pin_name  "mode=\<mode>&k=v" <br>
+    **REST url** : PUT host/board/gpio/pin_name  "mode=\<mode>&k=v" <br>
     where \<mode> is the value of the parameter passed to this function.
     k,v are key value pairs of the other_param object
         
     **returns** 'OK'
 
 
-* ####digitalWrite 
+* ####write 
   Drive the output of the pin to either high or low.
   ```javascript
-  digitalWrite(pin_name, state, [other_params, [callback]])
+  zygote.gpio.write(pin_name, state, [other_params, [callback]])
   
     pin_name : name of the pin
     state : 'high' or 'low'
-    other_params : a json obj. extra key value pairs 
+    other_params : a json obj. extra /boardkey value pairs 
     to be sent to server as a part of the HTTP body.
     callback : function to be called when server responds.
   ```
-    **REST url** : POST /host/gpio/pin_name "state=\<state>&k=v" <br>
+    **REST url** : POST /host/board/gpio/pin_name "state=\<state>&k=v" <br>
     **returns** 'OK'
   
   
-* ####digitalRead : 
+* ####read : 
   Read the input value being fed to the pin (if pin mode is input)
                   or read last written value (if pin mode is output)
   ```javascript
-  digitalRead(pin_name, [other_params, [callback]])
+  zygote.gpio.read(pin_name, [other_params, [callback]])
   
     pin_name : name of the pin
     other_params : a json obj. extra key value pairs 
     to be sent to server as a part of the HTTP body.
     callback : function to be called when server responds.
   ```
-    **REST url** : GET /host/gpio/pin_name <br>
+    **REST url** : GET /host/board/gpio/pin_name <br>
     **returns** '1' if high, '0' if low
   
   
