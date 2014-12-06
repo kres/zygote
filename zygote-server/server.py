@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, send_from_directory
 from flask.ext import restful
 import setup as board
 import inspect
@@ -186,7 +186,7 @@ class AIN(restful.Resource):
 
 @app.route('/app/<path:filename>')
 def serve_app(filename):
-	return send_from_directory('/web-interface', filename)
+	return send_from_directory('./web-interface', filename)
 
 
 #TODO : rather than adding resource manually, add it by reading the 
