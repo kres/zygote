@@ -72,7 +72,7 @@ zygote.gpio = {
 		var writePin =  this.url + pinName;
 	
 		params = params || {};
-		params['status'] = status;
+		params['state'] = status;
 		var paramData = $.param(params);
 	
 		callback = callback || function() {};
