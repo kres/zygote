@@ -9,6 +9,9 @@ zygote.server = "testServer.php"
 //Uncomment this when required.
 //zygote.server = "server.py"
 
+
+//TODO!! - Return data as an object....especially for reads
+
 //---------------GPIO---------------
 zygote.GPIOconfig = function (pinName, mode, params, callback) {
 
@@ -38,24 +41,28 @@ zygote.GPIOconfig = function (pinName, mode, params, callback) {
 zygote.GPIOread = function (pinName, params, callback) {
 
 	var readPin = "/gpio/" + pinName;
-	
 	params = params || {};
 	var paramData = ($.isEmptyObject(params)) ? "" : $.param(params);
 	
 	callback = callback || function() {};
 	 
+	var ret = {} 
 	$.ajax({
 		url : server + readPin,
 		type : "GET",
 		data : paramData,
 		success : function (response) {
 			console.log(response);
+			ret.data = response;
 		},
 		error : function (error) {
 			console.log(error.message);
+			ret.data = "Error!";
 		},
 		complete : callback
 	});
+	
+	return ret;
 	
 }
 
@@ -168,19 +175,23 @@ zygote.SERVOread = function (pinName, params, callback) {
 	
 	callback = callback || function() {};
 	 
+	var ret = {}; 
 	$.ajax({
 		url : server + readPin,
 		type : "GET",
 		data : paramData,
 		success : function (response) {
 			console.log(response);
+			ret.data = response;
 		},
 		error : function (error) {
 			console.log(error.message);
+			ret.data = "Error";
 		},
 		complete : callback
 	});
 	
+	return ret;
 }
 
 zygote.SERVOwrite = function (pinName, angle, params, callback) {
@@ -210,19 +221,18 @@ zygote.SERVOwrite = function (pinName, angle, params, callback) {
 //---------------AIN---------------
 function AINconfig(pinName, enable, params, callback) {
 
-	var configMode = "enable=" + enable;
 	var configPin = "/ain/" + pinName;
 	
+	params = params || {};
+	params['enable'] = enable;
+	var paramData = $.param(params);
 	
-	params = (typeof params === "undefined") ? {} : params;
-	var paramData = ($.isEmptyObject(params)) ? "" : $.param(params);
-		
-	callback = (typeof callback === "undefined") ? function() {} : callback;
+	callback = callback || function() {};
 	
 	$.ajax({
 		url : server + configPin,
 		type : "PUT",
-		data : configMode + "&" + paramData,
+		data : paramData,
 		success : function (response) {
 			console.log(response);
 		},
@@ -238,22 +248,27 @@ function AINread(pinName, params, callback) {
 
 	var readPin = "/ain/" + pinName;
 	
-	params = (typeof params === "undefined") ? {} : params;
+	params = params || {};
 	var paramData = ($.isEmptyObject(params)) ? "" : $.param(params);
-		
-	callback = (typeof callback === "undefined") ? function() {} : callback;
+	
+	callback = callback || function() {};
 	 
+	var ret = {}; 
 	$.ajax({
 		url : server + readPin,
 		type : "GET",
 		data : paramData,
 		success : function (response) {
 			console.log(response);
+			ret.data = response;
 		},
 		error : function (error) {
 			console.log(error.message);
+			ret.data = "Error!";
 		},
 		complete : callback
 	});
+	
+	return ret;
 	
 }
