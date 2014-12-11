@@ -125,9 +125,12 @@
 			
 			//Call the appropriate functions from function.js (the zygote js API).
 			var params = {}
-			for (var i = 0; i < currentSettings.readParams.length; ++i) {
-				entry = currentSettings.readParams[i]
-				params[entry.key] = entry.value;
+			if (currentSettings.readParams)
+			{
+				for (var i = 0; i < currentSettings.readParams.length; ++i) {
+					entry = currentSettings.readParams[i]
+					params[entry.key] = entry.value;
+				}
 			}
 			
 			console.log(params);
@@ -153,9 +156,12 @@
 			currentSettings = newSettings;
 			
 			var params = {}
-			for (var i = 0; i < currentSettings.configParams.length; ++i) {
-				entry = currentSettings.configParams[i]
-				params[entry.key] = entry.value;
+			if (currentSettings.configParams)
+			{
+				for (var i = 0; i < currentSettings.configParams.length; ++i) {
+					entry = currentSettings.configParams[i]
+					params[entry.key] = entry.value;
+				}
 			}
 			
 			console.log(params);
@@ -173,12 +179,25 @@
 			{
 				zygote.servo.config(currentSettings.pinNumber, "true", params, null);
 			}
+			
+			createRefreshTimer(currentSettings.refreshTime);
 		}
 		
 		self.onDispose = function()
 		{
 			clearInterval(refreshTimer);
 			refreshTimer = undefined;
+			
+			var params = {}
+			if (currentSettings.configParams)
+			{
+				for (var i = 0; i < currentSettings.configParams.length; ++i) {
+					entry = currentSettings.configParams[i]
+					params[entry.key] = entry.value;
+				}
+			}
+			
+			console.log(params);
 			
 			//Configuration is done here.
 			if(currentSettings.pinType == "ain")
@@ -328,13 +347,6 @@
 					},
 				]
 				
-			},
-			{
-				"name"         : "refreshTime",
-				"display_name" : "Refresh Time",
-				"type"         : "text",
-				"description"  : "In milliseconds",
-				"default_value": 5000
 			}
 		],
 		newInstance   : function(settings, newInstanceCallback, updateCallback)
@@ -348,18 +360,16 @@
 		var currentSettings = settings;
 		var refreshTimer = null;
 		
-		function createRefreshTimer(interval)
+		function createPollTimer()
 		{
-			if(refreshTimer)
-			{
-				clearInterval(refreshTimer);
-			}
-
 			refreshTimer = setInterval(function()
 			{
-				// Here we call our getData function to update freeboard with new data.
-				self.updateNow();
-			}, interval);
+				if (postData[currentSettings.id] && postData[currentSettings.id].updated)
+				{
+					self.updateNow();
+					postData[currentSettings.id].updated = false;
+				}
+			}, 2000);
 		}
 		
 		self.updateNow = function ()
@@ -374,18 +384,26 @@
 			
 			//Call the appropriate functions from function.js (the zygote js API).
 			var params = {}
-			for (var i = 0; i < currentSettings.writeParams.length; ++i) {
-				entry = currentSettings.writeParams[i]
-				params[entry.key] = entry.value;
+			if (currentSettings.writeParams) 
+			{
+				for (var i = 0; i < currentSettings.writeParams.length; ++i) {
+					entry = currentSettings.writeParams[i]
+					params[entry.key] = entry.value;
+				}
 			}
 			
 			console.log(params);
 			
-			//Get data from the widget...using the generator name.
-			data = postData[currentSettings.id];
-			
-			if (!data)
-				return;
+			if(postData[currentSettings.id]){
+				//Get data from the widget...using the generator name.
+				data = postData[currentSettings.id].data;
+
+				if (!data)
+					return;
+			}
+			else{
+				return; 
+			}	
 			
 			if(currentSettings.pinType == "gpio")
 			{
@@ -407,9 +425,12 @@
 			currentSettings = newSettings;
 			
 			var params = {}
-			for (var i = 0; i < currentSettings.configParams.length; ++i) {
-				entry = currentSettings.configParams[i]
-				params[entry.key] = entry.value;
+			if (currentSettings.configParams)
+			{
+				for (var i = 0; i < currentSettings.configParams.length; ++i) {
+					entry = currentSettings.configParams[i]
+					params[entry.key] = entry.value;
+				}
 			}
 			
 			console.log(params);
@@ -434,6 +455,17 @@
 			clearInterval(refreshTimer);
 			refreshTimer = undefined;
 			
+			var params = {}
+			if (currentSettings.configParams)
+			{
+				for (var i = 0; i < currentSettings.configParams.length; ++i) {
+					entry = currentSettings.configParams[i]
+					params[entry.key] = entry.value;
+				}
+			}
+			
+			console.log(params);
+			
 			//Configuration is done here.
 			if(currentSettings.pinType == "pwm")
 			{
@@ -446,7 +478,7 @@
 		}
 		
 		self.onSettingsChanged(settings);
-		createRefreshTimer(currentSettings.refreshTime);
+		createPollTimer();
 	}
 	
 	freeboard.loadWidgetPlugin({
@@ -495,8 +527,10 @@
 
 		self.onSettingsChanged = function(newSettings)
 		{
+			postData[currentSettings.id] = {};
 			currentSettings = newSettings;
-			postData[currentSettings.id] = currentSettings.value;
+			postData[currentSettings.id].data = currentSettings.value;
+			postData[currentSettings.id].updated = true;
 			$(myTextElement).html("Settings Changed: " + currentSettings.id + " : " + currentSettings.value);
 			
 		}
