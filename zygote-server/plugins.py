@@ -19,7 +19,8 @@ class TEMP(restful.Resource):
 
 class LOC(restful.Resource):
 	def get(self):
-		return "12.934268,77.534326,17z", 200
+		#return "12.934268,77.534326,17z", 200
+		return "37.240,-115.81111", 200
 		#latitude, longitide, zoom level - for PESU
 
 ##add magnetometer :p
