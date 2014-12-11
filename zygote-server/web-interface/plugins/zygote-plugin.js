@@ -369,7 +369,7 @@
 					self.updateNow();
 					postData[currentSettings.id].updated = false;
 				}
-			}, 1000);
+			}, 2000);
 		}
 		
 		self.updateNow = function ()
@@ -394,11 +394,16 @@
 			
 			console.log(params);
 			
-			//Get data from the widget...using the generator name.
-			data = postData[currentSettings.id].data;
-			
-			if (!data)
-				return;
+			if(postData[currentSettings.id]){
+				//Get data from the widget...using the generator name.
+				data = postData[currentSettings.id].data;
+
+				if (!data)
+					return;
+			}
+			else{
+				return; 
+			}	
 			
 			if(currentSettings.pinType == "gpio")
 			{
@@ -522,9 +527,10 @@
 
 		self.onSettingsChanged = function(newSettings)
 		{
+			postData[currentSettings.id] = {};
 			currentSettings = newSettings;
 			postData[currentSettings.id].data = currentSettings.value;
-			postData[currentSettings.id].updated = false;
+			postData[currentSettings.id].updated = true;
 			$(myTextElement).html("Settings Changed: " + currentSettings.id + " : " + currentSettings.value);
 			
 		}
