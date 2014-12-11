@@ -389,6 +389,7 @@
 				for (var i = 0; i < currentSettings.writeParams.length; ++i) {
 					entry = currentSettings.writeParams[i]
 					params[entry.key] = entry.value;
+				}
 			}
 			
 			console.log(params);
