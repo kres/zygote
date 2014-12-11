@@ -173,6 +173,8 @@
 			{
 				zygote.servo.config(currentSettings.pinNumber, "true", params, null);
 			}
+			
+			createRefreshTimer(currentSettings.refreshTime);
 		}
 		
 		self.onDispose = function()
@@ -328,13 +330,6 @@
 					},
 				]
 				
-			},
-			{
-				"name"         : "refreshTime",
-				"display_name" : "Refresh Time",
-				"type"         : "text",
-				"description"  : "In milliseconds",
-				"default_value": 5000
 			}
 		],
 		newInstance   : function(settings, newInstanceCallback, updateCallback)
@@ -348,18 +343,16 @@
 		var currentSettings = settings;
 		var refreshTimer = null;
 		
-		function createRefreshTimer(interval)
+		function createPollTimer()
 		{
-			if(refreshTimer)
-			{
-				clearInterval(refreshTimer);
-			}
-
 			refreshTimer = setInterval(function()
 			{
-				// Here we call our getData function to update freeboard with new data.
-				self.updateNow();
-			}, interval);
+				if (postData[currentSettings.id].updated)
+				{
+					self.updateNow();
+					postData[currentSettings.id].updated = false;
+				}
+			}, 1000);
 		}
 		
 		self.updateNow = function ()
@@ -382,7 +375,7 @@
 			console.log(params);
 			
 			//Get data from the widget...using the generator name.
-			data = postData[currentSettings.id];
+			data = postData[currentSettings.id].data;
 			
 			if (!data)
 				return;
@@ -446,7 +439,7 @@
 		}
 		
 		self.onSettingsChanged(settings);
-		createRefreshTimer(currentSettings.refreshTime);
+		createPollTimer();
 	}
 	
 	freeboard.loadWidgetPlugin({
@@ -496,7 +489,8 @@
 		self.onSettingsChanged = function(newSettings)
 		{
 			currentSettings = newSettings;
-			postData[currentSettings.id] = currentSettings.value;
+			postData[currentSettings.id].data = currentSettings.value;
+			postData[currentSettings.id].updated = false;
 			$(myTextElement).html("Settings Changed: " + currentSettings.id + " : " + currentSettings.value);
 			
 		}
