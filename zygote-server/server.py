@@ -40,9 +40,12 @@ class GPIO(restful.Resource):
 			return "Non existing resource", 404
 
 		data = get_dict(request.form)
+		print data
 		print "return from GPIO put"
 		#if the pin exists configure it
-		return  board.config_gpio(pin_val, data)
+		res =   board.config_gpio(pin_val, data)
+		print res
+		return res
 		
 	#read the pin
 	def get(self, pin):
@@ -68,7 +71,6 @@ class GPIO(restful.Resource):
 			return "Non existing resource", 404
 
 		data = get_dict(request.form)
-
 		state = data.get('state',None)
 		if not state:
 			return "no state info", 404
