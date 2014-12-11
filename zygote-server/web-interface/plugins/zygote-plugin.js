@@ -125,9 +125,12 @@
 			
 			//Call the appropriate functions from function.js (the zygote js API).
 			var params = {}
-			for (var i = 0; i < currentSettings.readParams.length; ++i) {
-				entry = currentSettings.readParams[i]
-				params[entry.key] = entry.value;
+			if (currentSettings.readParams)
+			{
+				for (var i = 0; i < currentSettings.readParams.length; ++i) {
+					entry = currentSettings.readParams[i]
+					params[entry.key] = entry.value;
+				}
 			}
 			
 			console.log(params);
@@ -153,9 +156,12 @@
 			currentSettings = newSettings;
 			
 			var params = {}
-			for (var i = 0; i < currentSettings.configParams.length; ++i) {
-				entry = currentSettings.configParams[i]
-				params[entry.key] = entry.value;
+			if (currentSettings.configParams)
+			{
+				for (var i = 0; i < currentSettings.configParams.length; ++i) {
+					entry = currentSettings.configParams[i]
+					params[entry.key] = entry.value;
+				}
 			}
 			
 			console.log(params);
@@ -181,6 +187,17 @@
 		{
 			clearInterval(refreshTimer);
 			refreshTimer = undefined;
+			
+			var params = {}
+			if (currentSettings.configParams)
+			{
+				for (var i = 0; i < currentSettings.configParams.length; ++i) {
+					entry = currentSettings.configParams[i]
+					params[entry.key] = entry.value;
+				}
+			}
+			
+			console.log(params);
 			
 			//Configuration is done here.
 			if(currentSettings.pinType == "ain")
@@ -347,7 +364,7 @@
 		{
 			refreshTimer = setInterval(function()
 			{
-				if (postData[currentSettings.id].updated)
+				if (postData[currentSettings.id] && postData[currentSettings.id].updated)
 				{
 					self.updateNow();
 					postData[currentSettings.id].updated = false;
@@ -367,9 +384,11 @@
 			
 			//Call the appropriate functions from function.js (the zygote js API).
 			var params = {}
-			for (var i = 0; i < currentSettings.writeParams.length; ++i) {
-				entry = currentSettings.writeParams[i]
-				params[entry.key] = entry.value;
+			if (currentSettings.writeParams) 
+			{
+				for (var i = 0; i < currentSettings.writeParams.length; ++i) {
+					entry = currentSettings.writeParams[i]
+					params[entry.key] = entry.value;
 			}
 			
 			console.log(params);
@@ -400,9 +419,12 @@
 			currentSettings = newSettings;
 			
 			var params = {}
-			for (var i = 0; i < currentSettings.configParams.length; ++i) {
-				entry = currentSettings.configParams[i]
-				params[entry.key] = entry.value;
+			if (currentSettings.configParams)
+			{
+				for (var i = 0; i < currentSettings.configParams.length; ++i) {
+					entry = currentSettings.configParams[i]
+					params[entry.key] = entry.value;
+				}
 			}
 			
 			console.log(params);
@@ -426,6 +448,17 @@
 		{
 			clearInterval(refreshTimer);
 			refreshTimer = undefined;
+			
+			var params = {}
+			if (currentSettings.configParams)
+			{
+				for (var i = 0; i < currentSettings.configParams.length; ++i) {
+					entry = currentSettings.configParams[i]
+					params[entry.key] = entry.value;
+				}
+			}
+			
+			console.log(params);
 			
 			//Configuration is done here.
 			if(currentSettings.pinType == "pwm")
