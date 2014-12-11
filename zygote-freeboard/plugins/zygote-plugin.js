@@ -7,7 +7,7 @@
 		display_name : "Zygote Data Source",
 		description : "Get data from your hardware.",
 		external_scripts: [
-			"../zygote-js/functions.js"
+			"js/zygote_functions.js"
 		],
 		settings: [
 			{
@@ -163,15 +163,15 @@
 			//Configuration is done here.
 			if(currentSettings.pinType == "gpio")
 			{
-				zygote.gpio.config(currentSettings.pinNumber, "read", params, null);
+				zygote.gpio.config(currentSettings.pinNumber, "INPUT", params, null);
 			}
 			else if(currentSettings.pinType == "ain")
 			{
-				zygote.ain.config(currentSettings.pinNumber, "enable", params, null);
+				zygote.ain.config(currentSettings.pinNumber, "true", params, null);
 			}
 			else if(currentSettings.pinType == "servo")
 			{
-				zygote.servo.config(currentSettings.pinNumber, "enable", params, null);
+				zygote.servo.config(currentSettings.pinNumber, "true", params, null);
 			}
 		}
 		
@@ -183,11 +183,11 @@
 			//Configuration is done here.
 			if(currentSettings.pinType == "ain")
 			{
-				zygote.ain.config(currentSettings.pinNumber, "disable", params, null);
+				zygote.ain.config(currentSettings.pinNumber, "false", params, null);
 			}
 			else if(currentSettings.pinType == "servo")
 			{
-				zygote.servo.config(currentSettings.pinNumber, "disable", params, null);
+				zygote.servo.config(currentSettings.pinNumber, "false", params, null);
 			}
 		}
 		
@@ -256,7 +256,7 @@
 		display_name : "Zygote Data Generator",
 		description : "Post data to your hardware.",
 		external_scripts: [
-			"../../zygote-js/functions.js"
+			"js/zygote_functions.js"
 		],
 		settings: [
 			{
@@ -417,15 +417,15 @@
 			//Configuration is done here.
 			if(currentSettings.pinType == "gpio")
 			{
-				zygote.gpio.config(currentSettings.pinNumber, "write", params, null);
+				zygote.gpio.config(currentSettings.pinNumber, "OUTPUT", params, null);
 			}
 			else if(currentSettings.pinType == "pwm")
 			{
-				zygote.gpio.config(currentSettings.pinNumber, "enable", params, null);
+				zygote.gpio.config(currentSettings.pinNumber, "true", params, null);
 			}
 			else if(currentSettings.pinType == "servo")
 			{
-				zygote.servo.config(currentSettings.pinNumber, "enable", params, null);
+				zygote.servo.config(currentSettings.pinNumber, "true", params, null);
 			}
 		}
 		
@@ -437,11 +437,11 @@
 			//Configuration is done here.
 			if(currentSettings.pinType == "pwm")
 			{
-				zygote.ain.config(currentSettings.pinNumber, "disable", params, null);
+				zygote.ain.config(currentSettings.pinNumber, "false", params, null);
 			}
 			else if(currentSettings.pinType == "servo")
 			{
-				zygote.servo.config(currentSettings.pinNumber, "disable", params, null);
+				zygote.servo.config(currentSettings.pinNumber, "false", params, null);
 			}
 		}
 		
