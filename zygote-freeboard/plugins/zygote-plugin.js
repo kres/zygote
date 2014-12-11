@@ -125,9 +125,11 @@
 			
 			//Call the appropriate functions from function.js (the zygote js API).
 			var params = {}
-			for (entry in currentSettings.readParams) {
+			for (var i = 0; i < currentSettings.readParams.length; ++i) {
+				entry = currentSettings.readParams[i]
 				params[entry.key] = entry.value;
 			}
+			
 			console.log(params);
 			
 			//Configuration is done here.
@@ -150,10 +152,12 @@
 		{
 			currentSettings = newSettings;
 			
-			params = {}
-			for (entry in currentSettings.configParams) {
+			var params = {}
+			for (var i = 0; i < currentSettings.configParams.length; ++i) {
+				entry = currentSettings.configParams[i]
 				params[entry.key] = entry.value;
 			}
+			
 			console.log(params);
 			
 			//Configuration is done here.
@@ -187,6 +191,7 @@
 			}
 		}
 		
+		self.onSettingsChanged(settings);
 		createRefreshTimer(currentSettings.refreshTime);
 	}
 	
@@ -218,7 +223,6 @@
 
 		self.render = function(containerElement)
 		{
-			$(myTextElement).html("Latest Response: " + currentSettings.response)
 			$(containerElement).append(myTextElement);
 		}
 
@@ -236,13 +240,15 @@
 		{
 			if(settingName == "response")
 			{
-				$(myTextElement).html("Latest Response: " + newValue);
+				$(myTextElement).html(newValue);
 			}
 		}
 
 		self.onDispose = function()
 		{
 		}
+		
+		self.onSettingsChanged(settings);
 	}
 	
 	freeboard.loadDatasourcePlugin({
@@ -368,9 +374,11 @@
 			
 			//Call the appropriate functions from function.js (the zygote js API).
 			var params = {}
-			for (entry in currentSettings.readParams) {
+			for (var i = 0; i < currentSettings.writeParams.length; ++i) {
+				entry = currentSettings.writeParams[i]
 				params[entry.key] = entry.value;
 			}
+			
 			console.log(params);
 			
 			//Get data from the widget...using the generator name.
@@ -398,10 +406,12 @@
 		{
 			currentSettings = newSettings;
 			
-			params = {}
-			for (entry in currentSettings.configParams) {
+			var params = {}
+			for (var i = 0; i < currentSettings.configParams.length; ++i) {
+				entry = currentSettings.configParams[i]
 				params[entry.key] = entry.value;
 			}
+			
 			console.log(params);
 			
 			//Configuration is done here.
@@ -435,6 +445,7 @@
 			}
 		}
 		
+		self.onSettingsChanged(settings);
 		createRefreshTimer(currentSettings.refreshTime);
 	}
 	
@@ -460,11 +471,11 @@
 		
 		newInstance   : function(settings, newInstanceCallback)
 		{
-			newInstanceCallback(new zygoteReadWidgetPlugin(settings));
+			newInstanceCallback(new zygoteWriteWidgetPlugin(settings));
 		}
 	});
 	
-	var zygoteReadWidgetPlugin = function(settings)
+	var zygoteWriteWidgetPlugin = function(settings)
 	{
 		var self = this;
 		var currentSettings = settings;
@@ -497,5 +508,7 @@
 		self.onDispose = function()
 		{
 		}
+		
+		self.onSettingsChanged(settings);
 	}
 }());
