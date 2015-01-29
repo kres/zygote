@@ -1,6 +1,11 @@
 zygote
 ======
 
+---------
+Zygote is now getting updated. All old code has been removed. The framework will now be powered by Node!!
+Below is the legacy readme file. Old code can be found by rolling back to older commits.
+---------
+
 Zygote is a physical-web framework, for the internet of things. It is a perfect fusion of hardware and the web, enabling IoT developers to access hardware through Javascript libraries and RESTful APIs. The platform, portable and light weight can run on any piece of hardware which has a python based IO library (such as [PyBBIO][1] for the [Beaglebone Black] [2] or [RPi.GPIO][3] for the [Raspberry Pi][4]). The key purpose of the project is to get the hardware resources on to the web, thus being an essential tool in the IoT environment.
 
 [1]: http://github.com/alexanderhiam/PyBBIO
