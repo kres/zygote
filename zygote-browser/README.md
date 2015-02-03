@@ -1,0 +1,4 @@
+Zygote-browser
+==============
+
+This is the component of the framework that runs on the clients browser. It provides a visualization dashboard and authoring tool for developers to quickly get started with the Internet of Things.
