@@ -16,6 +16,7 @@ module.exports = function (req, res) {
 		switch(req.method){
 			case 'GET':
 				//req.params[0] => gives path following "container/"
+				//EG : if input url is '/container/bbb/gpio/'; we pass 'bbb/gpio'
 				model.read(req.params[0], req.query, callback);
 			break;
 
