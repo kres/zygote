@@ -1,25 +1,20 @@
 {
-	"name" : "Zygote-Server",
-
-	"description": "Server component of project Zygote",
-
-	"author": {
-		"name": "Deepak Karki",
-		"email": "deepak6k@gmail.com",
-		"url": "http://deepakkarki.github.io/"
-	},
-
-	"version" : "0.0.1",
-
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/kres/zygote"
-	},
-
-	"dependencies" : {
-		"express" : "~4.11.1"
-	},
-
-	"main" : "server"
+  "name": "Zygote-Server",
+  "description": "Server component of project Zygote",
+  "author": {
+    "name": "Deepak Karki",
+    "email": "deepak6k@gmail.com",
+    "url": "http://deepakkarki.github.io/"
+  },
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kres/zygote"
+  },
+  "dependencies": {
+    "body-parser": "^1.11.0",
+    "express": "~4.11.1",
+    "multer": "^0.1.7"
+  },
+  "main": "server"
 }
-
