@@ -4,5 +4,5 @@ module.exports = function(app) {
 		var index = require('../controllers/index.js');
 		var container = require('../controllers/container.js');
 		app.get('/', index);
-		app.all('/container/*', container);
+		app.all('/container/*/$', container);
 	};
