@@ -7,12 +7,24 @@ module.exports = function (req, res) {
 		var model = require("../models/index.js");
 		
 		//callback function called by the module method
-		var callback = function (result) {
+		var callback = function (result, action) {
 				//this could do something more complex later
-				res.send(result);
+				
+				if(result == undefined){
+					res.status(404).send('Not Found');
+				}
+				else{
+                    
+					if (action && ('ep' in action)){
+						//add new ep to routes
+						req.app.all('/container'+ action['ep'], require('./res_instance.js'));
+					}
+					res.send(result);
+				}
 			};
 
 		//forward the request to the model
+		//XXX: should I just pass response to the model fn instead of callbacks?
 		switch(req.method){
 			case 'GET':
 				//req.params[0] => gives path following "container/"
