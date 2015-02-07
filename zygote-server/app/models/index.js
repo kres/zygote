@@ -26,10 +26,6 @@ function get_data(url){
 	return data;
 }
 
-function create_res(url){
-
-}
-
 /*
  * id => the REST url component - the resource to manipulate 
  * data => the json data associated with the request
@@ -47,15 +43,36 @@ exports.write = function (id, data, callback){
 		callback("<h1>OKAY</h1>");
 	};
 
-
+//XXX: any change in structure of desc file will break the code
 exports.update = function (id, data, callback){
 		console.log('CONFIG : '+id+' : '+ JSON.stringify(data));
+
+		//if client is creating a new endoint
 		if('ep' in data){
-			if (ep in get_data(id)) {
+
+			//get ep trying to be created
+			var ep = data['ep'];
+
+			//get sets of ep for res_type 
+			var ep_set = get_data(id);
+			
+			//does res_type exist? if so, does reqd 'ep' exist?
+			if (ep_set && (ep in ep_set)) {
 				//create an endpoint; link it to res_instance.js controller
+				//eg: id='gpio', ep='1'; url created => '/container/gpio/1'
+				ep_url = "/"+id+"/"+ep;
+				callback({"ep": ep_url}, {"ep" : ep_url});
+			}
+
+			else{
+				//somethin wong!
+				callback(undefined);
 			}
 		}
-		callback(undefined);
+		else{
+			//not handling anything else now
+			callback(undefined);
+		}
 	};
 
 
