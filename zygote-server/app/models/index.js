@@ -18,7 +18,7 @@ function get_data(url){
 	console.log("URL : "+ url);
 	var data = undefined;
 
-	for(i in dir){
+	for(var i in dir){
 		data = ds[dir[i]];
 		if(data == undefined) break;
 	}
