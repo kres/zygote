@@ -1,27 +1,29 @@
 // All requests to '/container/*' is routed here.
 // Includes GET, POST, PUT, DEL. forwards to the correct model.
 
-var ds = require('./datasource.js');
+var d_src = require('./datasource.js');
 
-//merge resources into main object 
-//XXX : ignore 'bbb' for now; assume only 1 h/w
-// It will take minimal effort to change anyway
-
-if('res' in ds){
-	var extend = require('util')._extend;
-	extend(ds, ds['res']);
-	delete ds['res'];
-}
-
-function get_data(url){
+//The function below will get complex, instead 
+//have a simple url to json map for each res_type
+function get_data(ds, url){
 	
 	dir = url.split('/');
 	console.log("URL : "+ url);
-	var data = undefined;
 
+	//check if it is a board property
+	//XXX:handles only one lvl of depth;
+	//OK since it fits board desc file for now
+	if (url[0] in ds) {
+		return ds[url[0]];
+	};
+
+	//otherwise it is a res
+	var data = undefined;
+	ds = ds['res'];
 	for(var i in dir){
 		data = ds[dir[i]];
 		if(data == undefined) break;
+		ds = data;
 	}
 
 	return data;
@@ -35,7 +37,7 @@ exports.get = function (req, res) {
 	var id = req.params[0]; //id is res_type's URL
 	var data = req.query;
 	console.log('READ : '+id+' : '+ JSON.stringify(data));
-	res.send(JSON.stringify(get_data(id)));
+	res.send(JSON.stringify(get_data(d_src, id)));
 	//XXX later instead of res.send; `model.read(id, data, callback_fn);`
 };
 
@@ -52,7 +54,7 @@ exports.put = function (req, res) {
 		var ep = data['ep'];
 
 		//get sets of ep for res_type 
-		var ep_set = get_data(id);
+		var ep_set = get_data(d_src, id);
 			
 		//does res_type exist? if so, does reqd 'ep' exist?
 		if (ep_set && (ep in ep_set)) {
