@@ -3,6 +3,8 @@
 
 var d_src = require('./datasource.js');
 
+var used_pins = [];
+
 //The function below will get complex, instead 
 //have a simple url to json map for each res_type
 function get_data(ds, url){
@@ -60,6 +62,10 @@ exports.put = function (req, res) {
 		if (ep_set && (ep in ep_set)) {
 			//create an endpoint; link it to res_instance.js controller
 			//eg: id='gpio', ep='1'; url created => '/container/gpio/1'
+			if(register_pins(used_pins, ep_set[ep]).length != 0){
+				res.status(404).send('pins busy');
+				return;
+			}
 			ep_url = "/"+id+"/"+ep;
 			req.app.all('/container'+ ep_url, require('./res_instance.js'));
 			res.send({"ep": ep_url});
@@ -93,3 +99,19 @@ exports.del = function(req, res){
 	res.send("<h1>OKAY</h1>");
 };
 
+//takes in list of busy pins and json of res_type
+//returns the list of pins not allocated
+function register_pins(busy, type){
+	if ('pins' in type){
+		reqd = type['pins'];
+		res = [];
+		for(pin in reqd){
+			if(busy.indexOf(reqd[pin]) > -1) res.push(reqd[pin]);
+		}
+		if(res.length == 0){
+			for(i in reqd) busy.push(reqd[i]);
+		}
+		console.log(used_pins);
+		return res;
+	}
+}
