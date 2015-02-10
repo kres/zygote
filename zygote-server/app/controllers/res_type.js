@@ -1,93 +1,49 @@
 // All requests to '/container/*' is routed here.
 // Includes GET, POST, PUT, DEL. forwards to the correct model.
 
-var d_src = require('./datasource.js');
+var data = require('./data.js');
 
 var used_pins = [];
-
-//The function below will get complex, instead 
-//have a simple url to json map for each res_type
-function get_data(ds, url){
-	
-	dir = url.split('/');
-	console.log("URL : "+ url);
-
-	//check if it is a board property
-	//XXX:handles only one lvl of depth;
-	//OK since it fits board desc file for now
-	if (url[0] in ds) {
-		return ds[url[0]];
-	};
-
-	//otherwise it is a res
-	var data = undefined;
-	ds = ds['res'];
-	for(var i in dir){
-		data = ds[dir[i]];
-		if(data == undefined) break;
-		ds = data;
-	}
-
-	return data;
-}
-
 		
-//req.params[0] => gives path following "container/"
-//EG : if input url is '/container/bbb/gpio/'; we pass 'bbb/gpio'
+//req.params[0] => gives path following "bbb/"
+//EG : if input url is '/bbb/gpio/'; we have 'gpio'
 		
+//Returns the number of free/available ep for the given resource type
 exports.get = function (req, res) {
 	var id = req.params[0]; //id is res_type's URL
-	var data = req.query;
-	console.log('READ : '+id+' : '+ JSON.stringify(data));
-	res.send(JSON.stringify(get_data(d_src, id)));
-	//XXX later instead of res.send; `model.read(id, data, callback_fn);`
-};
+	var container = req.url.split('/')[1];
+	console.log('READ : '+id+' : '+ req.url);
 
-
-exports.put = function (req, res) {
-	var id = req.params[0]; //id is res_type's URL
-	var data = req.body;
-	console.log('CONFIG : '+id+' : '+ JSON.stringify(data));
-
-	//if client is creating a new end point
-	if('ep' in data){
-
-		//get ep trying to be created
-		var ep = data['ep'];
-
-		//get sets of ep for res_type 
-		var ep_set = get_data(d_src, id);
-			
-		//does res_type exist? if so, does reqd 'ep' exist?
-		if (ep_set && (ep in ep_set)) {
-			//create an endpoint; link it to res_instance.js controller
-			//eg: id='gpio', ep='1'; url created => '/container/gpio/1'
-			if(register_pins(used_pins, ep_set[ep]).length != 0){
-				res.status(404).send('pins busy');
-				return;
-			}
-			ep_url = "/"+id+"/"+ep;
-			req.app.all('/container'+ ep_url, require('./res_instance.js'));
-			res.send({"ep": ep_url});
-		}
-
-		else{
-			//somethin wong!
-			res.status(404).send("Invalid endpoint");
-		}
+	var available_ep = data.res_type[container][id];
+	if(available_ep){
+		res.json(available_ep);
 	}
-		
 	else{
-		//not handling anything else now
-		res.status(404).send("Operation not supported");
+		res.status(404).json({"error" : "resource type not found"});
 	}
 };
 
 exports.post = function(req, res) {
 	var id = req.params[0]; //id is res_type's URL
-	var data = req.body;
-	console.log('WRITE : '+id+' : '+ JSON.stringify(data));
-	res.send("<h1>OKAY</h1>");
+	var ep = req.body['ep'];
+	if(! ep){
+		res.status(404).json({"error" : "unsupported operation"});
+	}
+	var container = req.url.split('/')[1];
+	var ep_set = data.res_type[container][id];
+
+	if(ep_set && (ep in ep_set)){
+		//end point is available
+		if(register_pins(used_pins, ep_set[ep]).length != 0){
+			res.status(404).json({"error" : "pins busy"});
+			return;
+		}
+		req.app.all(req.url+ep, require('./res_instance.js'));
+		res.json({"url":req.url+ep})
+	}
+	else{
+		res.status(404).json({"error" : "invalid endpoint"});
+	}
 };
 
 exports.del = function(req, res){
