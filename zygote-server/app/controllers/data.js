@@ -36,3 +36,16 @@ exports.res_inst = {};
 	}
 }
 */
+
+//holds list of pins currently in use
+exports.used_pins = {};
+/*
+	later it should be 
+	{
+		'bbb' : [],
+		'rpi' : [], etc..
+	}
+*/
+
+//set of all the data that keeps changing....
+exports.meta = [exports.res_inst, exports.used_pins];
