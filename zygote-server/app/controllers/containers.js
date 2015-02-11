@@ -45,10 +45,16 @@ exports.post = function(req, res){
 		for(var resource in sys_res){
 			data.res_type[id][resource] = sys_res[resource];
 		}
-		//console.log(JSON.stringify(data.res_type));
+		//add the cont url to active inst dict
+		data.res_inst[id] = {};
+
+		//initalize used pins list for this board
+		data.used_pins[id] = [];
+
 		//set up new routes
 		req.app.get('/'+ cont['url'] +'/*/$', require('./res_type.js').get);
 		req.app.post('/'+ cont['url'] +'/*/$', require('./res_type.js').post);
+		req.app.delete('/'+ cont['url'] +'/*/$', require('./res_type.js').del);
 
 		//send the new url generated
 		res.json({"url" : id});
