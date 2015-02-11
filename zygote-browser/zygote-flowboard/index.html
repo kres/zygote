@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset='utf-8' />
+        
+        <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+        <link type="text/css" rel="stylesheet" href="css/bootstrap-theme.min.css" />
+        <link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css" />
+
+        <link type="text/css" rel="stylesheet" href="css/styles.css" />
+
+        <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/dom.jsPlumb-1.7.2-min.js"></script>
+        
+        <title>Zygote Flowboard</title>
+        
+        <script>
+            $(function () {
+                $(".block").draggable({
+                    revert: "invalid",
+                    scope: "chart",
+                    appendTo: "#chart",
+                    helper: "clone"
+                });
+                $(".resource").draggable({
+                    revert: "invalid",
+                    scope: "chart",
+                    appendTo: "#chart",
+                    helper: "clone"
+                });
+                
+                $("#chart").droppable({
+                    scope: "chart",
+                    drop: function(e, ui) {
+                            $(this).append($(ui.helper).clone());
+                    }
+                });
+            });
+        </script>
+        
+    </head>
+    
+    <body>
+        <div id="container-main">
+        
+            <div id="header" class="navbar navbar-default navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Zygote Flowboard</a>
+                    </div>
+                    
+                    <div>
+                        <ul id="navs" class="nav navbar-nav navbar-right ">
+                            <button type="button" class="btn btn-default navbar-btn">
+                                <span class="glyphicon glyphicon-import" aria-hidden="true"></span> Import
+                            </button>
+                            <button type="button" class="btn btn-default navbar-btn">
+                                <span class="glyphicon glyphicon-export" aria-hidden="true"></span> Export
+                            </button>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="palette">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Blocks</div>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="block a-block">A-BLOCK</div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="block b-block">B-BLOCK</div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="block c-block">C-BLOCK</div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="block d-block">D-BLOCK</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Resources</div>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <div class="resource a-resource">A-RESOURCE</div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="resource b-resource">B-RESOURCE</div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="resource c-resource">C-RESOURCE</div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="resource d-resource">D-RESOURCE</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="sidebar">
+                <ul id="tabs" class="nav nav-tabs nav-justified">
+                    <li class="active"><a href="#element-info" data-toggle="tab">Element</a></li>
+                    <li><a href="#json-flow" data-toggle="tab">JSON</a></li>
+                </ul>
+                
+                <div id="sidebar-tab-content" class="tab-content">
+                    <div class="tab-pane active" id="element-info">
+                        <p>This is where information about the selected element will be displayed.</p>
+                    </div>
+                    <div class="tab-pane" id="json-flow">
+                        <p>This is where the JSON data that is generated by the flow will be displayed.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="workspace">
+                <div id="workspace-container">
+                    <div id="chart">
+                    </div>
+                </div>
+            </div>
+        
+            
+        </div>
+    </body>
+</html>
