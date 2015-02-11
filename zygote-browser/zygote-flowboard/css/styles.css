@@ -1,0 +1,98 @@
+body {
+    padding-top: 60px;
+}
+
+#palette {
+    background-color: #F0F0F0;
+    width: 150px;
+    height: 700px;
+    overflow-y: scroll;
+    float: left;
+    margin-left: 10px;
+}
+
+#sidebar {
+    background-color: #F0F0F0;
+    width: 300px;
+    height: 700px;
+    overflow-y: scroll;
+    float: right;
+    margin-right: 10px;
+}
+
+#workspace {
+    overflow: hidden;
+}
+
+#workspace-container {
+    position: relative;
+    height: 700px;
+    overflow: scroll;
+    background-color: #FBFBFB;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#chart {
+    position: relative;
+    z-index: 100;
+    background-color: #FFFFFF;
+    width: 1500px;
+    height: 1500px;
+    margin: 10px;
+}
+#navs {
+    padding-right: 110px;
+}
+
+.block {
+    width: 100px;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 10px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 50px;
+}
+
+.a-block {
+    background-color: #99C2FF;
+}
+
+.b-block {
+    background-color: #CCE0FF;
+}
+
+.c-block {
+    background-color: #B2B2FF;
+}
+
+.d-block {
+    background-color: #D1D1FF;
+}
+
+.resource {
+    width: 100px;
+    height: 75px;
+    border: 1px solid black;
+    border-radius: 25px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 75px;
+}
+
+.a-resource {
+    background-color: #FF7519;
+}
+
+.b-resource {
+    background-color: #FF9933;
+}
+
+.c-resource {
+    background-color: #FFA347;
+}
+
+.d-resource {
+    background-color: #FFB547;
+}
