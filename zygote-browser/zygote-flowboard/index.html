@@ -13,12 +13,13 @@
         <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/dom.jsPlumb-1.7.2-min.js"></script>
+        <script type="text/javascript" src="js/jquery.jsPlumb-1.7.2-min.js"></script>
         
         <title>Zygote Flowboard</title>
         
         <script>
-            $(function () {
+            $(document).ready(function () {
+                
                 $(".block").draggable({
                     revert: "invalid",
                     scope: "chart",
@@ -35,10 +36,19 @@
                 $("#chart").droppable({
                     scope: "chart",
                     drop: function(e, ui) {
-                            $(this).append($(ui.helper).clone());
+                            var elem = $(ui.helper).clone();
+                            elem.uniqueId();
+                            elem.removeClass("ui-draggable ui-draggable-handle ui-draggable-dragging");
+                            jsPlumb.draggable(elem,{containment:"parent"});
+                            $(this).append(elem);
                     }
                 });
             });
+            
+            jsPlumb.ready(function() {
+                jsPlumb.setContainer($("#chart"));                
+            });
+            
         </script>
         
     </head>
