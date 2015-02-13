@@ -11,6 +11,6 @@ CODE STRUCTURE
 
 //module.exports = function init(){ } --constructor
 
-//init.prototype.read = function read(){ }
-//init.prototype.write = function write(){ }
-//init.prototype.config = function config(){ }
+//init.prototype.read = function read(info, callbk){ }
+//init.prototype.write = function write(info, callbk){ }
+//init.prototype.config = function config(info, callbk){ }
