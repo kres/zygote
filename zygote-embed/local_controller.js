@@ -61,11 +61,10 @@ exports.create = function(res, opts, callback){
 		if(type in conf){
 			//init returns the actual h/w object
 			//h/w object has a R-W-C interface along with delete 'destructor'
-			obj_map[res] = new conf[type].init(ep, opts, function(obj){
+			new conf[type].init(ep, opts, function(obj){
+				obj_map[res] = obj;
 				callback({"ep" : res});
 			});
-			//whats happening here is that I'm creating an res object
-			//and assign it in obj_map. once the init completes, calls callback fn
 		}
 	}
 };

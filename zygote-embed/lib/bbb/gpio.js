@@ -9,11 +9,34 @@ CODE STRUCTURE
 -----------------------
 */
 
-//module.exports = function init(ep, opts, callback){ } --constructor
-//or exports.init
+exports.init = function init(ep, opts, callback){
+	//I could have a rest url to internal identifier map if reqd.
+	this.ep = ep;
+	console.log("New GPIO end point created");
+	//shuld I have a url mapping defined here; just for back linking
+	if('mode' in opts){
+		this.mode = mode;
+	}
+	callback(this); //if there is an error, do what?
+};
 
 
-//init.prototype.read = function read(info, callbk){ }
-//init.prototype.write = function write(info, callbk){ }
-//init.prototype.config = function config(info, callbk){ }
-//init.prototype.delete = function delete() {}
+init.prototype.read = function read(data, callback){ 
+	console.log("GPIO Read : ", data);
+	callback({"value":"random-data"});
+};
+
+init.prototype.write = function write(data, callback){ 
+	console.log("GPIO write : ", data);
+	callback({"value":"bytes-written?"});
+};
+
+init.prototype.config = function config(data, callback){ 
+	console.log("GPIO config : ", data);
+	callback({"value":"something configured"});
+};
+
+init.prototype.delete = function delete(data, callback) {
+	console.log("GPIO delete : ", data);
+	callback({"value":"cleanup done"});
+};

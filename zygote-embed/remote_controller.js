@@ -27,3 +27,5 @@ exports.start = function start(server){
 
 	});
 }
+
+//export read-write-config
