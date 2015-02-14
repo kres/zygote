@@ -3,9 +3,11 @@
 
 //has a create and delete function to add new and remove existing resources
 
+var conf = require("./conf.js");
+
 var obj_map = {
 	//url to obj mapping
-	// 'gpio/P9_11' ---> conf['gpio']('P9_11'); where conf['gpio'] is require('./base_dir/gpio.js')
+	// 'gpio/P9_11' ---> conf.res['gpio']('P9_11'); where conf['gpio'] is require('./base_dir/gpio.js')
 };
 
 /*
@@ -14,11 +16,70 @@ var obj_map = {
 	callback : fn which takes one argument, viz ret val data
 */
 exports.read = function(res, info, callback){
+	//info could have no. of bytes to read,
+		//ofset to start from, etc.
 	if(res in obj_map){
-			var real_obj = obj_map['res'];
+			var real_obj = obj_map[res];
 			real_obj.read(info, callback);
 	}
 	else{
 		callback({"error":"no such resource"});
+	}
+};
+
+exports.write = function(res, info, callback){
+	//info here will contain data to be written
+	if(res in obj_map){
+			var real_obj = obj_map[res];
+			real_obj.write(info, callback);
+	}
+	else{
+		callback({"error":"no such resource"});
+	}
+};
+
+exports.config = function(res, info, callback){
+	//info contains config params
+	if(res in obj_map){
+			var real_obj = obj_map[res];
+			real_obj.config(info, callback);
+	}
+	else{
+		callback({"error":"no such resource"});
+	}
+};
+
+exports.create = function(res, opts, callback){
+	//res => gpio/1
+	if(res in obj_map){
+		callback({"error":"resource already exists"});
+	}
+
+	else{
+		var type = res.split('/')[0];
+		var ep = res.split('/')[1];
+		if(type in conf){
+			//init returns the actual h/w object
+			//h/w object has a R-W-C interface along with delete 'destructor'
+			obj_map[res] = new conf[type].init(ep, opts, function(obj){
+				callback({"ep" : res});
+			});
+			//whats happening here is that I'm creating an res object
+			//and assign it in obj_map. once the init completes, calls callback fn
+		}
+	}
+};
+
+exports.delete = function(res, opts, callback){
+	//res => gpio/1
+	if(res in obj_map){
+		obj_map[res].delete(opts, function(){
+			delete obj_map[res];
+			callback({"ep":res});
+		});
+	}
+
+	else{
+		callback({"error":"resource does not exist"});
 	}
 };
