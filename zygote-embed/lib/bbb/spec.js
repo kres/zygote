@@ -32,7 +32,7 @@ module.exports =
 			"4" : {
 				"pins" : ["p4"]
 			}
-		},
+		}/*,
 
 		"pwm" : {
 			"1" : {
@@ -48,6 +48,6 @@ module.exports =
 			"1" : {
 				"pins" : ["p6", "p7"]
 			}
-		}
+		}*/
 	}
 }
