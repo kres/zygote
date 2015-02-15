@@ -56,8 +56,8 @@ exports.create = function(res, opts, callback){
 	}
 
 	else{
-		var type = res.split('/')[0];
-		var ep = res.split('/')[1];
+		var type = res.split('/')[0]; //'gpio'
+		var ep = res.split('/')[1]; // '1'
 		if(type in conf){
 			//init returns the actual h/w object
 			//h/w object has a R-W-C interface along with delete 'destructor'
