@@ -12,20 +12,20 @@ exports.startSocket = function(server){
 	io.on('connection', function(socket){
 
 		socket.on('url', function(msg){
-			//msg is a string, such as : 'bbb', 'rpi'
+			//msg is json, such as : {'url' : bbb'}
 			//if the board is available 
-			if(msg in data.spec){
+			if(msg['url'] in data.spec){
 				//add a mapping 
-				sock_map[msg] = socket;
+				sock_map[msg['url']] = socket;
 				
 				//add data handler
 				socket.on('data', function(req, callback){
 					//req contains the request data
-					//req : {'container' : 'bbb', 'res' : 'gpio/1', 'op' : 'read',data : {}}
+					//req : {'container' : 'bbb', 'ep' : 'gpio/1', 'op' : 'read',data : {}}
 					if(req['container'] in sock_map){
 						sock_map[req['container']].emit('data', req, function(ret_val){
 							callback(ret_val);
-						})
+						});
 					}
 					else{
 						callback({"error": "no such container"});
@@ -34,7 +34,7 @@ exports.startSocket = function(server){
 
 				//add disconnect handler 
 				socket.on('disconnect', function(){
-					if(msg in sock_map) delete sock_map[msg];
+					if(msg['url'] in sock_map) delete sock_map[msg['url']];
 				});
 
 			}
@@ -43,4 +43,97 @@ exports.startSocket = function(server){
 			}
 		});
 	});
+}
+
+exports.read = function(container, ep, data, callback){
+	console.log("call to read");
+	if(container in sock_map){
+		var s = sock_map[container];
+		var rpc_struct = {};
+		rpc_struct['data'] = data;
+		rpc_struct['op'] = 'read';
+		rpc_struct['ep'] = ep;
+		rpc_struct['container'] = container; //reqd. ?
+		s.emit("data", rpc_struct, function(ret_val){
+			callback(ret_val);
+		});
+	}
+	else{
+		callback({"error":"no such container"});
+	}
+};
+
+exports.write = function(container, ep, data, callback){
+	console.log("call to write");
+	if(container in sock_map){
+		var s = sock_map[container];
+		var rpc_struct = {};
+		rpc_struct['data'] = data;
+		rpc_struct['op'] = 'write';
+		rpc_struct['ep'] = ep;
+		rpc_struct['container'] = container; //reqd. ?
+		s.emit("data", rpc_struct, function(ret_val){
+			callback(ret_val);
+		});
+	}
+	else{
+		callback({"error":"no such container"});
+	}
+}
+
+exports.config = function(container, ep, data, callback){
+	console.log("call to config");
+	if(container in sock_map){
+		var s = sock_map[container];
+		var rpc_struct = {};
+		rpc_struct['data'] = data;
+		rpc_struct['op'] = 'config';
+		rpc_struct['ep'] = ep;
+		rpc_struct['container'] = container; //reqd. ?
+		s.emit("data", rpc_struct, function(ret_val){
+			callback(ret_val);
+		});
+	}
+	else{
+		callback({"error":"no such container"});
+	}
+}
+
+
+/*
+	create delete resources in the remote containers
+*/
+
+exports.create = function(container, ep, data, callback){
+	console.log("call to create");
+	if(container in sock_map){
+		var s = sock_map[container];
+		var rpc_struct = {};
+		rpc_struct['data'] = data;
+		rpc_struct['ep'] = ep;
+		rpc_struct['container'] = container; //reqd. ?
+		s.emit("create", rpc_struct, function(ret_val){
+			callback(ret_val);
+		});
+	}
+	else{
+		callback({"error":"no such container"});
+	}
+}
+
+exports.delete = function(container, ep, data, callback){
+	console.log("call to delete");
+	if(container in sock_map){
+		var s = sock_map[container];
+		var rpc_struct = {};
+		rpc_struct['data'] = data;
+		rpc_struct['ep'] = ep;
+		rpc_struct['container'] = container; //reqd. ?
+		s.emit("delete", rpc_struct, function(ret_val){
+			callback(ret_val);
+		});
+	}
+	else{
+		callback({"error":"no such container"});
+	}
 }
