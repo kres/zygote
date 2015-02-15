@@ -7,6 +7,7 @@
 
 
 var data = require('./data.js');
+var sc = require('./socket_handler.js');
 
 var used_pins = data.used_pins;
 		
@@ -34,7 +35,9 @@ exports.get = function (req, res) {
 };
 
 exports.post = function(req, res) {
-	var id = req.params[0]; //id is res_type's URL
+	//POST /bbb/gpio/  {'ep' : 'P1'}
+
+	var id = req.params[0]; //id => 'gpio'
 	var ep = req.body['ep'];
 	if(! ep){
 		res.status(404).json({"error" : "unsupported operation"});
@@ -66,7 +69,9 @@ exports.post = function(req, res) {
 		//add ep url to res_inst
 		data.res_inst[container][id+'/'+ep] = ep_set[ep];
 		
-		res.json({"url":req.url+ep})
+		sc.create(container, id+'/'+ep, {}, function(data){
+			res.json(data);
+		}); 
 	}
 	else{
 		res.status(404).json({"error" : "invalid endpoint"});
@@ -101,8 +106,12 @@ exports.del = function(req, res){
 		//NO error checking as pin is supposed to be there
 		used_pins[container].splice(used_pins[container].indexOf(pins[i]), 1);
 	}
+	
 	delete data.res_inst[container][id+'/'+ep];
-	res.json({"url" : req.url+ep});
+	
+	sc.delete(container, id+'/'+ep, {}, function(data){
+		res.json(data);
+	}); 
 };
 
 //takes in list of busy pins and json of res_type
