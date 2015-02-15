@@ -17,9 +17,13 @@ exports.res_type = {};
 /* 
 {
 	'bbb' : {
-		'gpio' : {'P9_1' : ['P9_1'], ...}, 
+		'gpio' : {'1' : {'pins' : ['P9_1'],
+						  'other info' : 'other val'
+						  }, 
+					'2' : {...}
+				 },
 				==> the value is basically the 'gpio' object in the spec file
-		'servo/pwm' : {}, 
+		'servo/pwm' : {...}, 
 	},
 	'rpi' : {}, ...
 }
