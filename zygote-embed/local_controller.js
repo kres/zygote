@@ -58,13 +58,16 @@ exports.create = function(res, opts, callback){
 	else{
 		var type = res.split('/')[0]; //'gpio'
 		var ep = res.split('/')[1]; // '1'
-		if(type in conf){
+		if(type in conf.res){
 			//init returns the actual h/w object
 			//h/w object has a R-W-C interface along with delete 'destructor'
-			new conf[type].init(ep, opts, function(obj){
+			new conf.res[type].init(ep, opts, function(obj){
 				obj_map[res] = obj;
 				callback({"ep" : res});
 			});
+		}
+		else{
+			callback({"error": "Non existant resource type"})
 		}
 	}
 };
