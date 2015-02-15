@@ -9,7 +9,7 @@ CODE STRUCTURE
 -----------------------
 */
 
-exports.init = function init(ep, opts, callback){
+function init(ep, opts, callback){
 	//I could have a rest url to internal identifier map if reqd.
 	this.ep = ep;
 	console.log("New GPIO end point created");
@@ -18,7 +18,7 @@ exports.init = function init(ep, opts, callback){
 		this.mode = mode;
 	}
 	callback(this); //if there is an error, do what?
-};
+}
 
 
 init.prototype.read = function read(data, callback){ 
@@ -36,7 +36,9 @@ init.prototype.config = function config(data, callback){
 	callback({"value":"something configured"});
 };
 
-init.prototype.delete = function delete(data, callback) {
+init.prototype.delete = function del(data, callback) {
 	console.log("GPIO delete : ", data);
 	callback({"value":"cleanup done"});
 };
+
+exports.init = init;
