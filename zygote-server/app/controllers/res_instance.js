@@ -3,6 +3,7 @@
 // When model handling resurce type
 
 var data = require('./data.js');
+var sc = require("./socket_handler.js");
 
 exports.read = function (req, res){
 	//url : /bbb/gpio/1
@@ -14,9 +15,10 @@ exports.read = function (req, res){
 
 	if(id in data.res_inst[container]){
 		console.log("READ : "+ req.url);
-		//here it will route to sockets handler
-		//model.read('url', function callback(data){res.json(data);})
-		res.json({id:"available"})
+		//here it will route to sockets controller
+		sc.read(container, id, req.query, function(data){
+			res.json(data);
+		});
 	}
 	else{
 		res.status(404).json({"error": "non existing instance"});
@@ -37,9 +39,10 @@ exports.write = function (req, res){
 	console.log("ID : "+ id);
 	if(id in data.res_inst[container]){
 		console.log("WRITE : "+ req.url);
-		//here it will route to sockets handler
-		//model.write('url', req.body, function callback(data){res.json(data);})
-		res.json({id:"available"})
+		//here it will route to sockets controller
+		sc.write(container, id, req.query, function(data){
+			res.json(data);
+		});
 	}
 	else{
 		res.status(404).json({"error": "non existing instance"});
@@ -53,9 +56,10 @@ exports.config = function (req, res){
 
 	if(id in data.res_inst[container]){
 		console.log("CONFIG : "+ req.url);
-		//here it will route to sockets handler
-		//model.config('url', req.body, function callback(data){res.json(data);})
-		res.json({id:"available"})
+		//here it will route to sockets controller
+		sc.config(container, id, req.query, function(data){
+			res.json(data);
+		});
 	}
 	else{
 		res.status(404).json({"error": "non existing instance"});
