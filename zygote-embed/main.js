@@ -15,5 +15,25 @@ for(var i in res_list){
 	conf.res[res_list[i]] = require(base_dir+res_list[i]);
 }
 
-var r_controller = require("./remote_controller.js")
-r_controller.start('http://localhost:3000');
+//register with the client
+var request = require('request-json');
+var client = request.createClient('http://localhost:3000/');
+ 
+client.post('containers/', spec, function(err, res, data) {
+	if(err){
+		console.log("Error : ", err);
+	}
+	else{
+		if('error' in data){
+			console.log("Error : " + data['error']);
+		}
+		else{
+			console.log("Connected!");
+			console.log(data);
+			var r_controller = require("./remote_controller.js")
+			r_controller.start('http://localhost:3000');
+		}
+	}
+});
+
+
