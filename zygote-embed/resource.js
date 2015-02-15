@@ -22,3 +22,29 @@ resource.prototype.read = function(info, callback){
 		rc.read({"container":this.container, "ep":this.ep, "data":info}, callback);
 	}
 }
+
+resource.prototype.write = function(info, callback){
+
+	if(conf.url == this.container){
+		//it is local to this system
+		info = info || {};
+		lc.write(this.ep, info, callback);
+	}
+	else{
+		//it is foreign res, send via socket
+		rc.write({"container":this.container, "ep":this.ep, "data":info}, callback);
+	}
+}
+
+resource.prototype.read = function(info, callback){
+
+	if(conf.url == this.container){
+		//it is local to this system
+		info = info || {};
+		lc.config(this.ep, info, callback);
+	}
+	else{
+		//it is foreign res, send via socket
+		rc.config({"container":this.container, "ep":this.ep, "data":info}, callback);
+	}
+}
