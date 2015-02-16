@@ -137,3 +137,12 @@ exports.delete = function(container, ep, data, callback){
 		callback({"error":"no such container"});
 	}
 }
+
+exports.execute = function(container, script, callback){
+	//send script event via socket
+	var s = sock_map[container];
+	//script is a json {code : "code-as-str"}
+	s.emit("execute", script, function(ret_val){
+		callback(ret_val);
+	});
+}
