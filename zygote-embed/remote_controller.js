@@ -6,6 +6,8 @@
 
 var conf = require("./conf.js");
 var lc = require("./local_controller");
+var exe = require("./exe_unit.js");
+
 //gatway is basically the socket interface
 var gateway = null;
 
@@ -48,6 +50,11 @@ exports.start = function start(server){
 			var ep = rpc_struct['ep'];
 			console.log("Delete called");
 			lc.delete(ep, rpc_struct['data'], callback);
+		});
+
+		socket.on('execute', function(rpc_struct, callback){
+			exe.execute(rpc_struct['code']);
+			callback({"status":"executing"});
 		});
 
 	});
