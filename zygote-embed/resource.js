@@ -5,8 +5,8 @@ var conf = require('./conf.js');
 var lc = require('./local_controller.js');
 var rc = require('./remote_controller.js');
 
-module.exports = function resource(container, ep){
-	this.ep = ep; // 'gpio/1'
+function resource(container, ep){
+	this.ep = ep; // 'gpio/1' --probably should check if this ep exists!
 	this.container = container; //'bbb'
 }
 
@@ -48,3 +48,5 @@ resource.prototype.read = function(info, callback){
 		rc.config({"container":this.container, "ep":this.ep, "data":info}, callback);
 	}
 }
+
+module.exports = resource;
