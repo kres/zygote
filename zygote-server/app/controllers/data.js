@@ -44,11 +44,10 @@ exports.res_inst = {};
 //holds list of pins currently in use
 exports.used_pins = {};
 /*
-	later it should be 
-	{
-		'bbb' : [],
-		'rpi' : [], etc..
-	}
+{
+	'bbb' : [],
+	'rpi' : [], etc..
+}
 */
 
 //set of all the data that keeps changing....

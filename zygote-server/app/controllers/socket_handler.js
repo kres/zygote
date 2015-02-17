@@ -34,7 +34,12 @@ exports.startSocket = function(server){
 
 				//add disconnect handler 
 				socket.on('disconnect', function(){
-					if(msg['url'] in sock_map) delete sock_map[msg['url']];
+					delete sock_map[msg['url']];
+					delete data.spec[msg['url']];
+					delete data.res_type[msg['url']];
+					delete data.res_inst[msg['url']];
+					delete data.used_pins[msg['url']];
+					console.log(msg['url'] + " - connection terminated");
 				});
 
 			}
