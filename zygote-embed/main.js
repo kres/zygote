@@ -2,10 +2,23 @@
 //powered by socket-io-client
 var conf = require("./conf.js");
 
-var url = process.argv[2] || 'bbb'; //for now
+//cmd line args  - node main.js <node-type>:<node-name> (eg. bbb:home)
+//the node name becomes the part of container url
+
+var arg = process.argv[2] || 'bbb:bbb'; //for now
+var rule = /\w+/;
+
+var cont_type = arg.split(":")[0];
+var url = arg.split(":")[1];
 conf.url = url;
 
-var base_dir = "./lib/"+url+"/";
+//see if the requested url is alpha numeric
+if(!(rule.exec(url) != null && rule.exec(url)[0].length == url.length)){
+	console.log("Invalid node name; node name should be alphanumeric");
+	return;
+}
+
+var base_dir = "./lib/"+cont_type+"/";
 var spec = require(base_dir+"spec.js"); // "./lib/bbb/spec.js"
 var res_list = Object.keys(spec['res']); //['gpio', 'serial', 'i2c']
 
@@ -18,7 +31,8 @@ for(var i in res_list){
 //register with the client
 var request = require('request-json');
 var client = request.createClient('http://localhost:3000/');
- 
+
+spec['url'] = url; //override the default url viz 'bbb'
 client.post('containers/', spec, function(err, res, data) {
 	if(err){
 		console.log("Error : ", err);
