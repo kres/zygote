@@ -36,7 +36,7 @@ resource.prototype.write = function(info, callback){
 	}
 }
 
-resource.prototype.read = function(info, callback){
+resource.prototype.config = function(info, callback){
 
 	if(conf.url == this.container){
 		//it is local to this system
