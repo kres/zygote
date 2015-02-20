@@ -35,9 +35,11 @@ init.prototype.write = function write(data, callback){
 	var out = parseInt(data['value']);
 	b.digitalWrite(this.ep, out, function(x){
 		if(x.err){
+			console.log("GPIO write error");
 			callback({"error" : x.err});
 		}
 		else{
+			console.log("GPIO write successful");
 			callback({"value": data['value']});
 		}
 	});

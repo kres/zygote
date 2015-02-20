@@ -8,6 +8,8 @@ var conf = require("./conf.js");
 var arg = process.argv[2] || 'bbb:bbb'; //for now
 var rule = /\w+/;
 
+var host = process.argv[3] || "localhost:3000";
+
 var cont_type = arg.split(":")[0];
 var url = arg.split(":")[1];
 conf.url = url;
@@ -30,7 +32,7 @@ for(var i in res_list){
 
 //register with the client
 var request = require('request-json');
-var client = request.createClient('http://localhost:3000/');
+var client = request.createClient('http://'+host+'/');
 
 spec['url'] = url; //override the default url viz 'bbb'
 client.post('containers/', spec, function(err, res, data) {
@@ -45,7 +47,7 @@ client.post('containers/', spec, function(err, res, data) {
 			console.log("Connected!");
 			console.log(data);
 			var r_controller = require("./remote_controller.js")
-			r_controller.start('http://localhost:3000');
+			r_controller.start('http://'+host);
 		}
 	}
 });
