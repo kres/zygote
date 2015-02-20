@@ -1,4 +1,4 @@
-//file to handle servo control
+// file to handle servo control
 var b = require('bonescript');
 
 function init(ep, opts, callback){
