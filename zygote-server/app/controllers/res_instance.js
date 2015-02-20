@@ -40,7 +40,7 @@ exports.write = function (req, res){
 	if(id in data.res_inst[container]){
 		console.log("WRITE : "+ req.url);
 		//here it will route to sockets controller
-		sc.write(container, id, req.query, function(data){
+		sc.write(container, id, req.body, function(data){
 			res.json(data);
 		});
 	}
@@ -57,7 +57,7 @@ exports.config = function (req, res){
 	if(id in data.res_inst[container]){
 		console.log("CONFIG : "+ req.url);
 		//here it will route to sockets controller
-		sc.config(container, id, req.query, function(data){
+		sc.config(container, id, req.body, function(data){
 			res.json(data);
 		});
 	}
