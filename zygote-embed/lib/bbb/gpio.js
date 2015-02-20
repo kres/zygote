@@ -8,6 +8,7 @@
 CODE STRUCTURE
 -----------------------
 */
+var b = require('bonescript');
 
 function init(ep, opts, callback){
 	//I could have a rest url to internal identifier map if reqd.
@@ -16,6 +17,9 @@ function init(ep, opts, callback){
 	//shuld I have a url mapping defined here; just for back linking
 	if('mode' in opts){
 		this.mode = mode;
+	}
+	else{
+		this.mode = 'out';
 	}
 	callback(this); //if there is an error, do what?
 }
@@ -28,7 +32,15 @@ init.prototype.read = function read(data, callback){
 
 init.prototype.write = function write(data, callback){ 
 	console.log("GPIO write : ", data);
-	callback({"value":"bytes-written?"});
+	var out = parseInt(data['value']);
+	b.digitalWrite(this.ep, out, function(x){
+		if(x.err){
+			callback({"error" : x.err});
+		}
+		else{
+			callback({"value": data['value']});
+		}
+	});
 };
 
 init.prototype.config = function config(data, callback){ 

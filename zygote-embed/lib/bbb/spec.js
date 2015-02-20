@@ -16,21 +16,21 @@ module.exports =
 		"gpio" : {
 		//have to add "service" : "GPIO" somewhere.....
 		//NO - let system res automaticall get listed
-			"1" : {
-				"pins" : ["p1"]
+			"USR0" : {
+				"pins" : ["u0"]
 				//other data not relevent now
 			},
 	
-			"2" : {
-				"pins" : ["p2"]
+			"USR1" : {
+				"pins" : ["u1"]
 			},
 
-			"3": {
-				"pins" : ["p3"]
+			"USR2": {
+				"pins" : ["u2"]
 			},
 			
-			"4" : {
-				"pins" : ["p4"]
+			"USR3" : {
+				"pins" : ["u3"]
 			}
 		}/*,
 
