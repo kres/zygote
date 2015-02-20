@@ -51,7 +51,7 @@ module.exports =
 				"pins" : ["P9_16"]
 			}
 		
-		}/*,
+		}/* ,
 
 		"pwm" : {
 			"1" : {
