@@ -1,7 +1,6 @@
 //sample h/w description file
 
-module.exports = 
-{
+var spec = {
 	//name of the board
 	"name" : "Beaglebone Black",
 
@@ -9,7 +8,7 @@ module.exports =
 	"url" : "bbb",
 
 	//all the pins contained by the board
-	"pins" : ["p1", "p2", "p3", "p4", "p5", "p6", "p7"],
+	"pins" : ["u0", "u1", "u2", "u3", "P8_13", "P8_19", "P9_14", "P9_16"],
 
 	//system resources
 	"res" : {
@@ -31,10 +30,14 @@ module.exports =
 			
 			"USR3" : {
 				"pins" : ["u3"]
+			},
+
+			"P8_19": {
+				"pins" : ["P8_19"]
 			}
 		}, 
 		
-		"servo" : {
+		"pwm" : {
 			"P8_13" : {
 				"pins" : ["P8_13"]
 			},
@@ -50,23 +53,14 @@ module.exports =
 			"P9_16" : {
 				"pins" : ["P9_16"]
 			}
-		
-		}/* ,
+		}
 
-		"pwm" : {
-			"1" : {
-				"pins" : ["p5"]
-			},
-			
-			"2" : {
-				"pins" : ["p6"]
-			}
-		},
-
-		"serial" : {
-			"1" : {
-				"pins" : ["p6", "p7"]
-			}
-		}*/
 	}
 }
+
+//add plugins -- deep copy
+spec.res['servo'] = JSON.parse(JSON.stringify(spec.res.pwm));
+
+
+module.exports = spec;
+
