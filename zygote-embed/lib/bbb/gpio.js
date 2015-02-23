@@ -16,12 +16,35 @@ function init(ep, opts, callback){
 	console.log("New GPIO end point created");
 	//shuld I have a url mapping defined here; just for back linking
 	if('mode' in opts){
-		this.mode = mode;
+		var mode = opts['mode'];
+
+		if(mode == 'output'){
+			this.mode = b.OUTPUT;
+		}
+
+		else{
+			if(mode == 'pullup' || mode == 'pulldown'){
+				if('USR' in ep){
+					//XXX : no way to handle error?
+					console.log("Error, can't set pin as input mode");
+				}
+
+				if(mode == 'pullup'){
+					b.pinMode(ep, b.INPUT_PULLUP);
+				}
+
+				else{
+					b.pinMode(ep, b.INPUT);
+				}
+			}
+		}
+		
 	}
 	else{
-		this.mode = 'out';
+		this.mode = b.OUTPUT;
+		this.value = 0;
 	}
-	callback(this); //if there is an error, do what?
+	callback(this); //XXX:if there is an error, do what?
 }
 
 
@@ -40,7 +63,8 @@ init.prototype.write = function write(data, callback){
 		}
 		else{
 			console.log("GPIO write successful");
-			callback({"value": data['value']});
+			this.value = out;
+			callback({"value": out.toString()});
 		}
 	});
 };
