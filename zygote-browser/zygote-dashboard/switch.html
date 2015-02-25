@@ -1,0 +1,39 @@
+ <!DOCTYPE html>
+ <html>
+ <head>
+ 	<title></title>
+    <link rel="stylesheet" type="text/css" href="switch.css">
+    <script type="text/javascript">
+
+    function changeClass()
+    {
+        change = document.getElementById('indicator');
+        
+        event_t = document.getElementById('indicator_b');
+
+    	event_t.addEventListener("click", function(){
+    change.className='indicator-light on';
+});
+    	event_t.addEventListener("dblclick", function(){
+    change.className='indicator-light';
+});
+    }
+
+
+
+    </script>
+ </head>
+ <body>
+    <div class="onoffswitch">
+    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+    <label class="onoffswitch-label" for="myonoffswitch">
+    <span class="onoffswitch-inner"></span>
+    <span class="onoffswitch-switch"></span>
+    </label>
+    </div> 
+    <br><br><br>
+    <div id='indicator' class="indicator-light on"></div>
+    <button id='indicator_b' onclick="changeClass()">Indicator-Light On/Off</button>
+    <div id='demo'></div>
+    </body>
+ </html>
