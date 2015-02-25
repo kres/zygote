@@ -38,6 +38,11 @@ exports.start = function start(server){
 
 		});
 
+		socket.on('spec', function(rpc_struct, callback){
+			//here no point of rpc_struct
+			callback(conf['spec']);
+		});
+
 		socket.on('create', function(rpc_struct, callback){
 			//create a resource
 			var ep = rpc_struct['ep'];

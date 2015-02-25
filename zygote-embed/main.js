@@ -22,6 +22,8 @@ if(!(rule.exec(url) != null && rule.exec(url)[0].length == url.length)){
 
 var base_dir = "./lib/"+cont_type+"/";
 var spec = require(base_dir+"spec.js"); // "./lib/bbb/spec.js"
+conf.spec = spec;
+
 var res_list = Object.keys(spec['res']); //['gpio', 'serial', 'i2c']
 
 //populate the res dict with name to module mapping
