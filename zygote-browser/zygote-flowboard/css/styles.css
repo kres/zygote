@@ -53,6 +53,7 @@ body {
     text-align: center;
     vertical-align: middle;
     line-height: 50px;
+    z-index: 5;
 }
 
 .a-block {
@@ -79,6 +80,7 @@ body {
     text-align: center;
     vertical-align: middle;
     line-height: 75px;
+    z-index: 5;
 }
 
 .a-resource {
@@ -95,4 +97,15 @@ body {
 
 .d-resource {
     background-color: #FFB547;
+}
+
+.window {
+    z-index: 20;
+}
+
+._jsPlumb_connector {
+    z-index: 1;
+}
+._jsPlumb_endpoint {
+    z-index: 0;
 }
