@@ -1,6 +1,6 @@
 //handles listing, adding and deleting of containers
 // All path with '/containers/' end here
-
+var sc = require('./socket_handler.js');
 var data = require('./data.js');
 //data. spec, res_type, res_inst
 
@@ -10,7 +10,15 @@ exports.get = function (req, res) {
 	if('container' in req.query){
 		var cont = req.query['container'];
 		if(cont in data.spec){
-			res.json(data.spec[cont]);
+			if('refresh' in req.query){
+				sc.refresh(cont, function(spec){
+					data.spec[cont] = spec;
+					res.json(spec);
+				});
+			}
+			else{
+				res.json(data.spec[cont]);
+			}
 		}
 		else{
 			res.status(404).json({'error': 'container does not exist'})

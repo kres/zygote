@@ -84,7 +84,7 @@ exports.write = function(container, ep, data, callback){
 	else{
 		callback({"error":"no such container"});
 	}
-}
+};
 
 exports.config = function(container, ep, data, callback){
 	console.log("call to config");
@@ -102,7 +102,7 @@ exports.config = function(container, ep, data, callback){
 	else{
 		callback({"error":"no such container"});
 	}
-}
+};
 
 
 /*
@@ -124,7 +124,7 @@ exports.create = function(container, ep, data, callback){
 	else{
 		callback({"error":"no such container"});
 	}
-}
+};
 
 exports.delete = function(container, ep, data, callback){
 	console.log("call to delete");
@@ -141,7 +141,7 @@ exports.delete = function(container, ep, data, callback){
 	else{
 		callback({"error":"no such container"});
 	}
-}
+};
 
 exports.execute = function(container, script, callback){
 	//send script event via socket
@@ -150,4 +150,11 @@ exports.execute = function(container, script, callback){
 	s.emit("execute", script, function(ret_val){
 		callback(ret_val);
 	});
-}
+};
+
+exports.refresh = function(container, callback){
+	var s = sock_map[container];
+	s.emit("spec", {}, function(ret_val){
+		callback(ret_val);
+	});
+};
