@@ -10,36 +10,16 @@
 
         <link type="text/css" rel="stylesheet" href="css/styles.css" />
 
-        <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/dom.jsPlumb-1.7.2-min.js"></script>
+        <script type="text/javascript" src="js/jquery.jsPlumb.min.js"></script>
+        
+        <script type="text/javascript" src="js/functions.js"></script>
+        <script type="text/javascript" src="js/save-load-json.js"></script>
+        <script type="text/javascript" src="js/init.js"></script>
         
         <title>Zygote Flowboard</title>
-        
-        <script>
-            $(function () {
-                $(".block").draggable({
-                    revert: "invalid",
-                    scope: "chart",
-                    appendTo: "#chart",
-                    helper: "clone"
-                });
-                $(".resource").draggable({
-                    revert: "invalid",
-                    scope: "chart",
-                    appendTo: "#chart",
-                    helper: "clone"
-                });
-                
-                $("#chart").droppable({
-                    scope: "chart",
-                    drop: function(e, ui) {
-                            $(this).append($(ui.helper).clone());
-                    }
-                });
-            });
-        </script>
         
     </head>
     
@@ -54,10 +34,13 @@
                     
                     <div>
                         <ul id="navs" class="nav navbar-nav navbar-right ">
-                            <button type="button" class="btn btn-default navbar-btn">
+                            <button id="clearButton" type="button" class="btn btn-default navbar-btn">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Clear
+                            </button>
+                            <button id="importButton" type="button" class="btn btn-default navbar-btn">
                                 <span class="glyphicon glyphicon-import" aria-hidden="true"></span> Import
                             </button>
-                            <button type="button" class="btn btn-default navbar-btn">
+                            <button id="exportButton" type="button" class="btn btn-default navbar-btn">
                                 <span class="glyphicon glyphicon-export" aria-hidden="true"></span> Export
                             </button>
                         </ul>
