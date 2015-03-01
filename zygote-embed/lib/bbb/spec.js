@@ -55,6 +55,11 @@ var spec = {
 			}
 		}
 
+	},
+
+	"service" : {
+		"wifi" : "<port-name>"
+
 	}
 }
 
