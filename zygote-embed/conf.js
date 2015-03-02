@@ -14,5 +14,5 @@ exports.service = {};
 
 //add the wifi service info; the wifi module will read this internally
 exports.service['wifi'] = { "interface" : "usb0"
-			//	, "ip"	: "192.168.7.1-30"
+				, "ip"	: "10.0.0.1-20"
 			};
