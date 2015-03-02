@@ -8,3 +8,11 @@ exports.res = {};
 	// h-w is the url in context
 
 exports.spec = {}; //corresponds to the spec file of the board it belongs to
+
+
+exports.service = {};
+
+//add the wifi service info; the wifi module will read this internally
+exports.service['wifi'] = { "interface" : "usb0"
+			//	, "ip"	: "192.168.7.1-30"
+			};

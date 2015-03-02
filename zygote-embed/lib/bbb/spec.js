@@ -58,7 +58,8 @@ var spec = {
 	},
 
 	"service" : {
-		"wifi" : "<port-name>"
+		"wifi" : [] //list of IP addresses available 
+				//as per interface specified in "conf.service.wifi"
 
 	}
 }
