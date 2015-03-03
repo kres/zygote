@@ -34,28 +34,23 @@ exports.onLoad = function(){
 		return;
 	}
 
-	var info = networkInterfaces[0];
+	var info = networkInterfaces[i][0];
 	var ip = info['address'];
 	ip = conf.service.wifi['ip'] || (ip.substr(0, ip.length-1) + "1-25");
 	//if ip range is mentioned in conf, that is taken; else read from net interface
 	//if IP "192.168.7.2" it becomes => "192.168.7.1-30" and will be used by nmap
-
+	console.log("Starting wifi service in ip range : "+ ip );
 	function scan(){
 		get_ips(ip, function(res){
+		//	console.log("WIFI : res - "+ res);
 			//update the spec file
 			spec.service.wifi = res;
 			//call scan again -- in 5sec
 			setTimeout(scan, 5000);
 		});
-	}
+	};
+	scan();
 };
-
-
-
-get_ips(ips, function(res){
-		console.log("IPs on the LAN");
-		console.log(res);
-	});
 
 function get_ips(ip_range, callback){
 	var child_process = require('child_process');
