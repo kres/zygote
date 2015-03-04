@@ -53,6 +53,11 @@ exports.post = function(req, res) {
 
 	var ep_set = data.res_type[container][id];
 
+	/*
+		ep_set is the json data for the container 
+		contains ep => pin mapping
+	*/
+
 	if(ep_set && (ep in ep_set)){
 		//end point is available
 		if(register_pins(used_pins[container], ep_set[ep]).length != 0){
@@ -60,7 +65,8 @@ exports.post = function(req, res) {
 			return;
 		}
 		
-		//add new urls to instance controller 'ic'
+		//register new urls 
+		//instance controller 'ic' does the req handling
 		var ic = require('./res_instance.js');
 		req.app.route(req.url+ep).get(ic.read)
 						.post(ic.write)
@@ -74,7 +80,13 @@ exports.post = function(req, res) {
 		}); 
 	}
 	else{
+		if(ep_set && ("service" in ep_set)){
+			//check if requested service available
+			//'ep' => the ip addr in case of wifi
+			
+		}
 		res.status(404).json({"error" : "invalid endpoint"});
+		return;
 	}
 };
 
@@ -128,6 +140,9 @@ function register_pins(busy, type){
 		}
 		console.log(used_pins);
 		return res;
+	}
+	if('service' in type){
+
 	}
 	return [];
 }
