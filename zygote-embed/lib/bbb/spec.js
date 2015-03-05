@@ -66,7 +66,7 @@ var spec = {
 
 //add plugins -- deep copy
 spec.res['servo'] = JSON.parse(JSON.stringify(spec.res.pwm));
-
+spec.res['wifi-temp'] = {'service' : 'wifi', "count" : "0"};
 
 module.exports = spec;
 
