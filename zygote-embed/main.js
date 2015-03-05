@@ -24,20 +24,24 @@ var base_dir = "./lib/"+cont_type+"/";
 var spec = require(base_dir+"spec.js"); // "./lib/bbb/spec.js"
 conf.spec = spec;
 
-var res_list = Object.keys(spec['res']); //['gpio', 'serial', 'i2c']
-var service_list = Object.keys(spec['service']);
+if(spec['res']){
+	var res_list = Object.keys(spec['res']); //['gpio', 'serial', 'i2c']
 
-//populate the res dict with name to module mapping
-for(var i in res_list){
-	//conf['gpio'] maps to require('./lib/bbb/gpio')
-	conf.res[res_list[i]] = require(base_dir+res_list[i]);
+	//populate the res dict with name to module mapping
+	for(var i in res_list){
+		//conf['gpio'] maps to require('./lib/bbb/gpio')
+		conf.res[res_list[i]] = require(base_dir+res_list[i]);
+	}
 }
 
-for(var i in service_list){
-	//s = require('./lib/bbb/wifi')
-	var s = require(base_dir+service_list[i]);
-	//call onload of wifi service
-	s.onLoad();
+if(spec['service']){
+	var service_list = Object.keys(spec['service']);
+	for(var i in service_list){
+		//s = require('./lib/bbb/wifi')
+		var s = require(base_dir+service_list[i]);
+		//call onload of wifi service
+		s.onLoad();
+	}
 }
 
 //register with the client
