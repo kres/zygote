@@ -80,10 +80,36 @@ exports.post = function(req, res) {
 		}); 
 	}
 	else{
-		if(ep_set && ("service" in ep_set)){
-			//check if requested service available
+		//check if requested service available
+		if(ep_set && ("service" in data.spec[container]['res'][id])){
 			//'ep' => the ip addr in case of wifi
-			
+			var service = data.spec[container]['res'][id]['service'];
+			//XXX main question is, how do I generate ep?
+			//sol : data.res_type will have another feild called as count
+			//which will maintain the latest count.
+
+			var s_data = ep; //in case of wifi, its IP addr
+			ep = parseInt(data.res_type[container][id]['count'])+1;
+			ep = ep.toString();
+			data.res_type[container][id]['count'] = ep;
+
+			//register new urls 
+			//instance controller 'ic' does the req handling
+			var ic = require('./res_instance.js');
+			req.app.route(req.url+ep).get(ic.read)
+							.post(ic.write)
+							.put(ic.config);
+
+			//add ep url to res_inst; "/wifi-temp/2  => ip addr"
+			data.res_inst[container][id+'/'+ep] = s_data;
+
+			//the client gets opts, eg. {"wifi":"ip-addr"}
+			var opts = {}
+			opts[service] = s_data;
+			sc.create(container, id+'/'+ep, opts, function(data){
+				res.json(data);
+			}); 
+			return;
 		}
 		res.status(404).json({"error" : "invalid endpoint"});
 		return;
@@ -113,10 +139,12 @@ exports.del = function(req, res){
 
 	//if so, free pins and delete it
 	var pins = data.res_inst[container][id+'/'+ep]['pins'];
-	for( var i in pins){
-		//free ze pins - get index of the pin, remove it
-		//NO error checking as pin is supposed to be there
-		used_pins[container].splice(used_pins[container].indexOf(pins[i]), 1);
+	if(pins){
+		for( var i in pins){
+			//free ze pins - get index of the pin, remove it
+			//NO error checking as pin is supposed to be there
+			used_pins[container].splice(used_pins[container].indexOf(pins[i]), 1);
+		}
 	}
 	
 	delete data.res_inst[container][id+'/'+ep];

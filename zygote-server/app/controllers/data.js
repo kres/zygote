@@ -35,8 +35,8 @@ exports.res_inst = {};
 /*
 {
 	'bbb' : {
-		'gpio/1' : ['p1'], //ok
-		'wifi/temp/2' : ['wifi'] ?? //have to mention which wifi resource
+		'gpio/1' : { 'pins' : ['p1']}, //ok
+		'wifi-temp/2' : 'ip-addr'
 	}
 }
 */
