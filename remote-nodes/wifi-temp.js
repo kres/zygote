@@ -3,8 +3,8 @@
 
 var net = require('net');
 
-var HOST = '127.0.0.1';
-var PORT = 3003;
+var HOST = '0.0.0.0';
+var PORT = 8888;
 
 net.createServer(function(sock) {
 	
@@ -17,15 +17,18 @@ net.createServer(function(sock) {
 		
 		//maybe data can be json later;
 		//will totally depend on sensor
-		if(data == 'get'){
+		if(data == 'read'){
+			console.log("writing data");
 			sock.write("10.0");
 		}
 		
 	});
 	
 	// Add a 'close' event handler to this instance of socket
+	var addr = sock.remoteAddress;
+	var port = sock.remotePort;
 	sock.on('close', function(data) {
-		console.log('CLOSED: ' + sock.remoteAddress +' '+ sock.remotePort);
+		console.log('CLOSED: ' + addr +' '+ port);
 	});
 	
 }).listen(PORT, HOST);
