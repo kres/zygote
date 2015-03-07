@@ -12,6 +12,10 @@ Project Zygote is an end to end IoT framework which enables developers, makers a
 ##Why
 Interconnecting things is **hard**. It takes knowledge of underlying hardware, working of sensors, installing tools, knowing programming, connecting the 'thing' to the internet etc. It makes it even worse when people want to visualize the data or give visual input. Project Zygote simplifies all these tasks by providing a DRY (Do not repeat yourself) framework. 
 
+#Features
+The framework will support fully graphics based logic generation across various sensor nodes.
+As of now the sensor nodes are Wifi based, but soon will support popular protocols such as BLE, Zigbee, Z-wave etc.
+
 ##How
 
 Coming soon ;)
