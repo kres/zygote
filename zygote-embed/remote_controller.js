@@ -6,7 +6,7 @@
 
 var conf = require("./conf.js");
 var lc = require("./local_controller");
-var exe = require("./exe_unit.js");
+var exe_engine = require("./exe_unit.js");
 
 //gatway is basically the socket interface
 var gateway = null;
@@ -57,9 +57,23 @@ exports.start = function start(server){
 			lc.delete(ep, rpc_struct['data'], callback);
 		});
 
+		//XXX : deprecated
+		/*
 		socket.on('execute', function(rpc_struct, callback){
 			exe.execute(rpc_struct['code']);
 			callback({"status":"executing"});
+		});
+		*/
+
+		socket.on('flow-create', function(flow_set, callback){
+			//flow set is a set of struct of 'flows'; each keyed by a flowid
+			//flow is a json object that defines the flow. i.e.
+			// flow-id : { "flow" : "<js-code>", "trigger" : {}, ...}
+
+			for(flow_id in flow_set){
+				exe_engine.execute(flow_id, flow_set[flow_id]);
+			}
+
 		});
 
 	});

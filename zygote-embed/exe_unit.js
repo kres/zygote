@@ -2,15 +2,20 @@
 //responsible for handling scripts got from flowboard
 //hardcode some test scripts 
 var Resource = require("./resource.js");
+var conf = require("./conf");
+conf.flows = {}
 
-exports.execute = function(script){
-	console.log('executing script : ');
-	console.log(script);
+exports.execute = function(flow_id, flow_struct){
+	//flow struct is the json that holds info 
+	//about the flow to be executed
+
+	console.log('executing script : ', flow_id);
+	console.log(flow_struct);
 	
 	//blindly evaluate the script for now
-	eval(script);
+	eval(flow_struct['flow']);
 
-	//script would be something like
+	//flow_struct['flow'] would be something like
 	/*
 	function foobar(){
 		var r1 = new Resource('rpi', 'gpio/1');
