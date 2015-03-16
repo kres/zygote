@@ -15,43 +15,47 @@ var spec = {
 		"gpio" : {
 		//have to add "service" : "GPIO" somewhere.....
 		//NO - let system res automaticall get listed
-			"USR0" : {
-				"pins" : ["u0"]
-				//other data not relevent now
-			},
-	
-			"USR1" : {
-				"pins" : ["u1"]
-			},
+			"ep" : {
+				"USR0" : {
+					"pins" : ["u0"]
+					//other data not relevent now
+				},
+		
+				"USR1" : {
+					"pins" : ["u1"]
+				},
 
-			"USR2": {
-				"pins" : ["u2"]
-			},
-			
-			"USR3" : {
-				"pins" : ["u3"]
-			},
+				"USR2": {
+					"pins" : ["u2"]
+				},
+				
+				"USR3" : {
+					"pins" : ["u3"]
+				},
 
-			"P8_19": {
-				"pins" : ["P8_19"]
+				"P8_19": {
+					"pins" : ["P8_19"]
+				}
 			}
 		}, 
 		
 		"pwm" : {
-			"P8_13" : {
-				"pins" : ["P8_13"]
-			},
+			"ep" : {
+				"P8_13" : {
+					"pins" : ["P8_13"]
+				},
 
-			"P8_19" : {
-				"pins" : ["P8_19"]
-			},
+				"P8_19" : {
+					"pins" : ["P8_19"]
+				},
 
-			"P9_14" : {
-				"pins" : ["P9_14"]
-			},
+				"P9_14" : {
+					"pins" : ["P9_14"]
+				},
 
-			"P9_16" : {
-				"pins" : ["P9_16"]
+				"P9_16" : {
+					"pins" : ["P9_16"]
+				}
 			}
 		}
 
@@ -66,7 +70,7 @@ var spec = {
 
 //add plugins -- deep copy
 spec.res['servo'] = JSON.parse(JSON.stringify(spec.res.pwm));
-spec.res['wifi-temp'] = {'service' : 'wifi', "count" : "0"};
+spec.res['wifi-temp'] = {"service" : "wifi", "count" : "0", "events" : ['high', 'low']};
 
 module.exports = spec;
 
