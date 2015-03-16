@@ -5,7 +5,16 @@ exports.spec = {};
 	'bbb' : {
 		'url' : 'bbb',
 		'name' : 'Beaglebone Black',
-		'res' : { 'gpio' : {..}, 'i2c' : {..}, 'pwm' : {..}}
+		'res' : { 'gpio' : {
+							"events" : ["", "", ""] //list of events generated
+							"ep" : {
+								"1" : {'pins' : ['P9_1']}
+							}
+						}, 
+				  'i2c' : {
+				  		..}, 
+				  'pwm' : {..}
+				}
 	},
 	'rpi' : {...}
 }
