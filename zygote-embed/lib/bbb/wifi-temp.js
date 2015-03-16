@@ -1,5 +1,6 @@
 //a network attached temp sensor reader
 //does nothing much for now, just to test the wifi service
+var net = require('net');
 
 function init(ep, opts, callback){
 	this.ep = ep;
@@ -8,12 +9,17 @@ function init(ep, opts, callback){
 	console.log("Wifi temp created");
 
 	//the wifi temp sensor listens @ port 3003
-	var PORT = 3003;
-
+	var PORT = 8888;
+	var HOST = this.ip;
 	var client = new net.Socket();
-	client.connect(PORT, this.ip, function() {
+	var myObj = this;
+	client.connect(PORT, HOST, function(err) {
+		if(err){
+			console.log("ERROR in connecting : "+ err);
+			return;
+		}
 		console.log('CONNECTED TO: ' + HOST + ':' + PORT);
-		this.sock = client;
+		myObj.sock = client;
 	});
 
 	// Add a 'close' event handler for the client socket
@@ -27,11 +33,11 @@ function init(ep, opts, callback){
 init.prototype.read = function read(data, callback){
 	console.log("WIFI-temp read");
 	console.log("EP : "+this.ep+" IP : "+ this.ip);
-	this.sock.write("read");
 	this.sock.on('data', function(data){
 		console.log("data : ", data);
-		callback({"value" : data});
+		callback({"value" : data.toString()});
 	});
+	this.sock.write("read");
 }
 
 init.prototype.write = function write(data, callback){
