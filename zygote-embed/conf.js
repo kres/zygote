@@ -16,3 +16,20 @@ exports.service = {};
 exports.service['wifi'] = { "interface" : "usb0"
 				, "ip"	: "10.0.0.1-20"
 			};
+
+//data about current running flows
+exports.flows = {}
+/*
+//flows has map of flow id to the following struct
+
+	flow-id : {
+			"flow" : "<code-string>",
+			"trigger" : {
+				"type"  : "['timer'|'event']",
+				"value" : "['number'|'url']", //number=> time in sec, url=>'gpio/1'
+				"obj"	:  [<timer-obj> | <event-emmiter-obj>]
+			},
+			"code" : <function-obj> //generated code, includes trigger
+	}
+	//on flow delete
+*/
