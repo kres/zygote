@@ -15,49 +15,58 @@ jsPlumb.ready(function () {
         jsPlumb.reset();
         $("#chart").empty();
         graph = {elements: {}, connections: {}};
+        functions = {};
         alert("Workspace Cleared.");
     }
     
+    function refreshResources() {
+        clearPalette();
+        initializePalette();
+        loadResources();
+    }
+    
     function exportJSON() {
-        localStorage.setItem("flow",JSON.stringify(graph));
+        localStorage.setItem("flow",JSON.stringify(getJSONData()));
         alert("Flow Exported.");
     }
     
     function importJSON() {
         clearWorkspace();
-        graph = JSON.parse(localStorage.getItem("flow"))
+        JSONData = JSON.parse(localStorage.getItem("flow"))
+        graph = JSONData["graph"];
+        resources = JSONData["resources"];
+        functions = JSONData["functions"];
         
+        refreshResources();
+        loadResources();
         loadElements(graph.elements, instance);
         loadConnections(graph.connections, instance)
         
         alert($("#chart")[0].outerHTML);
         alert("Flow Loaded");
     }
-    
-    //Making the blocks on the palette draggable to the workspace.
-    $(".block").draggable({
+
+    $(".start").draggable({
         revert: "invalid",
         scope: "chart",
         appendTo: "#chart",
         helper: "clone"
     });
     
-    //Making the resources draggable to the workspace.
-    $(".resource").draggable({
+    $(".stop").draggable({
         revert: "invalid",
         scope: "chart",
         appendTo: "#chart",
-        helper: "clone",
+        helper: "clone"
     });
     
-    $(".flow").draggable({
+    $(".function").draggable({
+        revert: "invalid",
         scope: "chart",
         appendTo: "#chart",
-        stop: function(e,ui) {
-            graph.elements[ui.helper.attr("id")].position = ui.position;
-        }
+        helper: "clone"
     });
-
+    
     //Making the chart (the white area of the workspace) a droppable area. 
     //On drop, add the element to the chart, remove jQuery drag configure with jsPlumb capabilities.
     $("#chart").droppable({
@@ -65,7 +74,8 @@ jsPlumb.ready(function () {
         drop: function(e, ui) {
                 var elem = $(ui.helper).clone();
                 $(this).append(elem);
-                configureElement(elem,instance);       
+                $("body").data("instance",instance);
+                configureElement(elem);       
         }
     });
     
@@ -74,12 +84,65 @@ jsPlumb.ready(function () {
     });
     
     instance.bind("connectionDetached", function(info, e) {
+        
+        delete graph.elements[info.sourceId].next[info.sourceEndpoint.y];
         delete graph.connections[info.connection.id];
     });
     
+    resourceDialog = $("#resource-dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        buttons: {
+            "Create Resource": addResource,
+            Cancel: function() {
+                resourceDialog.dialog("close");
+            }
+        },
+        close: function() {
+            document.forms[0].reset();
+        }
+    })
+    
+    resourceForm = resourceDialog.find( "#resource-form" ).on( "submit", function( event ) {
+      event.preventDefault();
+      addResource();
+    });
+    
+    functionDialog = $("#function-dialog").dialog({
+        autoOpen: false,
+        height: "auto",
+        width: "auto",
+        modal: true,
+        buttons: {
+            "Done": addFunction,
+            Cancel: function() {
+                $("#function-dialog").dialog("close");
+            }
+        },
+        open: function() {
+            console.log("Open");
+            loadFunctionParams();
+        },
+        close: function() {
+            document.forms[1].reset();
+        }
+    });
+
+    functionForm = functionDialog.find( "#function-form" ).on( "submit", function( event ) {
+      event.preventDefault();
+      addFunction();
+    });
+
+    initializePalette();
+    
     $("#chart").on("mouseover",setJSON);
+    $("#refreshButton").on("click", refreshResources);
     $("#importButton").on("click", importJSON);
     $("#exportButton").on("click", exportJSON);
     $("#clearButton").on("click", clearWorkspace);
+    $("#addButton").on("click", function() {
+        setFormOptions();
+        resourceDialog.dialog("open");
+    })
     
 });

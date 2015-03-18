@@ -6,12 +6,13 @@ function saveElement(elem) {
     graph.elements[elemID] = {}
     graph.elements[elemID].classes = elem.attr("class");
     graph.elements[elemID].position = elem.position();
-    graph.elements[elemID].html = elem.html();
+    graph.elements[elemID].html = encodeURI(elem.html());
+    graph.elements[elemID].next = {};
 }
 
 function saveConnection(connInfo){
     
-    graph.connections[connInfo.connection.id] = {
+    var newConnection = {
         sourceId: connInfo.sourceId, 
         targetId: connInfo.targetId,
         sourceEndpoint: { 
@@ -31,7 +32,23 @@ function saveConnection(connInfo){
             //parameters: connInfo.targetEndpoint.getParameters()
         } 
     }
+    
+    graph.connections[connInfo.connection.id] = newConnection;
+    
+    var index = 0;
+    if ($("#" + newConnection.sourceId).hasClass("function")) {
+        var anchors = anchorGenerator(parseInt(functions[newConnection.sourceId].endpoints))
+    
+        for(var i = 0; i < anchors.length; ++i){
+            if(newConnection.sourceEndpoint.y == anchors[i][1]){
+                index = i;
+                break;
+            }
+        }
+    }
+    graph.elements[newConnection.sourceId].next[index] = [newConnection.sourceEndpoint,newConnection.targetId];
 }
+
 function loadElements (elements, instance) { 
     
     for (var elemID in elements) {
@@ -43,7 +60,7 @@ function loadElements (elements, instance) {
         $("#chart").append(elem);
 
         elem.css({top: elemInfo.position.top, left: elemInfo.position.left, position: "absolute"});
-        elem.html(elemInfo.html);
+        elem.html(decodeURI(elemInfo.html));
 
         configureElementDrag(elem, instance)
         addEndpointsToElement(elem, instance);
@@ -62,5 +79,31 @@ function loadConnections (connections, instance) {
         });
 
         delete graph.connections[connID];
+    }
+}
+
+function loadResources () {
+    
+    for (var resID in resources) {
+        var listItem = $(document.createElement("li"));
+        listItem.addClass("list-group-item");
+
+        var res = $(document.createElement("div"));
+        res.addClass("resource")
+        res.html(resID);
+
+        res.draggable({
+            revert: "invalid",
+            scope: "chart",
+            appendTo: "#chart",
+            helper: "clone"
+        });
+
+        var container = resources[resID].container;
+        var type = resources[resID].type;
+        var pin = resources[resID].pin;
+
+        listItem.append(res);
+        $(".list-group." + container + "." + type).append(listItem);
     }
 }

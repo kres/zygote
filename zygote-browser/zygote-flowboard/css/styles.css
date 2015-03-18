@@ -2,19 +2,31 @@ body {
     padding-top: 60px;
 }
 
+#palette-sidebar {
+    width: 150px;
+    height: 700px;
+    float: left;
+    margin-left: 10px;
+}
+
 #palette {
     background-color: #F0F0F0;
     width: 150px;
-    height: 700px;
+    height: 663px;
     overflow-y: scroll;
-    float: left;
-    margin-left: 10px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+#palette-toolbar {
+    width: 150px;
+    margin-bottom: -2px;
 }
 
 #sidebar {
     background-color: #F0F0F0;
     width: 300px;
-    height: 700px;
+    height: 720px;
     overflow-y: scroll;
     float: right;
     margin-right: 10px;
@@ -26,7 +38,7 @@ body {
 
 #workspace-container {
     position: relative;
-    height: 700px;
+    height: 720px;
     overflow: scroll;
     background-color: #FBFBFB;
     margin-left: 10px;
@@ -45,31 +57,41 @@ body {
     padding-right: 110px;
 }
 
-.block {
-    width: 100px;
-    height: 50px;
+.start {
+    width: 35px;
+    height: 25px;
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 25px;
+    margin-left: 30px;
+    
+}
+
+.stop {
+    width: 35px;
+    height: 25px;
+    border: 1px solid black;
+    border-radius: 25px;
+    margin-left: 30px;
+}
+
+.init {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 20px;
+    background-color: rgb(0,255,0);
+    margin-left: 2px;
+    margin-top: 2px;
+}
+
+.function {
+    width: 100px;
+    height: 75px;
+    border: 1px solid black;
+    border-radius: 25px;
     text-align: center;
     vertical-align: middle;
-    line-height: 50px;
-    z-index: 5;
-}
-
-.a-block {
-    background-color: #99C2FF;
-}
-
-.b-block {
-    background-color: #CCE0FF;
-}
-
-.c-block {
-    background-color: #B2B2FF;
-}
-
-.d-block {
-    background-color: #D1D1FF;
+    line-height: 75px;
 }
 
 .resource {
@@ -83,20 +105,8 @@ body {
     z-index: 5;
 }
 
-.a-resource {
-    background-color: #FF7519;
-}
-
-.b-resource {
-    background-color: #FF9933;
-}
-
-.c-resource {
-    background-color: #FFA347;
-}
-
-.d-resource {
-    background-color: #FFB547;
+.panel-default {
+    margin-bottom: 10px;
 }
 
 .window {

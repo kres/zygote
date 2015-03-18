@@ -7,6 +7,8 @@
         <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
         <link type="text/css" rel="stylesheet" href="css/bootstrap-theme.min.css" />
         <link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css" />
+        <link type="text/css" rel="stylesheet" href="css/jquery-ui.structure.min.css" />
+        <link type="text/css" rel="stylesheet" href="css/jquery-ui.theme.min.css" />
 
         <link type="text/css" rel="stylesheet" href="css/styles.css" />
 
@@ -17,6 +19,7 @@
         
         <script type="text/javascript" src="js/functions.js"></script>
         <script type="text/javascript" src="js/save-load-json.js"></script>
+        <script type="text/javascript" src="js/script-gen.js"></script>
         <script type="text/javascript" src="js/init.js"></script>
         
         <title>Zygote Flowboard</title>
@@ -34,6 +37,9 @@
                     
                     <div>
                         <ul id="navs" class="nav navbar-nav navbar-right ">
+                            <button id="refreshButton" type="button" class="btn btn-default navbar-btn">
+                                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Refresh
+                            </button>
                             <button id="clearButton" type="button" class="btn btn-default navbar-btn">
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Clear
                             </button>
@@ -48,43 +54,70 @@
                 </div>
             </div>
             
-            <div id="palette">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Blocks</div>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <div class="block a-block">A-BLOCK</div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="block b-block">B-BLOCK</div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="block c-block">C-BLOCK</div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="block d-block">D-BLOCK</div>
-                        </li>
-                    </ul>
+            <div id="palette-sidebar"> 
+                <div id="palette-toolbar" class="panel panel-default">
+                    <div  class="panel-heading" style="background-color: #FCFCFC;">
+                        <button id="addButton" type="button" class="btn btn-default btn-block">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </button>
+                    </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">Resources</div>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            <div class="resource a-resource">A-RESOURCE</div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="resource b-resource">B-RESOURCE</div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="resource c-resource">C-RESOURCE</div>
-                        </li>
-                        <li class="list-group-item">
-                            <div class="resource d-resource">D-RESOURCE</div>
-                        </li>
-                    </ul>
+                <div id="palette">
+                    <div class="panel panel-default">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="start"><div class="init"></div></div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="stop"></div>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="function">Function</div>
+                            </li>
+                        </ul>
+                    </div>    
                 </div>
+                
+                <div id="resource-dialog" title="Add a Resource">
+                    <form id="resource-form">
+                        <fieldset>
+                            <label for="name">Name</label>
+                            <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
+                            <br />
+                            <label for="container-select">Container</label>
+                            <select name="container-select" id="container-select">
+                            </select>
+                            <br />
+                            <label for="type-select">Type</label>
+                            <select name="type-select" id="type-select">
+                            </select>
+                            <br />
+                            <label for="pin-select">Pins</label>
+                            <select name="pin-select" id="pin-select">
+                            </select>
+                            <br />
+                            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                        </fieldset>
+                    </form>
+                </div>
+                
+                <div id="function-dialog" title="Edit the Function">
+                    <form id="function-form">
+                        <fieldset>
+                            <label for="fname">Name</label>
+                            <input type="text" name="fname" id="fname" class="text ui-widget-content ui-corner-all" />
+                            <br />
+                            <label for="fendpoints">Endpoints</label>
+                            <input type="number" name="fendpoints" id="fendpoints" class="number ui-widget-content ui-corner-all" min="1" max="4" />
+                            <br />
+                            <textarea name="fdef" id= "fdef" form="function-form" rows="10" cols="50"></textarea>
+                            <br />
+                            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                        </fieldset>
+                    </form>
+                </div>
+                
             </div>
-            
             <div id="sidebar">
                 <ul id="tabs" class="nav nav-tabs nav-justified">
                     <li class="active"><a href="#element-info" data-toggle="tab">Element</a></li>
