@@ -65,4 +65,27 @@ exports.execute = function(flow_id, flow_struct){
 		setTimeout(1000, foobar);
 	}
 	*/
-}
+};
+
+exports.destroy = function(flow_id){
+	if (flow_id in conf.flows){
+		if(conf.flows[flow_id]['trigger']['type'] == "timer"){
+			//timer triggered flow
+			clearTimeout(conf.flows[flow_id]['trigger']['obj']);
+			delete conf.flows[flow_id];
+		}
+		else{
+			//resource event-emitter triggered flow
+			//remove emitter('event-name', listener_func)
+			conf.flows[flow_id]['trigger']['obj'].removeListener(
+				conf.flows[flow_id]['trigger']['event']
+				, conf.flows[flow_id]['code']
+			);
+			delete conf.flows[flow_id];
+		}
+	}
+	else{
+		console.log("Trying to delete non existing flows")
+		return false;
+	}
+};
