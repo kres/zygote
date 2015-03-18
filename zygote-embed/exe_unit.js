@@ -16,18 +16,17 @@ exports.execute = function(flow_id, flow_struct){
 		return;
 	}
 
+	var flow_func = eval(flow_struct['flow']);
+	conf.flows[flow_id] = flow_struct;
+
 	//check if trigger is okay
 	if(flow_struct.trigger['type'] == 'timer'){
-		var timer_val = parseInt(flow_struct.trigger['val']);
 
-		var flow_func = eval(flow_struct['flow']);
-		
-		conf.flows[flow_id] = flow_struct;
+		var timer_val = parseInt(flow_struct.trigger['val']);
 		
 		var func_to_execute = function(){
-			//if the flow exists, schedule again
-			//flow_id won't exist if it has been deleted
 			flow_func();
+			//on delete, use this to clean up
 			conf.flows[flow_id]['trigger']['obj'] = setTimeout(flow_func, timer_val*1000);
 		}
 		conf.flows[flow_id]['code'] = func_to_execute;
@@ -35,12 +34,24 @@ exports.execute = function(flow_id, flow_struct){
 	}
 
 	else if(flow_struct.trigger['type'] == 'event'){
-		//TODO : implement event based triggers
+		
+		var url = flow_struct.trigger['val'];
+		//on delete, use this to clean up. by removinf listeners.
+		conf.flows[flow_id]['trigger']['obj'] = conf.obj_map[url];
+
+		var func_to_execute = function(){
+			flow_func();
+			var emitter = conf.obj_map[url];
+			emitter.on(flow_struct.trigger['event'], flow_func);
+		}
+		conf.flows[flow_id]['code'] = func_to_execute;
+		func_to_execute();
 	}
 	else{
 		console.log("Invalid trigger type");
 		return;
 	}
+
 	//flow_struct['flow'] would be something like
 	/*
 	function foobar(){

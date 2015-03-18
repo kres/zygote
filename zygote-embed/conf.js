@@ -28,8 +28,12 @@ exports.flows = {}
 				"type"  : "['timer'|'event']",
 				"value" : "['number'|'url']", //number=> time in sec, url=>'gpio/1'
 				"obj"	:  [<timer-obj> | <event-emmiter-obj>]
+				"event" : "name-of-event" //only for event emitter types
 			},
 			"code" : <function-obj> //generated code, includes trigger
 	}
 	//on flow delete
 */
+
+conf.obj_map = {}
+//'gpio/P1' => new conf['res']['gpio']('P1');
