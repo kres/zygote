@@ -24,6 +24,7 @@ exports.flows = {}
 
 	flow-id : {
 			"flow" : "<code-string>",
+			"target" : "<container-name>",
 			"trigger" : {
 				"type"  : "['timer'|'event']",
 				"value" : "['number'|'url']", //number=> time in sec, url=>'gpio/1'
