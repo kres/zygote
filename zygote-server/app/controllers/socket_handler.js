@@ -143,11 +143,20 @@ exports.delete = function(container, ep, data, callback){
 	}
 };
 
-exports.execute = function(container, script, callback){
+exports.execute = function(container, flow_struct, callback){
 	//send script event via socket
 	var s = sock_map[container];
-	//script is a json {code : "code-as-str"}
-	s.emit("execute", script, function(ret_val){
+
+	s.emit("flow-create", flow_struct, function(ret_val){
+		callback(ret_val);
+	});
+};
+
+exports.delete_flow = function(container, flow_id, callback){
+	//send script event via socket
+	var s = sock_map[container];
+
+	s.emit("flow-delete", [flow_id], function(ret_val){
 		callback(ret_val);
 	});
 };

@@ -17,4 +17,5 @@ module.exports = function(app) {
 		});
 
 		app.post('/flowboard', fb.post);
+		app.delete('/flowboard', fb.delete);
 	};
