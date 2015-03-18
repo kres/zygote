@@ -1,0 +1,1 @@
+{"name" : "Raspberry Pi", "url" : "rpi", "pins" : ["p1", "p2", "p3", "p4", "p5", "p6", "p7"], "res" : {"gpio":{"1" : {"pins" : ["p1"]}, "2" : {"pins" : ["p2"]}, "3": {"pins" : ["p3"]},"4" : {"pins" : ["p4"]}}}}
