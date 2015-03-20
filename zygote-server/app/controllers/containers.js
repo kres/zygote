@@ -51,7 +51,13 @@ exports.post = function(req, res){
 		data.res_type[id] = {};
 		var sys_res = cont['res'];
 		for(var resource in sys_res){
-			data.res_type[id][resource] = sys_res[resource]["ep"];
+			//should take care of services
+			if("ep" in sys_res[resource]){
+				data.res_type[id][resource] = sys_res[resource]["ep"];
+			}
+			else{
+				data.res_type[id][resource] = sys_res[resource];			
+			}
 		}
 		//add the cont url to active inst dict
 		data.res_inst[id] = {};

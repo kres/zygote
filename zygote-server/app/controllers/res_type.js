@@ -89,9 +89,9 @@ exports.post = function(req, res) {
 			//which will maintain the latest count.
 
 			var s_data = ep; //in case of wifi, its IP addr
-			ep = parseInt(data.spec[container][id]['count'])+1;
+			ep = parseInt(data.spec[container]['res'][id]['count'])+1;
 			ep = ep.toString();
-			data.spec[container][id]['count'] = ep;
+			data.spec[container]['res'][id]['count'] = ep;
 
 			//register new urls 
 			//instance controller 'ic' does the req handling
