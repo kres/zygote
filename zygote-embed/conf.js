@@ -13,7 +13,7 @@ exports.spec = {}; //corresponds to the spec file of the board it belongs to
 exports.service = {};
 
 //add the wifi service info; the wifi module will read this internally
-exports.service['wifi'] = { "interface" : "usb0"
+exports.service['wifi'] = { "interface" : "eth1"
 				, "ip"	: "10.0.0.1-20"
 			};
 
@@ -36,5 +36,5 @@ exports.flows = {}
 	//on flow delete
 */
 
-conf.obj_map = {}
+exports.obj_map = {}
 //'gpio/P1' => new conf['res']['gpio']('P1');

@@ -1,6 +1,6 @@
 //sample h/w description file
 
-module.exports = 
+var spec = 
 {
 	//name of the board
 	"name" : "Raspberry Pi",
@@ -16,38 +16,40 @@ module.exports =
 		"gpio" : {
 		//have to add "service" : "GPIO" somewhere.....
 		//NO - let system res automaticall get listed
-			"1" : {
-				"pins" : ["p1"]
-				//other data not relevent now
-			},
-	
-			"2" : {
-				"pins" : ["p2"]
-			},
+			"ep" : {
+				"USR0" : {
+					"pins" : ["u0"]
+					//other data not relevent now
+				},
+		
+				"USR1" : {
+					"pins" : ["u1"]
+				},
 
-			"3": {
-				"pins" : ["p3"]
-			},
-			
-			"4" : {
-				"pins" : ["p4"]
-			}
-		}/*,
+				"USR2": {
+					"pins" : ["u2"]
+				},
+				
+				"USR3" : {
+					"pins" : ["u3"]
+				},
 
-		"pwm" : {
-			"1" : {
-				"pins" : ["p5"]
-			},
-			
-			"2" : {
-				"pins" : ["p6"]
+				"P8_19": {
+					"pins" : ["P8_19"]
+				}
 			}
-		},
+		}
+	},
 
-		"serial" : {
-			"1" : {
-				"pins" : ["p6", "p7"]
-			}
-		}*/
+	"service" : {
+		"wifi" : [] //list of IP addresses available 
+				//as per interface specified in "conf.service.wifi"
 	}
+
 }
+
+spec.res['wifi-bell'] = {"service" : "wifi", "count" : "0", "events" : ['bell']};
+spec.res['wifi-temp'] = {"service" : "wifi", "count" : "0"};
+spec.res['wifi-write'] = {"service" : "wifi", "count" : "0"};
+
+module.exports = spec;
