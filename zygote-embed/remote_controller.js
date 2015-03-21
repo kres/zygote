@@ -76,11 +76,10 @@ exports.start = function start(server){
 			callback({"status" : "ok"});
 		});
 
-		socket.on('flow-delete', function(flow_list, callback){
-			//flow list is a list of flow id's
-			for(i in flow_list){
-				exe_engine.destroy(flow_list[i]);
-			}
+		socket.on('flow-delete', function(flow_ids, callback){
+			//flow_ids is a list of flow id's
+			exe_engine.destroy(flow_ids[0]);
+			
 			//how to handle failure of couple of deletes?
 			callback({"status" : "ok"});
 		});
