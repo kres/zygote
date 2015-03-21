@@ -44,6 +44,7 @@ exports.execute = function(flow_id, flow_struct){
 			emitter.on(flow_struct.trigger['event'], flow_func);
 		}
 		conf.flows[flow_id]['code'] = func_to_execute;
+		conf.flows[flow_id]['flow'] = flow_func;
 		func_to_execute();
 	}
 	else{
@@ -64,6 +65,8 @@ exports.execute = function(flow_id, flow_struct){
 };
 
 exports.destroy = function(flow_id){
+	console.log("DELETING flow_id : " + flow_id);
+
 	if (flow_id in conf.flows){
 		if(conf.flows[flow_id]['trigger']['type'] == "timer"){
 			//timer triggered flow
@@ -75,7 +78,7 @@ exports.destroy = function(flow_id){
 			//remove emitter('event-name', listener_func)
 			conf.flows[flow_id]['trigger']['obj'].removeListener(
 				conf.flows[flow_id]['trigger']['event']
-				, conf.flows[flow_id]['code']
+				, conf.flows[flow_id]['flow']
 			);
 			delete conf.flows[flow_id];
 		}
