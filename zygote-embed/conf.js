@@ -27,7 +27,7 @@ exports.flows = {}
 			"target" : "<container-name>",
 			"trigger" : {
 				"type"  : "['timer'|'event']",
-				"value" : "['number'|'url']", //number=> time in sec, url=>'gpio/1'
+				"val" : "['number'|'url']", //number=> time in sec, url=>'gpio/1'
 				"obj"	:  [<timer-obj> | <event-emmiter-obj>]
 				"event" : "name-of-event" //only for event emitter types
 			},
