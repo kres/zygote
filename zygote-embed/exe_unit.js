@@ -16,7 +16,7 @@ exports.execute = function(flow_id, flow_struct){
 		return;
 	}
 
-	var flow_func = eval(flow_struct['flow']);
+	var flow_func = new Function(flow_struct['flow']);
 	conf.flows[flow_id] = flow_struct;
 
 	//check if trigger is okay
@@ -40,7 +40,6 @@ exports.execute = function(flow_id, flow_struct){
 		conf.flows[flow_id]['trigger']['obj'] = conf.obj_map[url];
 
 		var func_to_execute = function(){
-			flow_func();
 			var emitter = conf.obj_map[url];
 			emitter.on(flow_struct.trigger['event'], flow_func);
 		}
@@ -54,7 +53,6 @@ exports.execute = function(flow_id, flow_struct){
 
 	//flow_struct['flow'] would be something like
 	/*
-	function foobar(){
 		var r1 = new Resource('rpi', 'gpio/1');
 		r1.config({'mode' : 'input'});
 		var r2 = new Resource('bbb', 'gpio/1');
@@ -62,8 +60,6 @@ exports.execute = function(flow_id, flow_struct){
 		r1.read({}, function(data){
 			r2.write(data);
 		});
-		setTimeout(1000, foobar);
-	}
 	*/
 };
 
