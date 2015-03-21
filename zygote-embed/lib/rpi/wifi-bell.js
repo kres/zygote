@@ -25,13 +25,13 @@ function init(ep, opts, callback){
 		//add emitter here?
 		myObj.sock.on('data', function(data){
 			console.log("Bell ringed : ", data.toString());
-			myObj.emit("bell");
+			myObj.emit("bell"); //should I emit any data?
 		});
-
-		myObj.on("bell", function(){
-			console.log("bell event emited and recieved");
-		});
-
+		/* This was just for debug purpose
+			myObj.on("bell", function(){
+				console.log("bell event emited and recieved");
+			});
+		*/
 	});
 
 	// Add a 'close' event handler for the client socket
