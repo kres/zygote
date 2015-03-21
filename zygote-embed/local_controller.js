@@ -9,6 +9,7 @@ var obj_map = {
 	//url to obj mapping
 	// 'gpio/P9_11' ---> conf.res['gpio']('P9_11'); where conf['gpio'] is require('./base_dir/gpio.js')
 };
+conf.obj_map = obj_map;
 
 /*
 	res : string - 'gpio/1'
@@ -62,6 +63,7 @@ exports.create = function(res, opts, callback){
 			//init returns the actual h/w object
 			//h/w object has a R-W-C interface along with delete 'destructor'
 			new conf.res[type].init(ep, opts, function(obj){
+				console.log("Adding to obj_map " + res);
 				obj_map[res] = obj;
 				callback({"ep" : res});
 			});
