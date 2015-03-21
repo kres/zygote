@@ -146,7 +146,7 @@ exports.delete = function(container, ep, data, callback){
 exports.execute = function(container, flow_struct, callback){
 	//send script event via socket
 	var s = sock_map[container];
-
+	console.log("Sending flow to " + container);
 	s.emit("flow-create", flow_struct, function(ret_val){
 		callback(ret_val);
 	});
