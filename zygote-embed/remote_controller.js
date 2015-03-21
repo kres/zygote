@@ -69,7 +69,7 @@ exports.start = function start(server){
 			//flow set is a set of struct of 'flows'; each keyed by a flowid
 			//flow is a json object that defines the flow. i.e.
 			// flow-id : { "flow" : "<js-code>", "trigger" : {}, ...}
-
+			console.log("FLOW-received. Sending to execution engine")
 			for(flow_id in flow_set){
 				exe_engine.execute(flow_id, flow_set[flow_id]);
 			}
