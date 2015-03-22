@@ -9,6 +9,7 @@ exports.execute = function(flow_id, flow_struct){
 
 	console.log('executing script : ', flow_id);
 	console.log(flow_struct);
+	console.log("===================");
 
 	//check if flow already exists
 	if(flow_id in conf.flows){
@@ -27,7 +28,7 @@ exports.execute = function(flow_id, flow_struct){
 		var func_to_execute = function(){
 			flow_func();
 			//on delete, use this to clean up
-			conf.flows[flow_id]['trigger']['obj'] = setTimeout(flow_func, timer_val*1000);
+			conf.flows[flow_id]['trigger']['obj'] = setTimeout(func_to_execute, timer_val*1000);
 		}
 		conf.flows[flow_id]['code'] = func_to_execute;
 		func_to_execute();
