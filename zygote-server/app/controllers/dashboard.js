@@ -5,6 +5,7 @@
 
 function read (panel, widget, args, callback) {
 	// uses socket 'ds'
+	var obj = {"panel" : panel, "widget":widget}
 }
 
 function write (panel, widget, args, callback) {
@@ -25,10 +26,30 @@ exports.config = config;
 
 function create (panel, widget, args) {
 	// manipulate the dashboard_tree
+	if(!panel || !widget){
+		return {"error" : "data in wrong format"};
+	}
+
+	if(panel in dashboard_tree){
+		dashboard_tree[panel][widget] = args;
+		return {"status" : "ok"};
+	}else{
+		return {"error" : "panel does not exist"};
+	}
 }
 
 function del (panel, widget) {
 	// manipulate the dashboard_tree
+	if(!panel || !widget){
+		return {"error" : "data in wrong format"};
+	}
+
+	if(panel in dashboard_tree and widget in dashboard_tree[panel]){
+		delete dashboard_tree[panel][widget];
+		return {"status" : "ok"};
+	}else{
+		return {"error" : "panel/widget does not exist"};
+	}
 }
 
 // following structure is updated by create and delete
@@ -59,12 +80,28 @@ var dashboard_tree = {}
 }
 */
 
+/*
+	Return the list of panels present in the dashboard
+	["p1", "p2", "p3", ...]
+*/
 function get_panels(){
-	return panels;
+	return Object.keys(dashboard_tree);
 }
 
+/*
+	Returns the json obj of widgets (& its info)
+
+	{
+		"w-id" : {widget info},
+		"w-id" : {widget info},
+		...
+	}
+*/
 function get_widgets (panel_id) {
-	return widgets;
+	if(panel_id in dashboard_tree){
+		return dashboard_tree[panel_id];
+	}
+	return {"error" : "panel not found"}
 }
 
 exports.get_panels = get_panels;
@@ -82,12 +119,15 @@ exports.startSocket = function(server){
 	dsr.on("connection", function(socket){
 		console.log("Connected to dashboard!!");
 		ds = socket;
+
 		socket.on("create", function(data, callback){
-			create(data['panel'], data['widget'], data['widget-info']);
+			var res = create(data['panel'], data['widget'], data['widget-info']);
+			callback(res);
 		});
 
 		socket.on("delete", function(data, callback){
-			del(data['panel'], data['widget']);
+			var res = del(data['panel'], data['widget']);
+			callback(res);
 		});
 	});
 }
