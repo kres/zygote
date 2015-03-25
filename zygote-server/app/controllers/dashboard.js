@@ -4,16 +4,44 @@
 //There could be subtle differences that could lead to a problem. So seprate for now
 
 function read (panel, widget, args, callback) {
-	// uses socket 'ds'
-	var obj = {"panel" : panel, "widget":widget}
+
+	if((panel in dashboard_tree) and (widget in dashboard_tree[panel])){
+		var obj = {"panel" : panel, "widget":widget, "data" : args};
+		ds.emit("read", obj, function(ret_val){
+				callback(ret_val);
+			});
+	}
+	else{
+		callback({"error" : "non existing panel/widget"});
+	}
 }
 
 function write (panel, widget, args, callback) {
-	// uses socket 'ds'
+
+	if((panel in dashboard_tree) and (widget in dashboard_tree[panel])){
+		var obj = {"panel" : panel, "widget":widget, "data" : args};
+		ds.emit("write", obj, function(ret_val){
+				callback(ret_val);
+			});
+	}
+	else{
+		callback({"error" : "non existing panel/widget"});
+	}
 }
 
+// Don't know if config should be allowed!
+// all should be done from the user side.....
 function config (panel, widget, args, callback) {
-	// uses socket 'ds'
+
+	if((panel in dashboard_tree) and (widget in dashboard_tree[panel])){
+		var obj = {"panel" : panel, "widget":widget, "data" : args};
+		ds.emit("config", obj, function(ret_val){
+				callback(ret_val);
+			});
+	}
+	else{
+		callback({"error" : "non existing panel/widget"});
+	}
 }
 
 exports.read = read;
