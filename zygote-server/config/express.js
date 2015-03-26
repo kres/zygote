@@ -14,6 +14,8 @@ module.exports = function() {
 	app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 	app.use(multer()); // for parsing multipart/form-data
 	app.use(jsonify);
+
+	app.use("/static", express.static(__dirname+"/../static")); //handle static routes
 	
 	//add our routes to it
 	require('../app/routes/routes.js')(app);
