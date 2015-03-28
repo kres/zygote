@@ -17,7 +17,7 @@ exports.execute = function(flow_id, flow_struct){
 		return;
 	}
 
-	var flow_func = new Function(flow_struct['flow']);
+	var flow_func = new Function("event_data", flow_struct['flow']);
 	conf.flows[flow_id] = flow_struct;
 
 	//check if trigger is okay
