@@ -72,6 +72,7 @@ var spec = {
 spec.res['servo'] = JSON.parse(JSON.stringify(spec.res.pwm));
 spec.res['wifi-temp'] = {"service" : "wifi", "count" : "0"}
 spec.res['wifi-bell'] = {"service" : "wifi", "count" : "0", "events" : ['bell']};
+spec.res['wifi-dist'] = {"service" : "wifi", "count" : "0", "events" : ['dist']};
 
 module.exports = spec;
 
