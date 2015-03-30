@@ -19,20 +19,27 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((TCP_IP, TCP_PORT))
 s.listen(1)
 
-s_port = sys.argv[1] || '/dev/ttyACM1'
-ser = serial.Serial(s_port, 9600)
+if len(sys.argv) < 2:
+	s_port = '/dev/ttyACM0'
+else:
+	s_port = sys.argv[1]
 
 while True:
 	try:
+		print "Waiting for connection...."
 		conn, addr = s.accept()
 		print 'Connection address:', addr
+		ser = serial.Serial(s_port, 9600)
 		while 1:
-			data = serial.read(1)
+			data = ser.read(1)
 			print "Serial data : " + data
 			conn.send(""+data)  
 
 	except Exception as e:
-		print "Connection clsed"
+		print "Connection closed"
+		print e
 
 	finally:
-		conn.close()
+		if conn:
+			conn.close()
+		ser.close()
