@@ -25,7 +25,7 @@ function init(ep, opts, callback){
 		//add emitter here?
 		myObj.sock.on('data', function(data){
 			console.log("Bell ringed : ", data.toString());
-			this.emit("bell");
+			myObj.emit("bell");
 		});
 	});
 
