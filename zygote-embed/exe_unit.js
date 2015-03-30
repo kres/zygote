@@ -17,7 +17,10 @@ exports.execute = function(flow_id, flow_struct){
 		return;
 	}
 
-	var flow_func = new Function("event_data", "var Resource = require('./resource.js');"+flow_struct['flow']);
+	var flow_func = function(event_data){
+				eval(flow_struct['flow']);
+			};
+
 	conf.flows[flow_id] = flow_struct;
 
 	//check if trigger is okay
@@ -42,16 +45,10 @@ exports.execute = function(flow_id, flow_struct){
 
 		var func_to_execute = function(){
 			var emitter = conf.obj_map[url];
-
-			var flow_func2 = function(event_data){
-				console.log("Eval : "+ flow_struct['flow']);
-				eval(flow_struct['flow']);
-			};
-
-			emitter.on(flow_struct.trigger['event'], flow_func2);
+			emitter.on(flow_struct.trigger['event'], flow_func);
 		}
 		conf.flows[flow_id]['code'] = func_to_execute;
-		//conf.flows[flow_id]['flow'] = flow_func;
+		conf.flows[flow_id]['flow'] = flow_func;
 		func_to_execute();
 	}
 	else{
