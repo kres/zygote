@@ -61,9 +61,13 @@ function loadElements (elements, instance) {
 
         elem.css({top: elemInfo.position.top, left: elemInfo.position.left, position: "absolute"});
         elem.html(decodeURI(elemInfo.html));
+        
+        if(elem.hasClass("function")){
+            funcInfo = functions[elemID];
+        }
 
-        configureElementDrag(elem, instance)
-        addEndpointsToElement(elem, instance);
+        configureElementDrag(elem);
+        addEndpointsToElement(elem);
         addListenersToElement(elem);
     }
 }

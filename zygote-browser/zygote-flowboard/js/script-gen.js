@@ -21,7 +21,8 @@ function parseFlow(elem, prev) {
         func["_f"+(funcCounter)].pre = prev;
         parsed = "_f"+(funcCounter++)
     }
-    
+    if(elem.hasClass("start"))
+        parsed = "start";
     if(elem.hasClass("stop"))
         return;
     
@@ -120,14 +121,26 @@ function generateDataFlow(elem) {
         var prev = func[fn].pre;
         console.log(prev);
         console.log(Object.keys(res))
+        var call;
+        
         if (Object.keys(res).indexOf(prev) > -1) {
             
             //Get data and call function.
-            var call = "var " + fn + "_output = " + fn + "(" + prev + ".read());\n";
+            call = prev + ".read({}, function(" + fn + "_output) { \n"
             script += call;
             
             //Pass on the output
             passOnOutput(fn); 
+            
+            var callEnd= "});";
+            script += callEnd;
+        }
+        else if (prev == "start"){
+            call = "var " + fn + "_output = " + fn + "(event_data); \n ";
+            script += call;
+            
+            //Pass on the output
+            passOnOutput(fn);
         }
         
     }
@@ -158,4 +171,19 @@ function generateScript(startElem) {
     console.log(script);
     
     //Send script to server here.
+    flowData = {};
+    flowData.flow = script;
+    flowData.target = triggers[startElem.attr("id")].target;
+    
+    flowData.trigger = {}
+    flowData.trigger.type = triggers[startElem.attr("id")].type;
+    flowData.trigger.val = triggers[startElem.attr("id")].val;
+    if (flowData.trigger.type == "event") {
+        flowData.trigger.event = triggers[startElem.attr("id")].event;
+    }
+    
+    console.log(JSON.stringify(flowData));
+    
+    ;
+    
 }

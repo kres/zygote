@@ -9,6 +9,7 @@
         <link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css" />
         <link type="text/css" rel="stylesheet" href="css/jquery-ui.structure.min.css" />
         <link type="text/css" rel="stylesheet" href="css/jquery-ui.theme.min.css" />
+        <link type="text/css" rel="stylesheet" href="fonts/font-awesome/css/font-awesome.min.css" />
 
         <link type="text/css" rel="stylesheet" href="css/styles.css" />
 
@@ -113,6 +114,18 @@
                             <textarea name="fdef" id= "fdef" form="function-form" rows="10" cols="50"></textarea>
                             <br />
                             <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+                        </fieldset>
+                    </form>
+                </div>
+                
+                <div id="trigger-dialog" title="Set the flow trigger.">
+                    <form id="trigger-form">
+                        <fieldset>
+                            <label for="trigger-type">Type</label>
+                            <select name="trigger-type" id="trigger-type">
+                                <option value="timer">Timer</option>
+                                <option value="event">Event</option>
+                            </select>
                         </fieldset>
                     </form>
                 </div>
