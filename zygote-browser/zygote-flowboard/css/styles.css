@@ -3,7 +3,7 @@ body {
 }
 
 #palette-sidebar {
-    width: 150px;
+    width: 200px;
     height: 700px;
     float: left;
     margin-left: 10px;
@@ -11,7 +11,7 @@ body {
 
 #palette {
     background-color: #F0F0F0;
-    width: 150px;
+    width: 200px;
     height: 663px;
     overflow-y: scroll;
     border-top-left-radius: 0px;
@@ -19,7 +19,7 @@ body {
 }
 
 #palette-toolbar {
-    width: 150px;
+    width: 200px;
     margin-bottom: -2px;
 }
 
@@ -62,7 +62,7 @@ body {
     height: 25px;
     border: 1px solid black;
     border-radius: 25px;
-    margin-left: 30px;
+    margin-left: 50px;
     
 }
 
@@ -71,7 +71,7 @@ body {
     height: 25px;
     border: 1px solid black;
     border-radius: 25px;
-    margin-left: 30px;
+    margin-left: 50px;
 }
 
 .init {
@@ -85,23 +85,23 @@ body {
 }
 
 .function {
-    width: 100px;
-    height: 75px;
+    width: 150px;
+    height: 50px;
     border: 1px solid black;
-    border-radius: 25px;
+    border-radius: 15px;
     text-align: center;
     vertical-align: middle;
-    line-height: 75px;
+    line-height: 50px;
 }
 
 .resource {
-    width: 100px;
-    height: 75px;
+    width: 150px;
+    height: 50px;
     border: 1px solid black;
-    border-radius: 25px;
+    border-radius: 15px;
     text-align: center;
     vertical-align: middle;
-    line-height: 75px;
+    line-height: 50px;
     z-index: 5;
 }
 

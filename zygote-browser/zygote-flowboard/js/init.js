@@ -22,7 +22,6 @@ jsPlumb.ready(function () {
     function refreshResources() {
         clearPalette();
         initializePalette();
-        loadResources();
     }
     
     function exportJSON() {
@@ -131,6 +130,31 @@ jsPlumb.ready(function () {
     functionForm = functionDialog.find( "#function-form" ).on( "submit", function( event ) {
       event.preventDefault();
       addFunction();
+    });
+    
+   triggerDialog = $("#trigger-dialog").dialog({
+        autoOpen: false,
+        height: "auto",
+        width: "auto",
+        modal: true,
+        buttons: {
+            "Done": setTrigger,
+            Cancel: function() {
+                $("#function-dialog").dialog("close");
+            }
+        },
+        open: function() {
+            console.log("Open");
+            setTriggerFormOptions();
+        },
+        close: function() {
+            document.forms[2].reset();
+        }
+    });
+
+    triggerForm = triggerDialog.find( "#trigger-form" ).on( "submit", function( event ) {
+      event.preventDefault();
+      setTrigger();
     });
 
     initializePalette();

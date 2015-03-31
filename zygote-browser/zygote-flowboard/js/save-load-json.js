@@ -61,9 +61,13 @@ function loadElements (elements, instance) {
 
         elem.css({top: elemInfo.position.top, left: elemInfo.position.left, position: "absolute"});
         elem.html(decodeURI(elemInfo.html));
+        
+        if(elem.hasClass("function")){
+            funcInfo = functions[elemID];
+        }
 
-        configureElementDrag(elem, instance)
-        addEndpointsToElement(elem, instance);
+        configureElementDrag(elem);
+        addEndpointsToElement(elem);
         addListenersToElement(elem);
     }
 }
@@ -85,6 +89,7 @@ function loadConnections (connections, instance) {
 function loadResources () {
     
     for (var resID in resources) {
+        console.log(resID)
         var listItem = $(document.createElement("li"));
         listItem.addClass("list-group-item");
 
@@ -102,7 +107,9 @@ function loadResources () {
         var container = resources[resID].container;
         var type = resources[resID].type;
         var pin = resources[resID].pin;
-
+        console.log(container)
+        console.log(type)
+        console.log($(".list-group." + container + "." + type))
         listItem.append(res);
         $(".list-group." + container + "." + type).append(listItem);
     }

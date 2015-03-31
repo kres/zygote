@@ -1,1 +1,1 @@
-{"name" : "Raspberry Pi", "url" : "rpi", "pins" : ["p1", "p2", "p3", "p4", "p5", "p6", "p7"], "res" : {"gpio":{"1" : {"pins" : ["p1"]}, "2" : {"pins" : ["p2"]}, "3": {"pins" : ["p3"]},"4" : {"pins" : ["p4"]}}}}
+{"name" : "Raspberry Pi", "url" : "rpi", "pins" : ["p1", "p2", "p3", "p4", "p5", "p6", "p7"], "res" : {"gpio" : {"ep" : {"USR0" : {"pins" : ["u0"]},"USR1" : {"pins" : ["u1"]},"USR2": {"pins" : ["u2"]},"USR3" : {"pins" : ["u3"]},"P8_19": {"pins" : ["P8_19"]}}, "events": ["bell", "press", "alarm"]}}, "service" : {"wifi" : []}}

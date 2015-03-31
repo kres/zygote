@@ -2,8 +2,8 @@ var meta;
 var containers = [];
 var specs = {};
 var resources = {};
-var functions = {}
-
+var functions = {};
+var triggers = {};
 
 function setInfoText() {
     $("#element-info").html("<p>The element was selected<p>");
@@ -13,7 +13,8 @@ function getJSONData() {
     return {
         graph: graph,
         resources: resources,
-        functions: functions
+        functions: functions,
+        triggers: triggers
     }
 }
 function setJSON() {
@@ -30,8 +31,6 @@ function configureElementDrag(elem) {
         containment: "parent",
         stop: function(e,ui) {
             graph.elements[ui.helper.attr("id")].position = ui.position;
-            console.log(ui.helper[0].outerHTML);
-            console.log(instance.selectEndpoints({source: ui.helper.attr("id")}).getParameters()[0][1].anchor)
         }
     });
     
@@ -50,14 +49,14 @@ function anchorGenerator(count) {
                     break;
     }
 }
+
 function editFunctionEndpoints(elem) {
     
     var instance = $("body").data("instance");
     var func = functions[elem.attr("id")];
-    
+    console.log(func);
     var existing = instance.selectEndpoints({source: elem.attr("id")}).length
     console.log(existing);
-    console.log(typeof(func.endpoints));
     
     var eps = parseInt(func.endpoints)
     var anchors = anchorGenerator(eps);
@@ -113,16 +112,24 @@ function addEndpointsToElement(elem) {
 
 function addListenersToElement(elem) {
     elem.on("click", setInfoText);
+    
     if (elem.hasClass("function")){
         elem.on("click", function() {
             functionDialog.data("opener",elem);
             functionDialog.dialog("open");
         });
     }
+    
     if (elem.hasClass("start")){
-        elem.children().on("click", function() {
+        elem.children().on("click", function(event) {
             generateScript(elem);
+            event.stopPropagation();
         });
+        
+        elem.on("click", function() {
+            triggerDialog.data("opener", elem);
+            triggerDialog.dialog("open");
+        })
     }
 }
 
@@ -144,6 +151,11 @@ function configureElement(elem) {
     if(elem.hasClass("function")) {
         functionDialog.data("opener",elem);
         functionDialog.dialog("open");
+    }
+    
+    if (elem.hasClass("start")){
+        triggerDialog.data("opener", elem);
+        triggerDialog.dialog("open");
     }
 }
 
@@ -202,7 +214,7 @@ function setFormOptions() {
     
     var type = Object.keys(specs[container].res)[0]
     $("#pin-select").empty()
-    $.each(Object.keys(specs[container].res[type]), function(index, value){
+    $.each(Object.keys(specs[container].res[type].ep), function(index, value){
              option = $(document.createElement("option"));
             option.attr("value", value);
             option.html(value);
@@ -225,7 +237,7 @@ function setFormOptions() {
             var type = $(this).val();
         
             $("#pin-select").empty()
-            $.each(Object.keys(specs[container].res[type]), function(index, value){
+            $.each(Object.keys(specs[container].res[type].ep), function(index, value){
                 option = $(document.createElement("option"));
                 option.attr("value", value);
                 option.html(value);
@@ -236,6 +248,184 @@ function setFormOptions() {
     
 }
 
+function setTriggerFormOptions() {
+    
+    console.log(triggerDialog.data("opener").attr("id"));
+    console.log(Object.keys(triggers))
+    
+    if (Object.keys(triggers).indexOf(triggerDialog.data("opener").attr("id")) < 0 ) {
+        console.log("Here");
+        
+        var form = $("#trigger-form fieldset");
+        
+        while (form.children().length > 2) {
+                console.log(form.last());
+                form.children().last().remove();
+        }
+        
+        var timerLabel = $(document.createElement("label"));
+        timerLabel.attr("for", "timer");
+        timerLabel.html("Time (seconds): ")
+
+        var timer = $(document.createElement("input"));
+        timer.attr("id", "timer");
+        timer.attr("name", "timer");
+        timer.attr("type", "number");
+        
+        var targetLabel = $(document.createElement("label"));
+        targetLabel.attr("for", "target");
+        targetLabel.html("Target Container:")
+
+        var target = $(document.createElement("select"));
+        target.attr("id", "target");
+        target.attr("name", "target");
+        
+        $.each(containers, function(index, value){
+                    option = $(document.createElement("option"));
+                    option.attr("value", value);
+                    option.html(value);
+                    target.append(option);
+        });
+
+        form.append(document.createElement("br"));
+        form.append(timerLabel);
+        form.append(timer);
+        
+        form.append(document.createElement("br"));
+        form.append(targetLabel);
+        form.append(target);
+        
+        $("#trigger-type").change( function() {
+            var trigger = $(this).val();
+            console.log("trigger");
+            var form = $("#trigger-form fieldset");
+
+            while (form.children().length > 2) {
+                console.log(form.last());
+                form.children().last().remove();
+            }
+
+            if (trigger == "timer") {
+
+                var timerLabel = $(document.createElement("label"));
+                timerLabel.attr("for", "timer");
+                timerLabel.html("Time (seconds): ")
+
+                var timer = $(document.createElement("input"));
+                timer.attr("id", "timer");
+                timer.attr("name", "timer");
+                timer.attr("type", "number");
+
+                var targetLabel = $(document.createElement("label"));
+                targetLabel.attr("for", "target");
+                targetLabel.html("Target Container:")
+
+                var target = $(document.createElement("select"));
+                target.attr("id", "target");
+                target.attr("name", "target");
+
+                $.each(containers, function(index, value){
+                            option = $(document.createElement("option"));
+                            option.attr("value", value);
+                            option.html(value);
+                            target.append(option);
+                });
+
+                form.append(document.createElement("br"));
+                form.append(timerLabel);
+                form.append(timer);
+
+                form.append(document.createElement("br"));
+                form.append(targetLabel);
+                form.append(target);
+            }
+            
+            else if (trigger == "event") {
+
+                var resLabel = $(document.createElement("label"));
+                resLabel.attr("for", "res-select");
+                resLabel.html("Resource: ");
+
+                var resSelect = $(document.createElement("select"));
+                resSelect.attr("id", "res-select");
+                resSelect.attr("name", " res-select");
+
+                $.each(Object.keys(resources), function(index, value){
+                    option = $(document.createElement("option"));
+                    option.attr("value", value);
+                    option.html(value);
+                    resSelect.append(option);
+                });
+
+                form.append(document.createElement("br"));
+                form.append(resLabel);
+                form.append(resSelect);
+
+                var eventLabel = $(document.createElement("label"));
+                eventLabel.attr("for", "event-select");
+                eventLabel.html("Resource: ");
+
+                var eventSelect = $(document.createElement("select"));
+                eventSelect.attr("id", "event-select");
+                eventSelect.attr("name", " event-select");
+
+                var r = resources[Object.keys(resources)[0]];
+                console.log(r);
+                
+                
+                $.each(specs[r.container].res[r.type].events, function(index, value){
+                    option = $(document.createElement("option"));
+                    option.attr("value", value);
+                    option.html(value);
+                    eventSelect.append(option);
+                });
+                
+                form.append(document.createElement("br"));
+                form.append(eventLabel);
+                form.append(eventSelect)
+                
+                resSelect.change(function (){
+
+                    var r = resources[$(this).val()];
+
+                    $.each(specs[r.container].res[r.type].events, function(index, value){
+                        option = $(document.createElement("option"));
+                        option.attr("value", value);
+                        option.html(value);
+                        eventSelect.append(option);
+                    });
+                })
+            }
+
+        });
+    }
+    else
+        loadTriggerParams();
+}
+    
+function setTrigger() {
+    var id = triggerDialog.data("opener").attr("id");
+    var form = $(this);
+    
+    var trigger = {};
+    
+    trigger.type = $("#trigger-type").val();
+    if(trigger.type == "timer") {
+        trigger.val = $("#timer").val();
+        trigger.target = $("#target").val();
+    }
+    else if (trigger.type == "event"){
+        trigger.res = $("#res-select").val();
+        trigger.target = resources[trigger.res].container
+        trigger.val = resources[trigger.res].type + "/" + resources[trigger.res].pin;
+        trigger.event = $("#event-select").val();
+    }
+    
+    triggers[id] = trigger;
+    
+    triggerDialog.dialog("close");
+    
+}
 function addResource() {
     
     var listItem = $(document.createElement("li"));
@@ -277,6 +467,23 @@ function loadFunctionParams() {
         $("#fendpoints").val(functions[id].endpoints);
         $("#fdef").val(functions[id].definition);
     }
+    
+}
+
+function loadTriggerParams() {
+    var id = triggerDialog.data("opener").attr("id");
+    
+    if(triggers[id] != undefined) {
+        $("#trigger-type").val(triggers[id].type);
+        
+        if (triggers[id].type == "timer") {
+            $("#timer").val(triggers[id].val); 
+        }
+        else if (triggers[id].type == "event") {
+            $("#res-select").val(triggers[id].res);
+            $("#event-select").val(triggers[id].event);
+        }
+     }
     
 }
 
@@ -324,7 +531,8 @@ function clearPalette() {
 }
 
 function initializePalette() {
-    $.getJSON("../res/containers.txt", function(data) {
+    //"../res/containers.txt"
+    $.getJSON("/containers/", function(data) {
         containers = data.containers;
         console.log(containers)
         
@@ -332,12 +540,14 @@ function initializePalette() {
         $.each(containers, function(index, containervalue){
             createBlock(containervalue);
             
-            $.getJSON("../res/specsample-" + containervalue + ".txt", function(data) {
+            //"../res/specsample-" + containervalue + ".txt"
+            $.getJSON("/containers/", {"container": containervalue, "refresh": true}, function(data) {
                 specs[containervalue] = data;
                 
                 $.each(Object.keys(specs[containervalue].res), function(index, value) {
                     createResourceType(value,containervalue)
                 })
+                loadResources();
             })
         });
     });
