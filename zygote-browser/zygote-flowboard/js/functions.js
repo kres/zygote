@@ -513,6 +513,13 @@ function addResource() {
         pin: pin
     }
     
+    //Resource creation alert to server.
+    $.ajax({
+        method: "POST",
+        url: "/" + container + "/" + type + "/",
+        data: {"ep" : pin}
+    });
+    
     resourceDialog.dialog("close");
     
 }
@@ -590,7 +597,7 @@ function clearPalette() {
 
 function initializePalette() {
     //"../res/containers.txt"
-    $.getJSON("../res/containers.txt", function(data) {
+    $.getJSON("/containers/", function(data) {
         containers = data.containers;
         console.log(containers)
         
@@ -599,7 +606,7 @@ function initializePalette() {
             createBlock(containervalue);
             
             //"../res/specsample-" + containervalue + ".txt"
-            $.getJSON("../res/specsample-" + containervalue + ".txt", function(data) {
+            $.getJSON("/containers/", {"container": containervalue, "refresh": "true"},function(data) {
                 specs[containervalue] = data;
                 
                 $.each(Object.keys(specs[containervalue].res), function(index, value) {
