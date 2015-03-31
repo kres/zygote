@@ -513,6 +513,13 @@ function addResource() {
         pin: pin
     }
     
+    //Resource creation alert to server.
+    $.ajax({
+        method: "POST",
+        url: "/" + container + "/" + type + "/",
+        data: {"ep" : pin}
+    });
+    
     resourceDialog.dialog("close");
     
 }
