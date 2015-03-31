@@ -203,7 +203,7 @@ function setFormOptions() {
     
     var container = containers[0];
     console.log(container);
-    console.log(JSON.stringify(specs))
+    
     $("#type-select").empty()
     $.each(Object.keys(specs[container].res), function(index, value){
             option = $(document.createElement("option"));
@@ -213,37 +213,95 @@ function setFormOptions() {
     });
     
     var type = Object.keys(specs[container].res)[0]
+    console.log(type);
+    
     $("#pin-select").empty()
-    $.each(Object.keys(specs[container].res[type].ep), function(index, value){
-             option = $(document.createElement("option"));
+    
+    if(Object.keys(specs[container].res[type]).indexOf("service") >= 0) {
+        var serviceName = specs[container].res[type].service;
+        
+        $.each(specs[container].service[serviceName], function (index, value){
+            option = $(document.createElement("option"));
             option.attr("value", value);
             option.html(value);
             $("#pin-select").append(option);
-    });
+        });
+    }
+    else {
+        $.each(Object.keys(specs[container].res[type].ep), function(index, value){
+                option = $(document.createElement("option"));
+                option.attr("value", value);
+                option.html(value);
+                $("#pin-select").append(option);
+        });
+    }
     
     $("#container-select").change(function() {
         container = $(this).val();
+        console.log(container);
         
         $("#type-select").empty()
+        
         $.each(Object.keys(specs[container].res), function(index, value){
-             option = $(document.createElement("option"));
+            option = $(document.createElement("option"));
             option.attr("value", value);
             option.html(value);
             $("#type-select").append(option);
         });
         
-        $("#type-select").change(function() {
-            var container = $("#container-select").val();
-            var type = $(this).val();
-        
-            $("#pin-select").empty()
-            $.each(Object.keys(specs[container].res[type].ep), function(index, value){
+        var type = Object.keys(specs[container].res)[0]
+        $("#pin-select").empty()
+
+        if(Object.keys(specs[container].res[type]).indexOf("service") >= 0) {
+            var serviceName = specs[container].res[type].service;
+
+            $.each(specs[container].service[serviceName], function (index, value){
                 option = $(document.createElement("option"));
                 option.attr("value", value);
                 option.html(value);
                 $("#pin-select").append(option);
             });
-        });
+        }
+        else {
+            $.each(Object.keys(specs[container].res[type].ep), function(index, value){
+                    option = $(document.createElement("option"));
+                    option.attr("value", value);
+                    option.html(value);
+                    $("#pin-select").append(option);
+            });
+        }
+    });
+    
+    $("#type-select").change(function() {
+        var container = $("#container-select").val();
+        var type = $(this).val();
+        
+        console.log(container);
+        console.log(type);
+
+        $("#pin-select").empty()
+
+        if(Object.keys(specs[container].res[type]).indexOf("service") >= 0) {
+            var serviceName = specs[container].res[type].service;
+            console.log(serviceName);
+            console.log(specs[container].service[serviceName])
+
+            $.each(specs[container].service[serviceName], function (index, value){
+                option = $(document.createElement("option"));
+                option.attr("value", value);
+                option.html(value);
+                $("#pin-select").append(option);
+            });
+        }
+        else {
+            $.each(Object.keys(specs[container].res[type].ep), function(index, value){
+                    option = $(document.createElement("option"));
+                    option.attr("value", value);
+                    option.html(value);
+                    $("#pin-select").append(option);
+            });
+        }
+
     });
     
 }
@@ -532,7 +590,7 @@ function clearPalette() {
 
 function initializePalette() {
     //"../res/containers.txt"
-    $.getJSON("/containers/", function(data) {
+    $.getJSON("../res/containers.txt", function(data) {
         containers = data.containers;
         console.log(containers)
         
@@ -541,7 +599,7 @@ function initializePalette() {
             createBlock(containervalue);
             
             //"../res/specsample-" + containervalue + ".txt"
-            $.getJSON("/containers/", {"container": containervalue, "refresh": true}, function(data) {
+            $.getJSON("../res/specsample-" + containervalue + ".txt", function(data) {
                 specs[containervalue] = data;
                 
                 $.each(Object.keys(specs[containervalue].res), function(index, value) {
