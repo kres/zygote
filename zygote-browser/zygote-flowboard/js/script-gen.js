@@ -90,7 +90,7 @@ function passOnOutput(fn) {
         var ep = func[fn].endpointList[i];
         console.log("ep: " + ep);
         if(Object.keys(res).indexOf(ep) > -1) {
-            var write = "if (" + fn + "_output[" + i + "] != null) {\n" + ep + ".write(" + fn + "_output[" + i + "], function () {});\n}\n";
+            var write = "if (" + fn + "_output[" + i + "] != null) {\n" + ep + ".write(" + fn + "_output[" + i + "], function () {});\n}\n"; 
             script += write;
         }
         else if(Object.keys(func).indexOf(ep) > -1) {
@@ -126,7 +126,7 @@ function generateDataFlow(elem) {
         if (Object.keys(res).indexOf(prev) > -1) {
             
             //Get data and call function.
-            call = prev + ".read({}, function(" + prev + "_data) { \n " + fn + "_output = " + fn + "(" + prev + "_data); \n"
+            call = prev + ".read({}, function(" + prev + "_data) { \n var " + fn + "_output = " + fn + "(" + prev + "_data); \n"
             script += call;
             
             //Pass on the output
@@ -182,8 +182,15 @@ function generateScript(startElem) {
         flowData.trigger.event = triggers[startElem.attr("id")].event;
     }
     
-    console.log(JSON.stringify(flowData));
+    var flowname = triggers[startElem.attr("id")].flowname;
+    flows = {}
+    flows[flowname] = flowData;
+    console.log(flows);
     
-    ;
+    $.ajax({
+        method: "POST",
+        url: "/flowboard/",
+        data: flows
+    });
     
 }

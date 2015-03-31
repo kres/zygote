@@ -316,7 +316,7 @@ function setTriggerFormOptions() {
         
         var form = $("#trigger-form fieldset");
         
-        while (form.children().length > 2) {
+        while (form.children().length > 5) {
                 console.log(form.last());
                 form.children().last().remove();
         }
@@ -358,7 +358,7 @@ function setTriggerFormOptions() {
             console.log("trigger");
             var form = $("#trigger-form fieldset");
 
-            while (form.children().length > 2) {
+            while (form.children().length > 5) {
                 console.log(form.last());
                 form.children().last().remove();
             }
@@ -367,7 +367,7 @@ function setTriggerFormOptions() {
 
                 var timerLabel = $(document.createElement("label"));
                 timerLabel.attr("for", "timer");
-                timerLabel.html("Time (seconds): ")
+                timerLabel.html("Time (seconds) ")
 
                 var timer = $(document.createElement("input"));
                 timer.attr("id", "timer");
@@ -376,7 +376,7 @@ function setTriggerFormOptions() {
 
                 var targetLabel = $(document.createElement("label"));
                 targetLabel.attr("for", "target");
-                targetLabel.html("Target Container:")
+                targetLabel.html("Target Container ")
 
                 var target = $(document.createElement("select"));
                 target.attr("id", "target");
@@ -402,7 +402,7 @@ function setTriggerFormOptions() {
 
                 var resLabel = $(document.createElement("label"));
                 resLabel.attr("for", "res-select");
-                resLabel.html("Resource: ");
+                resLabel.html("Resource ");
 
                 var resSelect = $(document.createElement("select"));
                 resSelect.attr("id", "res-select");
@@ -421,7 +421,7 @@ function setTriggerFormOptions() {
 
                 var eventLabel = $(document.createElement("label"));
                 eventLabel.attr("for", "event-select");
-                eventLabel.html("Resource: ");
+                eventLabel.html("Event ");
 
                 var eventSelect = $(document.createElement("select"));
                 eventSelect.attr("id", "event-select");
@@ -466,6 +466,8 @@ function setTrigger() {
     var form = $(this);
     
     var trigger = {};
+    
+    trigger.flowname = $("#flowname").val();
     
     trigger.type = $("#trigger-type").val();
     if(trigger.type == "timer") {
@@ -539,6 +541,7 @@ function loadTriggerParams() {
     var id = triggerDialog.data("opener").attr("id");
     
     if(triggers[id] != undefined) {
+        $("#flowname").val(triggers[id].flowname);
         $("#trigger-type").val(triggers[id].type);
         
         if (triggers[id].type == "timer") {
@@ -595,7 +598,7 @@ function clearPalette() {
     });
 }
 
-function initializePalette() {
+/*function initializePalette() {
     //"../res/containers.txt"
     $.getJSON("/containers/", function(data) {
         containers = data.containers;
@@ -607,6 +610,29 @@ function initializePalette() {
             
             //"../res/specsample-" + containervalue + ".txt"
             $.getJSON("/containers/", {"container": containervalue, "refresh": "true"},function(data) {
+                specs[containervalue] = data;
+                
+                $.each(Object.keys(specs[containervalue].res), function(index, value) {
+                    createResourceType(value,containervalue)
+                })
+                loadResources();
+            })
+        });
+    });
+}*/
+
+function initializePalette() {
+    //"../res/containers.txt"
+    $.getJSON("../res/containers.txt", function(data) {
+        containers = data.containers;
+        console.log(containers)
+        
+        specs = {};
+        $.each(containers, function(index, containervalue){
+            createBlock(containervalue);
+            
+            //"../res/specsample-" + containervalue + ".txt"
+            $.getJSON("../res/specsample-" + containervalue + ".txt",function(data) {
                 specs[containervalue] = data;
                 
                 $.each(Object.keys(specs[containervalue].res), function(index, value) {
