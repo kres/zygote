@@ -22,7 +22,6 @@ jsPlumb.ready(function () {
     function refreshResources() {
         clearPalette();
         initializePalette();
-        loadResources();
     }
     
     function exportJSON() {

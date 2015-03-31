@@ -531,7 +531,8 @@ function clearPalette() {
 }
 
 function initializePalette() {
-    $.getJSON("../res/containers.txt", function(data) {
+    //"../res/containers.txt"
+    $.getJSON("/containers/", function(data) {
         containers = data.containers;
         console.log(containers)
         
@@ -539,12 +540,14 @@ function initializePalette() {
         $.each(containers, function(index, containervalue){
             createBlock(containervalue);
             
-            $.getJSON("../res/specsample-" + containervalue + ".txt", function(data) {
+            //"../res/specsample-" + containervalue + ".txt"
+            $.getJSON("/containers/", {"container": containervalue, "refresh": true}, function(data) {
                 specs[containervalue] = data;
                 
                 $.each(Object.keys(specs[containervalue].res), function(index, value) {
                     createResourceType(value,containervalue)
                 })
+                loadResources();
             })
         });
     });
