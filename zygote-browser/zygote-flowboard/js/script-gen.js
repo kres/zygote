@@ -126,7 +126,7 @@ function generateDataFlow(elem) {
         if (Object.keys(res).indexOf(prev) > -1) {
             
             //Get data and call function.
-            call = prev + ".read({}, function(" + fn + "_output) { \n"
+            call = prev + ".read({}, function(" + prev + "_data) { \n " + fn + "_output = " + fn "(" + prev + "_data); \n"
             script += call;
             
             //Pass on the output
