@@ -523,13 +523,11 @@ function addResource() {
                     pin: pin,
                     url: data.ep
                 }
+                resourceDialog.dialog("close");
             }
             console.log(data)
         }
     });
-    
-    resourceDialog.dialog("close");
-    
 }
 
 function loadFunctionParams() {
