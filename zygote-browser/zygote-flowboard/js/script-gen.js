@@ -90,7 +90,7 @@ function passOnOutput(fn) {
         var ep = func[fn].endpointList[i];
         console.log("ep: " + ep);
         if(Object.keys(res).indexOf(ep) > -1) {
-            var write = "if (" + fn + "_output[" + i + "] != null) {\n" + ep + ".write(" + fn + "_output[" + i + "]);\n}\n"; 
+            var write = "if (" + fn + "_output[" + i + "] != null) {\n" + ep + ".write(" + fn + "_output[" + i + "], function () {});\n}\n";
             script += write;
         }
         else if(Object.keys(func).indexOf(ep) > -1) {
