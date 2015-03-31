@@ -1,1 +1,76 @@
-{"name" : "Raspberry Pi", "url" : "rpi", "pins" : ["p1", "p2", "p3", "p4", "p5", "p6", "p7"], "res" : {"gpio" : {"ep" : {"USR0" : {"pins" : ["u0"]},"USR1" : {"pins" : ["u1"]},"USR2": {"pins" : ["u2"]},"USR3" : {"pins" : ["u3"]},"P8_19": {"pins" : ["P8_19"]}}, "events": ["bell", "press", "alarm"]}}, "service" : {"wifi" : []}}
+{
+    "name": "Raspberry Pi",
+    "url": "rpi",
+    "pins": [
+        "p1",
+        "p2",
+        "p3",
+        "p4",
+        "p5",
+        "p6",
+        "p7"
+    ],
+    "res": {
+        "gpio": {
+            "ep": {
+                "USR0": {
+                    "pins": [
+                        "u0"
+                    ]
+                },
+                "USR1": {
+                    "pins": [
+                        "u1"
+                    ]
+                },
+                "USR2": {
+                    "pins": [
+                        "u2"
+                    ]
+                },
+                "USR3": {
+                    "pins": [
+                        "u3"
+                    ]
+                },
+                "P8_19": {
+                    "pins": [
+                        "P8_19"
+                    ]
+                }
+            }
+        },
+        "wifi-bell": {
+            "service": "wifi",
+            "count": "0",
+            "events": [
+                "bell"
+            ]
+        },
+        "wifi-temp": {
+            "service": "wifi",
+            "count": "0"
+        },
+        "wifi-write": {
+            "service": "wifi",
+            "count": "0"
+        },
+        "wifi-dist": {
+            "service": "wifi",
+            "count": "0",
+            "events": [
+                "dist"
+            ]
+        }
+    },
+    "service": {
+        "wifi": [
+            "10.0.0.1",
+            "10.0.0.5",
+            "10.0.0.10",
+            "10.0.0.12",
+            "10.0.0.15",
+            "10.0.0.16"
+        ]
+    }
+}

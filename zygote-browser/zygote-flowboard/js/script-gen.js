@@ -35,7 +35,7 @@ function defineResources() {
     for (item in res){
         
         var container = res[item].container;
-        var url = res[item].type + "/" + res[item].pin;
+        var url = res[item].url;
         
         var definition = "var " + item + " = new Resource('" + container + "', '" + url + "'); \n"
         script += definition;

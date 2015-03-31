@@ -509,17 +509,23 @@ function addResource() {
     listItem.append(res);
     $(".list-group." + container + "." + type).append(listItem);
     
-    resources[$("#name").val()] = {
-        container: container,
-        type: type,
-        pin: pin
-    }
-    
     //Resource creation alert to server.
     $.ajax({
         method: "POST",
         url: "/" + container + "/" + type + "/",
-        data: {"ep" : pin}
+        data: {"ep" : pin},
+        success: function (data) {
+            if(Object.keys(data).indexOf("ep") >= 0) {
+                
+                resources[$("#name").val()] = {
+                    container: container,
+                    type: type,
+                    pin: pin,
+                    url: data.ep
+                }
+            }
+            console.log(data)
+        }
     });
     
     resourceDialog.dialog("close");
@@ -598,7 +604,7 @@ function clearPalette() {
     });
 }
 
-/*function initializePalette() {
+function initializePalette() {
     //"../res/containers.txt"
     $.getJSON("/containers/", function(data) {
         containers = data.containers;
@@ -619,9 +625,9 @@ function clearPalette() {
             })
         });
     });
-}*/
+}
 
-function initializePalette() {
+/*function initializePalette() {
     //"../res/containers.txt"
     $.getJSON("../res/containers.txt", function(data) {
         containers = data.containers;
@@ -642,4 +648,4 @@ function initializePalette() {
             })
         });
     });
-}
+}*/
