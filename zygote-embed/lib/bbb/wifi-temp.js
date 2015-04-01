@@ -33,7 +33,7 @@ function init(ep, opts, callback){
 init.prototype.read = function read(data, callback){
 	console.log("WIFI-temp read");
 	console.log("EP : "+this.ep+" IP : "+ this.ip);
-	this.sock.on('data', function(data){
+	this.sock.once('data', function(data){
 		console.log("data : ", data);
 		callback({"value" : data.toString()});
 	});
