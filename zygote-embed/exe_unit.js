@@ -13,8 +13,9 @@ exports.execute = function(flow_id, flow_struct){
 
 	//check if flow already exists
 	if(flow_id in conf.flows){
-		console.log("Flow exists! Delete first. Aborting...");
-		return;
+		console.log("Flow exists! Deleting first....");
+		destroy(flow_id);
+		//return;
 	}
 
 	var flow_func = function(event_data){
@@ -68,7 +69,7 @@ exports.execute = function(flow_id, flow_struct){
 	*/
 };
 
-exports.destroy = function(flow_id){
+function destroy(flow_id){
 	console.log("DELETING flow_id : " + flow_id);
 
 	if (flow_id in conf.flows){
@@ -92,3 +93,4 @@ exports.destroy = function(flow_id){
 		return false;
 	}
 };
+exports.destroy = destroy;
