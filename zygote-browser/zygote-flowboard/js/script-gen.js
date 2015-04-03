@@ -10,8 +10,9 @@ function parseFlow(elem, prev) {
     
     var parsed;
     
+    console.log(elem.html())
     if(elem.hasClass("resource")) {
-        res["_r"+(resCounter)] = resources[elem.html()];
+        res["_r"+(resCounter)] = resources[elem.html().split("<")[0]];
         res["_r"+(resCounter)].id = elem.attr("id");
         parsed = "_r"+(resCounter++)
     }

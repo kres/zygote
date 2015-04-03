@@ -496,10 +496,12 @@ function setTriggerFormOptions() {
                 resSelect.attr("name", " res-select");
 
                 $.each(Object.keys(resources), function(index, value){
-                    option = $(document.createElement("option"));
-                    option.attr("value", value);
-                    option.html(value);
-                    resSelect.append(option);
+                    if(specs[resources[value].container].res[resources[value].type].events != undefined) {
+                        option = $(document.createElement("option"));
+                        option.attr("value", value);
+                        option.html(value);
+                        resSelect.append(option);
+                    }
                 });
 
                 form.append(document.createElement("br"));
@@ -514,9 +516,8 @@ function setTriggerFormOptions() {
                 eventSelect.attr("id", "event-select");
                 eventSelect.attr("name", " event-select");
 
-                var r = resources[Object.keys(resources)[0]];
+                var r = resources[$(resSelect.children("option")[0]).val()]
                 console.log(r);
-                
                 
                 $.each(specs[r.container].res[r.type].events, function(index, value){
                     option = $(document.createElement("option"));
@@ -564,7 +565,7 @@ function setTrigger() {
     else if (trigger.type == "event"){
         trigger.res = $("#res-select").val();
         trigger.target = resources[trigger.res].container
-        trigger.val = resources[trigger.res].type + "/" + resources[trigger.res].pin;
+        trigger.val = resources[trigger.res].url;
         trigger.event = $("#event-select").val();
     }
     
@@ -610,12 +611,20 @@ function addResource() {
                     pin: pin,
                     url: data.ep
                 }
+                
+                resourceDialog.dialog("close");
             }
             console.log(data)
         }
     });
     
-    resourceDialog.dialog("close");
+    /*resources[$("#name").val()] = {
+        container: container,
+        type: type,
+        pin: pin,
+        url: type + '/' + pin
+    }
+    resourceDialog.dialog("close");*/
     
 }
 
@@ -725,7 +734,7 @@ function initializePalette() {
             createBlock(containervalue);
             
             //"../res/specsample-" + containervalue + ".txt"
-            $.getJSON("/containers/", {container: containervalue, refresh: "true"}, function(data) {
+            $.getJSON("/containers/", {container: containervalue, refresh: "true"},  function(data) {
                 specs[containervalue] = data;
                 
                 $.each(Object.keys(specs[containervalue].res), function(index, value) {
