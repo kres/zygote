@@ -17,10 +17,11 @@ exports.execute = function(flow_id, flow_struct){
 		destroy(flow_id);
 		//return;
 	}
-
+	var flow_str = flow_struct['flow'];
+	
 	var flow_func = function(event_data){
 		console.log("EXECUTING FLOW");
-				eval(flow_struct['flow']);
+				eval(flow_str);
 			};
 
 	conf.flows[flow_id] = flow_struct;
