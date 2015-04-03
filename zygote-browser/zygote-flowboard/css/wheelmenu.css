@@ -1,0 +1,38 @@
+/* Required Stylesheets */
+.wheel-button {
+    position: relative;
+    color: #000000;
+}
+
+.wheel {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 150px; /* this will determine the diameter of the circle  */
+  height: 150px; /* this will determine the diameter of the circle  */
+  visibility: hidden;
+  position: relative;
+  display: none;
+}
+
+.wheel li {
+  overflow: hidden;
+  float:left;
+}
+
+.wheel li a {
+  display: block;
+  color: #000000;
+}
+
+.wheel li a:hover {
+  display: block;
+  color: #555555;
+}
+
+/*Added Stylesheets*/
+.menu-holder {
+    float: right;
+    width: 20px;
+    margin-right: 10px;
+}

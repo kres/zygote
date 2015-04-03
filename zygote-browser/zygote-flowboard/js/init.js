@@ -157,6 +157,7 @@ jsPlumb.ready(function () {
       setTrigger();
     });
 
+    
     initializePalette();
     
     $("#chart").on("mouseover",setJSON);

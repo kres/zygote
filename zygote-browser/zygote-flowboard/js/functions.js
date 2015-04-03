@@ -6,7 +6,35 @@ var functions = {};
 var triggers = {};
 
 function setInfoText() {
-    $("#element-info").html("<p>The element was selected<p>");
+    var elem =$(this);
+    
+    $("#element-info").html("");
+    
+    var table = $(document.createElement("table"));
+    table.addClass("table table-striped table-hover");
+    
+    table.html("<tr><th>Key</th><th>Value</th></tr>")
+    var displayData;
+    
+    if(elem.hasClass("start")){
+        displayData = triggers[elem.attr("id")];
+    }
+    else if(elem.hasClass("function")) {
+        displayData = functions[elem.attr("id")];
+    }
+    else if(elem.hasClass("resource")) {
+        displayData = resources[graph.elements[elem.attr("id")].html];
+    }
+    
+    if(displayData != undefined) {
+        $.each(Object.keys(displayData), function(index, key) {
+            console.log(key);
+            var tablerow = $(document.createElement("tr"))
+            tablerow.html("<td>"+key+"</td><td>"+displayData[key]+"</td>")
+            table.append(tablerow);
+        })
+    }
+    $("#element-info").append(table);
 }
 
 function getJSONData() {
@@ -90,6 +118,34 @@ function editFunctionEndpoints(elem) {
     
 }
 
+function editElement(){
+    $("#wheel-menu").css("visibility", "hidden");
+    
+    var node = $(".wheel-button.active").closest(".node");
+    if ((node.hasClass("resource")) || (node.hasClass("stop"))) {
+        alert("This element cannot be edited.");
+    }
+    else if(node.hasClass("start")) {
+        triggerDialog.data("opener", node);
+        triggerDialog.dialog("open");
+    }
+    else if(node.hasClass("function")) {
+        functionDialog.data("opener", node);
+        functionDialog.dialog("open");
+    }
+}
+
+function deleteElement() {
+    var instance = $("body").data("instance");
+    
+    $("#wheel-menu").css("visibility", "hidden");
+    
+    if(confirm("Delete this node?")){
+        console.log($(".wheel-button.active"))
+        instance.remove($(".wheel-button.active").closest(".node").attr("id"));
+    }
+}
+
 function addEndpointsToElement(elem) {
 
     var instance = $("body").data("instance");
@@ -113,24 +169,45 @@ function addEndpointsToElement(elem) {
 function addListenersToElement(elem) {
     elem.on("click", setInfoText);
     
-    if (elem.hasClass("function")){
-        elem.on("click", function() {
-            functionDialog.data("opener",elem);
-            functionDialog.dialog("open");
-        });
-    }
-    
     if (elem.hasClass("start")){
         elem.children().on("click", function(event) {
             generateScript(elem);
             event.stopPropagation();
         });
-        
-        elem.on("click", function() {
-            triggerDialog.data("opener", elem);
-            triggerDialog.dialog("open");
-        })
     }
+}
+
+function addMenu(elem) {
+    var menuID = "menu-" + elem.attr("id").split("-")[2]
+    var menulist = $(document.createElement("ul"))
+    menulist.attr("id", menuID);
+    menulist.attr("data-angle", "[270,360]");
+    menulist.addClass("wheel");
+    menulist.append($(document.createElement("li")).addClass("item").html('<a href="#" onclick="deleteElement();"><span class="fa fa-trash fa-lg"></span></a>'));
+    menulist.append($(document.createElement("li")).addClass("item").html('<a href="#" onclick="editElement();"><span class="fa fa-edit fa-lg"></span></a>'));
+    
+    elem.append(menulist);
+    
+    var menuHolder = $(document.createElement("div"));
+    menuHolder.addClass("menu-holder");
+    
+    var menu = $(document.createElement("a"));
+    menu.attr("href", "#" + menuID);
+    menu.addClass("wheel-button ne")
+    menu.on("click", function(event) {
+        event.preventDefault();
+    })
+    
+    menu.html("<span class='fa fa-gear fa-lg'></span>");
+    
+    menu.wheelmenu({
+      trigger: "hover",
+      animation: "fly", 
+      animationSpeed: "fast"
+    });
+    
+    menuHolder.append(menu);
+    elem.append(menuHolder);
 }
 
 function configureElement(elem) {
@@ -138,8 +215,7 @@ function configureElement(elem) {
     elem.uniqueId();
     var instance = $("body").data("instance");
     
-    if((!elem.hasClass("start")) && (!elem.hasClass("stop")))
-        configureElementDrag(elem);
+    configureElementDrag(elem);
     
     //Add to the graph data, to be saved as JSON.    
     saveElement(elem);
@@ -157,6 +233,8 @@ function configureElement(elem) {
         triggerDialog.data("opener", elem);
         triggerDialog.dialog("open");
     }
+    
+    addMenu(elem);
 }
 
 function createBlock(containerName) {
@@ -167,9 +245,13 @@ function createBlock(containerName) {
     
     var heading = $(document.createElement("div"));
     heading.addClass("panel-heading");
-    heading.html(containerName);
+    heading.html(containerName + "<span style='float:right' class='fa fa-chevron-down fa-lg'></span>");
+    
+    var body = $(document.createElement("div"));
+    body.addClass("panel-body")
     
     panel.append(heading);
+    panel.append(body);
     console.log(panel);
     panel.appendTo($("#palette"));
     
@@ -183,12 +265,17 @@ function createResourceType(resourceType, container){
     heading.addClass("panel-heading");
     heading.html(resourceType);
     
+    
     var ulist =$(document.createElement("ul"));
     ulist.addClass("list-group " + container + " " + resourceType);
     
+    var body = $(document.createElement("div"));
+    body.addClass("panel-body");
+    
     panel.append(heading);
-    panel.append(ulist);
-    panel.appendTo($("#" + container + "-block"));
+    body.append(ulist);
+    panel.append(body);
+    panel.appendTo($("#" + container + "-block").children( ".panel-body"));
     
 }
 function setFormOptions() {
@@ -492,7 +579,7 @@ function addResource() {
     listItem.addClass("list-group-item");
     
     var res = $(document.createElement("div"));
-    res.addClass("resource")
+    res.addClass("node resource")
     res.html($("#name").val());
     
     res.draggable({
@@ -523,11 +610,13 @@ function addResource() {
                     pin: pin,
                     url: data.ep
                 }
-                resourceDialog.dialog("close");
             }
             console.log(data)
         }
     });
+    
+    resourceDialog.dialog("close");
+    
 }
 
 function loadFunctionParams() {
@@ -574,6 +663,7 @@ function addFunction() {
     editFunctionEndpoints(functionDialog.data("opener"));
     
     functionDialog.data("opener").html(name);
+    addMenu(functionDialog.data("opener"));
     functionDialog.dialog("close"); 
 }
 
@@ -602,6 +692,28 @@ function clearPalette() {
     });
 }
 
+function hideDropdown() {
+    var panel= $(this);
+    panel.children("span").removeClass("fa-chevron-up");
+    panel.children("span").addClass("fa-chevron-down");
+    panel.siblings(".panel-body").slideUp();
+    
+    panel.off("click", hideDropdown);
+    panel.on("click", showDropdown);
+}
+
+function showDropdown() {
+    var panel= $(this);
+    panel.children("span").removeClass("fa-chevron-down");
+    panel.children("span").addClass("fa-chevron-up");
+    panel.siblings(".panel-body").slideDown();
+    
+    panel.off("click", showDropdown);
+    panel.on("click", hideDropdown);
+    
+}
+
+
 function initializePalette() {
     //"../res/containers.txt"
     $.getJSON("/containers/", function(data) {
@@ -613,7 +725,7 @@ function initializePalette() {
             createBlock(containervalue);
             
             //"../res/specsample-" + containervalue + ".txt"
-            $.getJSON("/containers/", {"container": containervalue, "refresh": "true"},function(data) {
+            $.getJSON("/containers/", {container: containervalue, refresh: "true"}, function(data) {
                 specs[containervalue] = data;
                 
                 $.each(Object.keys(specs[containervalue].res), function(index, value) {
@@ -621,29 +733,9 @@ function initializePalette() {
                 })
                 loadResources();
             })
+            
+            $("#" + containervalue + "-block .panel-body").hide();
+            $("#" + containervalue + "-block .panel-heading").on("click", showDropdown);
         });
     });
 }
-
-/*function initializePalette() {
-    //"../res/containers.txt"
-    $.getJSON("../res/containers.txt", function(data) {
-        containers = data.containers;
-        console.log(containers)
-        
-        specs = {};
-        $.each(containers, function(index, containervalue){
-            createBlock(containervalue);
-            
-            //"../res/specsample-" + containervalue + ".txt"
-            $.getJSON("../res/specsample-" + containervalue + ".txt",function(data) {
-                specs[containervalue] = data;
-                
-                $.each(Object.keys(specs[containervalue].res), function(index, value) {
-                    createResourceType(value,containervalue)
-                })
-                loadResources();
-            })
-        });
-    });
-}*/

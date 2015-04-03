@@ -2,16 +2,15 @@ body {
     padding-top: 60px;
 }
 
+
 #palette-sidebar {
-    width: 200px;
+    width: 210px;
     height: 700px;
     float: left;
-    margin-left: 10px;
 }
 
 #palette {
-    background-color: #F0F0F0;
-    width: 200px;
+    width: 210px;
     height: 663px;
     overflow-y: scroll;
     border-top-left-radius: 0px;
@@ -19,12 +18,12 @@ body {
 }
 
 #palette-toolbar {
-    width: 200px;
+    width: 210px;
     margin-bottom: -2px;
+    border: 0px;
 }
 
 #sidebar {
-    background-color: #F0F0F0;
     width: 300px;
     height: 720px;
     overflow-y: scroll;
@@ -40,7 +39,6 @@ body {
     position: relative;
     height: 720px;
     overflow: scroll;
-    background-color: #FBFBFB;
     margin-left: 10px;
     margin-right: 10px;
 }
@@ -58,30 +56,37 @@ body {
 }
 
 .start {
-    width: 35px;
-    height: 25px;
+    width: 100px;
+    height: 35px;
     border: 1px solid black;
     border-radius: 25px;
-    margin-left: 50px;
+    vertical-align: middle;
+    line-height: 35px;
+    background: -moz-linear-gradient(#77cb77, #54be54); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#77cb77, #54be54);
     
 }
 
 .stop {
-    width: 35px;
-    height: 25px;
+    width: 100px;
+    height: 35px;
     border: 1px solid black;
     border-radius: 25px;
-    margin-left: 50px;
+    vertical-align: middle;
+    line-height: 35px;
+    background: -moz-linear-gradient(#f17475, #ec4e4a); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#f17475, #ec4e4a);
 }
 
-.init {
+.init, .end {
     width: 20px;
     height: 20px;
     border: 1px solid black;
     border-radius: 20px;
-    background-color: rgb(0,255,0);
-    margin-left: 2px;
-    margin-top: 2px;
+    background-color: #FEFEFE;
+    margin-left: 10px;
+    margin-top: 7px;
+    float: left;
 }
 
 .function {
@@ -92,6 +97,9 @@ body {
     text-align: center;
     vertical-align: middle;
     line-height: 50px;
+    background: -moz-linear-gradient(#faa022, #e58906); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#faa022, #e58906);
+    color: #FEFEFE;
 }
 
 .resource {
@@ -103,10 +111,37 @@ body {
     vertical-align: middle;
     line-height: 50px;
     z-index: 5;
+    background: -moz-linear-gradient(#73c9e2, #4bbadb); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(#73c9e2, #4bbadb);
+    color: #FEFEFE;
 }
 
 .panel-default {
     margin-bottom: 10px;
+}
+
+.block .panel-heading {
+    color: #EFEFEF;
+    border-radius: 5px;
+}
+
+.res-type {
+    margin-bottom: 0px;
+    border-radius: 0px;
+}
+
+.res-type .panel-heading {
+    color: #EFEFEF;
+    border-radius: 0px;
+}
+
+
+.panel-body {
+    padding: 0px;
+}
+
+ul.list-group {
+    margin: 0px;
 }
 
 .window {
@@ -119,3 +154,6 @@ body {
 ._jsPlumb_endpoint {
     z-index: 0;
 }
+
+
+
