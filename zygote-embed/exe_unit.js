@@ -19,6 +19,7 @@ exports.execute = function(flow_id, flow_struct){
 	}
 
 	var flow_func = function(event_data){
+		console.log("EXECUTING FLOW");
 				eval(flow_struct['flow']);
 			};
 
@@ -26,7 +27,7 @@ exports.execute = function(flow_id, flow_struct){
 
 	//check if trigger is okay
 	if(flow_struct.trigger['type'] == 'timer'){
-
+		console.log("TIMER TRIGGER");
 		var timer_val = parseInt(flow_struct.trigger['val']);
 		
 		var func_to_execute = function(){
@@ -39,7 +40,7 @@ exports.execute = function(flow_id, flow_struct){
 	}
 
 	else if(flow_struct.trigger['type'] == 'event'){
-		
+		console.log("EVENT TRIGGER");
 		var url = flow_struct.trigger['val'];
 		//on delete, use this to clean up. by removinf listeners.
 		conf.flows[flow_id]['trigger']['obj'] = conf.obj_map[url];
@@ -51,6 +52,7 @@ exports.execute = function(flow_id, flow_struct){
 		conf.flows[flow_id]['code'] = func_to_execute;
 		conf.flows[flow_id]['flow'] = flow_func;
 		func_to_execute();
+		console.log("FLOW event : " + flow_struct.trigger['event']);
 	}
 	else{
 		console.log("Invalid trigger type");
