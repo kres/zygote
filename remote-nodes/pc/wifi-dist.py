@@ -29,11 +29,16 @@ while True:
 		print "Waiting for connection...."
 		conn, addr = s.accept()
 		print 'Connection address:', addr
+		print "serial port : ", s_port
 		ser = serial.Serial(s_port, 9600)
 		while 1:
 			data = ser.read(1)
 			print "Serial data : " + data
 			conn.send(""+data)  
+
+	except KeyboardInterrupt as e:
+		print "Connection closed"
+		print e
 
 	except Exception as e:
 		print "Connection closed"
