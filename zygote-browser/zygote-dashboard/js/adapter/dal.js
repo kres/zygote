@@ -57,8 +57,24 @@ dal.db.getJOSN = function(){
 };
 
 //res (resource)
-//	res.addResource(panel_id, widget);
-//	res.getResource(ep); // "panel-id/widget-id"
+//	res.addResource(ep); ep => "panel-id/widget-id"
+//	res.getResource(ep); 
+//	res.deleteResource(ep);
+
+dal.res.addResource = function(ep){
+	res_data[ep] = new Resource("dashboard", ep);
+};
+
+dal.res.getResource = function(ep){
+	return res_data[ep];
+};
+
+dal.res.deleteResource = function(ep){
+	if(res_data[ep])
+		delete res_data[ep];
+	else
+		console.log("No resource to be deleted");
+};
 
 //flows (flows to execute)
 //	flows.getFlow(flow_id)
