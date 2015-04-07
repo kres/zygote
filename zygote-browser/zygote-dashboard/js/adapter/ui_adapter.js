@@ -25,11 +25,11 @@ container.on("new-panel", function(panel){
 	//should delete be a event on panel or on widget??
 	panel.on("delete-widget", function(widget){
 		console.log("Deleteing widget");
-		dal.db.deleteWidget(panel.id, widget.id);
+		dal.db.deleteWidget(panel.id, widget);
 	});
 });
 
 container.on("delete-panel", function(panel){
 	console.log("Panel deleted");
-	dal.db.deletePanel(panel.id);
+	dal.db.deletePanel(panel);
 });
