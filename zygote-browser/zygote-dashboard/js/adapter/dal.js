@@ -12,6 +12,7 @@ var res_data	= {};
 var flow_data	= {};
 
 /***************API*******************/
+
 //DB (dashboard)
 //	db.addPanel(panel)
 //	db.addWidget(panel_id, widget)
@@ -80,3 +81,16 @@ dal.res.deleteResource = function(ep){
 //	flows.getFlow(flow_id)
 //	flows.addFlow(flow_id, flow_struct);
 //	flows.deleteFlow(flow_id);
+
+dal.flows.getFlow = function(flow_id){
+	return flow_data[flow_id];
+};
+
+dal.flows.addFlow = function(flow_id, flow_struct){
+	flow_data[flow_id] = flow_struct;
+};
+
+dal.flows.deleteFlow = function(flow_id){
+	if(flow_data[flow_id])
+		delete flow_data[flow_id];
+};
