@@ -7,13 +7,14 @@ var sh = {};
 var socket = io('/dashboard');
 socket.on('connect', function(){
 	console.log("Connected to the Server");
+	socket.emit('url', {'url' : 'dashboard'});
 
 	/**
 	 * This event is emitted by the server to get 
 	 * updated 'spec'(?) file.
 	 */
-	socket.on("get-json", function(rpc_struct, callback){
-		console.log("get-json request to WSkt")
+	socket.on("spec", function(rpc_struct, callback){
+		console.log("spec request to WSkt");
 		var struct = dal.getJSON();
 		callback(struct);
 	});
@@ -73,12 +74,21 @@ sh.socket = socket;
 
 sh.read = function(rpc_struct, callback){
 	console.log("socket handler read called");
+	rpc_struct['op'] = 'read';
+	//callback is a fn that takes one param --> viz resulting_data
+	sh.socket.emit("data", rpc_struct, callback);
 }
 
 sh.write = function(rpc_struct, callback){
 	console.log("socket handler write called");
+	rpc_struct['op'] = 'write';
+	//callback is a fn that takes one param --> viz resulting_data
+	sh.socket.emit("data", rpc_struct, callback);
 }
 
 sh.config = function(rpc_struct, callback){
 	console.log("socket handler config called");
+	rpc_struct['op'] = 'config';
+	//callback is a fn that takes one param --> viz resulting_data
+	sh.socket.emit("data", rpc_struct, callback);
 }
