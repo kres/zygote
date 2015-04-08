@@ -1,11 +1,11 @@
 //The file responsible for adding routes
 
 module.exports = function(app) {
-		var index = require('../controllers/index.js');
-		var res_type = require('../controllers/res_type.js');
+
 		var containers = require('../controllers/containers.js')
 		var data =  require('../controllers/data.js');
 		var fb = require('../controllers/flowboard.js');
+		var db = require('../controllers/dashboard.js');
 
 		app.get('/', index);
 
@@ -18,4 +18,8 @@ module.exports = function(app) {
 
 		app.post('/flowboard', fb.post);
 		app.delete('/flowboard', fb.delete);
+
+		app.post('/dashboard/*', db.write);
+		app.get('/dashboard/*', db.read);
+		app.put('/dashboard/*', db.config);
 	};
