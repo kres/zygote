@@ -4,7 +4,7 @@
 
 function Resource(container, path){
 	//container = "dashboard"
-	//path = /panel-name/widget-name
+	//path = panel-name/widget-name
 	this.container = container;
 	if(container == "dashboard"){
 		this.panel = path.split("/")[0];
