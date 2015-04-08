@@ -13,8 +13,8 @@ exports.startSocket = function(server){
 
 		socket.on('url', function(msg){
 			//msg is json, such as : {'url' : bbb'}
-			//if the board is available 
-			if(msg['url'] in data.spec){
+			//if the board is available, or dashboard connects automatically
+			if(msg['url'] in data.spec || msg['url'] == "dashboard"){
 				//add a mapping 
 				sock_map[msg['url']] = socket;
 				
@@ -41,7 +41,7 @@ exports.startSocket = function(server){
 					delete data.used_pins[msg['url']];
 					console.log(msg['url'] + " - connection terminated");
 				});
-
+				console.log(msg['url'] + " - connected");
 			}
 			else{
 				socket.disconnect();
