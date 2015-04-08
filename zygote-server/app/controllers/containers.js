@@ -9,7 +9,7 @@ exports.get = function (req, res) {
 	//case of querying specific container
 	if('container' in req.query){
 		var cont = req.query['container'];
-		if(cont in data.spec){
+		if(cont in data.spec || cont == "dashboard"){
 			if('refresh' in req.query){
 				sc.refresh(cont, function(spec){
 					data.spec[cont] = spec;
@@ -42,6 +42,9 @@ exports.post = function(req, res){
 	if(cont['url'] in data.spec){
 		//error
 		res.status(404).json({"error" : "container id exists"});
+	}
+	else if(cont['url'] == 'dashboard'){
+		res.status(404).json({"error" : "Dashboard is a reserved keyword"});
 	}
 	else{
 		var id = cont['url'];
