@@ -19,13 +19,14 @@ container.on("new-panel", function(panel){
 	panel.on("new-widget", function(widget){
 		console.log("New widget created!");
 		dal.db.addWidget(panel.id, widget);
-		dal.res.addResource(panel.id, widget);
+		dal.res.addResource(panel.id + "/" + widget.id);
 	});
 
 	//should delete be a event on panel or on widget??
 	panel.on("delete-widget", function(widget){
 		console.log("Deleteing widget");
 		dal.db.deleteWidget(panel.id, widget);
+		dal.res.deleteResource(panel.id + "/" + widget.id);
 	});
 });
 
