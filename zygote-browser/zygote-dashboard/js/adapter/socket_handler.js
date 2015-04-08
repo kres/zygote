@@ -27,6 +27,12 @@ socket.on('connect', function(){
 		console.log(rpc_struct);
 		var ep = rpc_struct['ep'];
 		var res = dal.res.getResource(ep);
+		
+		//Incase there is no such widget....
+		if(!res){
+			callback({"error" : "non existing widget"});
+			return;
+		}
 
 		if(rpc_struct['op'] == 'read'){
 			res.read(rpc_struct['data'], callback);
