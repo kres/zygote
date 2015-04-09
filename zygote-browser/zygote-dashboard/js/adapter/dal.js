@@ -16,6 +16,7 @@ var flow_data	= {};
 //DB (dashboard)
 //	db.addPanel(panel)
 //	db.addWidget(panel_id, widget)
+//	db.getWidget(panel_id, widget_id)
 //	db.deletePanel(panel)
 //	db.deleteWidget(panel_id, widget)
 //	db.getJSON()
@@ -32,6 +33,16 @@ dal.db.addWidget = function(panel_id, widget){
 	}
 	else{
 		console.log("Adding widget to non existing panel");
+	}
+};
+
+dal.db.getWidget = function(panel_id, widget_id){
+	if(panel_id in db_data 
+	  && widget_id in db_data[panel_id]){
+		return db_data[panel_id][widget_id];
+	}
+	else{
+		return null;
 	}
 };
 
