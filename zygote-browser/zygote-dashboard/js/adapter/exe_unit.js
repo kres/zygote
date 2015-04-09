@@ -13,7 +13,7 @@ exe_unit.create = function(flow_id, flow_struct){
 	console.log("===================");
 
 	//check if flow already exists
-	if(flow_id in dal.flows.getFlows()){
+	if(dal.flows.getFlow(flow_id)){
 		console.log("Flow exists! Deleting first....");
 		exe_unit.destroy(flow_id);
 	}
@@ -75,7 +75,7 @@ exe_unit.create = function(flow_id, flow_struct){
 exe_unit.destroy = function destroy(flow_id){
 	console.log("DELETING flow_id : " + flow_id);
 
-	if (flow_id in dal.flows.getFlows()){
+	if (dal.flows.getFlow(flow_id)){
 		if(dal.flows.getFlow(flow_id)['trigger']['type'] == "timer"){
 			//timer triggered flow
 			clearTimeout(dal.flows.getFlow(flow_id)['trigger']['obj']);
