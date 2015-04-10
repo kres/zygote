@@ -1,0 +1,31 @@
+#heading {
+    margin-left: 50px;
+}
+
+.container-main {
+    width: 1250px;
+    height: auto;
+    margin: auto;
+}
+
+.navbar .container {
+    margin-right: 25px;
+}
+
+.panel {
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0px;
+}
+
+.panel-heading {
+    height: 60px;
+    vertical-align: middle;
+    line-height: 60px;
+}
+.panel-btn {
+    float : right;
+}
+
