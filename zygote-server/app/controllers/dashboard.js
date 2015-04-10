@@ -40,3 +40,13 @@ exports.config = function (req, res){
 	});
 };
 
+//hold all the events specific to the widget type
+//used by the dashboard
+var event_map = {
+	"button" : ["click"],
+	"slider" : ["slide"]
+};
+
+exports.events = function(req, res){
+	res.json(event_map);
+};

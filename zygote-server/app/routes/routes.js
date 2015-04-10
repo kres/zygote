@@ -19,6 +19,7 @@ module.exports = function(app) {
 		app.post('/flowboard', fb.post);
 		app.delete('/flowboard', fb.delete);
 
+		app.get('/dashboard/events', db.events);
 		app.post('/dashboard/*', db.write);
 		app.get('/dashboard/*', db.read);
 		app.put('/dashboard/*', db.config);
