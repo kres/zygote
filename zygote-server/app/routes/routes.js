@@ -7,8 +7,6 @@ module.exports = function(app) {
 		var fb = require('../controllers/flowboard.js');
 		var db = require('../controllers/dashboard.js');
 
-		app.get('/', index);
-
 		app.get('/containers/', containers.get);
 		app.post('/containers/', containers.post);
 
