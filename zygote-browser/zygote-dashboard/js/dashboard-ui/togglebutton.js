@@ -12,7 +12,7 @@ function addToggleButton(widgetObj) {
 
 function ToggleButtonWidget(widgetID) {
     
-    ToggleButtonWidget.prototype = $.extend(EventEmitter.prototype, {});
+    $.extend(ToggleButtonWidget.prototype, EventEmitter.prototype);
     
     this.widgetID = widgetID;
     this.widgetObj = undefined;
@@ -57,11 +57,17 @@ function ToggleButtonWidget(widgetID) {
         });
         
         this.toggleButton.bootstrapToggle(this.options.default);
+        
+        this.toggleButton.change(function () {
+            this.emitEvent("toggle", {value: this.read()})
+            console.log(this.read);
+        });
     
     }
     
     this.read = function () {
         
+        return this.toggleButton.attr("checked");
     }
     
     this.write = function () {

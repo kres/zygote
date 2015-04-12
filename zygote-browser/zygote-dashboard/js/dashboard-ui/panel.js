@@ -34,7 +34,7 @@ function setPanelListeners(panel) {
 
 function Panel(panelID) {
     
-    Panel.prototype = $.extend(EventEmitter.prototype, {});
+    $.extend(Panel.prototype, EventEmitter.prototype);
     
     this.widgets = {};
     this.panelObj = undefined;

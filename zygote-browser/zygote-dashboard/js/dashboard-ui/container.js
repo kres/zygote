@@ -97,7 +97,7 @@ function setContainerListeners(container) {
 
 function Container(containerID) {
     
-    Container.prototype = $.extend(EventEmitter.prototype, {});
+    $.extend(Container.prototype, EventEmitter.prototype);
     
     this.panels = {};
     this.containerObj = undefined;
@@ -138,13 +138,13 @@ function Container(containerID) {
         console.log(this.getPanels());
         
         //Emit event: panel-added
-        this.emitEvent("panel-added", panel);
+        this.emitEvent("panel-added", [panel]);
         
     }
     
     this.removePanel = function (panelID) {
         //Emit event: panel-removed
-        this.emitEvent("panel-removed", this.panels[panelID]);
+        this.emitEvent("panel-removed", [this.panels[panelID]]);
         
         this.panels[panelID].panelObj.remove();
         delete this.panels[panelID];
