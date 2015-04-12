@@ -1,3 +1,37 @@
+function addPanelToolbar(panelObj) {
+    var toolbar = $(document.createElement("div"));
+    toolbar.addClass("panel-heading");
+    
+    var rfr = $(document.createElement("button")).addClass("btn btn-info panel-btn refresh").append($(document.createElement("span")).addClass("fa fa-refresh fa-lg"));
+    var rmv = $(document.createElement("button")).addClass("btn btn-danger panel-btn remove").append($(document.createElement("span")).addClass("fa fa-remove fa-lg"));
+    var add = $(document.createElement("button")).addClass("btn btn-success panel-btn add").append($(document.createElement("span")).addClass("fa fa-plus fa-lg"));
+    
+    toolbar.append(rfr)
+    toolbar.append(rmv)
+    toolbar.append(add)
+    panelObj.append(toolbar);
+    
+}
+
+function addPanelGrid(panelObj) {
+    var grid = $(document.createElement("div"));
+    grid.addClass("widget-container");
+    
+    grid.sortable();
+    panelObj.append(grid);
+}
+
+function setPanelListeners(panel) {
+    panel.panelObj.find(".btn.add").on("click", function () {
+        $("#addWidgetModal").data("trigger", panel);
+        $("#addWidgetModal").modal('show');
+    });
+    
+    panel.panelObj.find(".btn.remove").on("click", function () {
+        panel.container.removePanel(panel.panelID);
+    });                                       
+}
+
 function Panel(panelID) {
     
     Panel.prototype = $.extend(EventEmitter.prototype, {});
@@ -43,11 +77,12 @@ function Panel(panelID) {
         return this.widgets[widgetID];
     }
     
-    this.addWidget = function (widgetID) {
+    this.addWidget = function (widgetID, widgetType, widgetOptions) {
         
-        var widget = new Widget(widgetID);
-        widgets[widgetID] = widget.create(this);
+        var widget = new widgets[widgetType].class(widgetID);
+        this.widgets[widgetID] = widget.create(this, widgetOptions);
         
+        console.log(this.getWidgets());
         //Emit event: create-widget
     }
     
@@ -56,6 +91,7 @@ function Panel(panelID) {
         this.widgets[widgetID].widgetObj.remove();
         delete this.widgets[widgetID];
         
+        console.log(this.getWidgets());
         //Emit event: delete-widget
     }
 }

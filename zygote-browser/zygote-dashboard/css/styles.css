@@ -29,3 +29,22 @@
     float : right;
 }
 
+.widget-toolbar {
+    height: 45px;
+    vertical-align: middle;
+    line-height: 45px;
+}
+
+.widget-btn {
+    float: right;
+}
+
+.toggle-button .panel-body {
+    height: 75px;
+    margin: 5px;
+    padding: 0px;
+    vertical-align: middle;
+    line-height: 75px;
+    text-align: center;
+}
+
