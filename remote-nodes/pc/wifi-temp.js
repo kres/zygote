@@ -4,7 +4,7 @@
 var net = require('net');
 
 var HOST = '0.0.0.0';
-var PORT = 8888;
+var PORT = 8894;
 
 net.createServer(function(sock) {
 	
