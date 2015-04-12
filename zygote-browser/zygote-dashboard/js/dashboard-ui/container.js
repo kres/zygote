@@ -136,15 +136,21 @@ function Container(containerID) {
         this.panels[panelID] = panel.create(this);
         
         console.log(this.getPanels());
+        
         //Emit event: panel-added
+        this.emitEvent("panel-added", panel);
+        
     }
     
     this.removePanel = function (panelID) {
+        //Emit event: panel-removed
+        this.emitEvent("panel-removed", this.panels[panelID]);
+        
         this.panels[panelID].panelObj.remove();
         delete this.panels[panelID];
         
         console.log(this.getPanels());
-        //Emit event: panel-removed
+        
     }
     
 }
