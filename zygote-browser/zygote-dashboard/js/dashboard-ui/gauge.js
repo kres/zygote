@@ -4,7 +4,7 @@ function addGauge(widget, widgetOptions) {
         bindto : $("#" + widget.widgetID + " .panel-body")[0],
         data: {
             columns: [
-                ['data', 62]
+                ['data', widget.data.value]
             ],
             type: 'gauge',
             
@@ -19,8 +19,8 @@ function addGauge(widget, widgetOptions) {
                 },
                 show: true
             },
-            min: parseInt(widgetOptions.min), 
-            max: parseInt(widgetOptions.max),
+            min: widgetOptions.min, 
+            max: widgetOptions.max,
             units: widgetOptions.units,
             width: 40,
             expand: false
@@ -54,6 +54,7 @@ function GaugeWidget(widgetID) {
     this.widgetObj = undefined;
     this.panel = undefined;
     
+    this.data = {value: 63};
     this.options = {min: "0", max: "100", units: " %"}
     this.gauge= undefined;
     
@@ -89,6 +90,8 @@ function GaugeWidget(widgetID) {
         this.gauge.load({
             columns: [['data', data.value]]
         });
+        
+        this.data = data;
     }
     
     this.config = function (widgetOptions) {
