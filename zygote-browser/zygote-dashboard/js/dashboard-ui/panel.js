@@ -85,12 +85,12 @@ function Panel(panelID) {
         console.log(this.getWidgets());
         
         //Emit event: widget-added
-        this.emitEvent("widget-added", widget)
+        this.emitEvent("widget-added", [widget])
     }
     
     this.removeWidget = function (widgetID) {
         //Emit event: widget-removed
-         this.emitEvent("widget-added", this.widgets[widgetID]);
+         this.emitEvent("widget-added", [this.widgets[widgetID]]);
         
         this.widgets[widgetID].widgetObj.remove();
         delete this.widgets[widgetID];

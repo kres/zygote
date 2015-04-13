@@ -1,11 +1,12 @@
-function addToggleButton(widgetObj) {
+function addToggleButton(widget) {
     var toggleButton = $(document.createElement("input"))
     toggleButton.addClass("toggle-button-widget");
     toggleButton.attr("type", "checkbox");
     toggleButton.attr("checked","checked");
-    toggleButton.data("toggle","toggle")
+    toggleButton.data("toggle","toggle");
     
-    widgetObj.find(".panel-body").append(toggleButton);
+    toggleButton.data("widget", widget);
+    widget.widgetObj.find(".panel-body").append(toggleButton);
     
     return toggleButton
 }
@@ -33,12 +34,22 @@ function ToggleButtonWidget(widgetID) {
         addWidgetToolbar(this.widgetObj);
         setWidgetListeners(this);
         this.widgetObj.append($(document.createElement("div")).addClass("panel-body"));
-        this.toggleButton = addToggleButton(this.widgetObj);
+        this.toggleButton = addToggleButton(this);
         this.config(widgetOptions);
         
         this.panel.panelObj.find(".widget-container").append(this.widgetObj);
         
         return this;
+        
+    }
+    
+    this.read = function () {
+        
+        return (this.toggleButton.prop("checked"))?1:0;
+    }
+    
+    this.write = function () {
+        //Cannot write to this widget.
         
     }
     
@@ -58,21 +69,12 @@ function ToggleButtonWidget(widgetID) {
         
         this.toggleButton.bootstrapToggle(this.options.default);
         
-        this.toggleButton.change(function () {
-            this.emitEvent("toggle", {value: this.read()})
-            console.log(this.read);
+        this.toggleButton.change(function (event) {
+            var widget = $(event.target).data("widget");
+            console.log(widget.read());
+            widget.emitEvent("toggle", [{value: widget.read()}]) 
         });
     
-    }
-    
-    this.read = function () {
-        
-        return this.toggleButton.attr("checked");
-    }
-    
-    this.write = function () {
-        //Cannot write to this widget.
-        
     }
     
 }
