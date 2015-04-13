@@ -24,6 +24,7 @@
         <script type="text/javascript" src="js/dashboard-ui/container.js"></script>
 
         <script type="text/javascript" src="js/dashboard-ui/togglebutton.js"></script>
+        <script type="text/javascript" src="js/dashboard-ui/gauge.js"></script>
         
         <title>Zygote Dashboard</title>
         
@@ -33,6 +34,17 @@
                 
                 var container = getDefaultContainer();
                 container.addPanel("Panel1");
+                
+                var panel = container.getPanel("Panel1");
+                panel.addWidget("Widget1", "Gauge", {});
+                panel.addWidget("Widget2", "Toggle Button", {});
+                panel.addWidget("Widget3", "Toggle Button", {});
+                
+                var gauge = panel.getWidget("Widget1");
+                setTimeout(function () {gauge.write({value: 7})}, 2000);
+                setTimeout(function () {gauge.write({value: 82})}, 4000);
+                setTimeout(function () {gauge.write({value: 48})}, 6000);
+                setTimeout(function () {gauge.write({value: 100})}, 8000);
             });
         </script>
     </head>

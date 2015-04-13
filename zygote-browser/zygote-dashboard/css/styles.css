@@ -48,3 +48,9 @@
     text-align: center;
 }
 
+.gauge .panel-body {
+    padding: 0px;
+    overflow: visible;
+}
+
+

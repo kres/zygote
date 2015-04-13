@@ -19,7 +19,6 @@ function ToggleButtonWidget(widgetID) {
     this.widgetObj = undefined;
     this.panel = undefined;
     
-    this.data = {}
     this.options = { onText : "ON", offText: "OFF", default:"off" }
     this.toggleButton = undefined;
     
