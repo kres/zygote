@@ -55,6 +55,8 @@ function GaugeWidget(widgetID) {
     $.extend(GaugeWidget.prototype, EventEmitter.prototype);
     
     this.widgetID = widgetID;
+    this.id = widgetID;
+    this.type = "gauge";
     this.widgetObj = undefined;
     this.panel = undefined;
     

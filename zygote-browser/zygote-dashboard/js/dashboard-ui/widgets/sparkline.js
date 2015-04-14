@@ -65,6 +65,8 @@ function SparklineWidget(widgetID) {
     $.extend(SparklineWidget.prototype, EventEmitter.prototype);
     
     this.widgetID = widgetID;
+    this.id = widgetID;
+    this.type = "sparkline";
     this.widgetObj = undefined;
     this.panel = undefined;
     

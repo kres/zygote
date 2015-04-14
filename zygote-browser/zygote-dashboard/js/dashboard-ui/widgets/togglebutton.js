@@ -16,6 +16,8 @@ function ToggleButtonWidget(widgetID) {
     $.extend(ToggleButtonWidget.prototype, EventEmitter.prototype);
     
     this.widgetID = widgetID;
+    this.id = widgetID;
+    this.type = "toggleButton";
     this.widgetObj = undefined;
     this.panel = undefined;
     

@@ -68,6 +68,8 @@ function ColorPickerWidget(widgetID) {
     $.extend(ColorPickerWidget.prototype, EventEmitter.prototype);
     
     this.widgetID = widgetID;
+    this.id = widgetID;
+    this.type = "colorPicker";
     this.widgetObj = undefined;
     this.panel = undefined;
     

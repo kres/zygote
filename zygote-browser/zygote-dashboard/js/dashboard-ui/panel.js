@@ -40,6 +40,7 @@ function Panel(panelID) {
     this.panelObj = undefined;
     this.container = undefined;
     this.panelID = panelID;
+    this.id = panelID;
     
     this.create = function(container) {
         this.container = container;
