@@ -85,17 +85,20 @@ function Panel(panelID) {
         console.log(this.getWidgets());
         
         //Emit event: widget-added
-        this.emitEvent("widget-added", widget)
+        this.emitEvent("widget-added", [widget])
     }
     
     this.removeWidget = function (widgetID) {
         //Emit event: widget-removed
-         this.emitEvent("widget-added", this.widgets[widgetID]);
+         this.emitEvent("widget-added", [this.widgets[widgetID]]);
         
         this.widgets[widgetID].widgetObj.remove();
         delete this.widgets[widgetID];
         
         console.log(this.getWidgets());
         
+    }
+    this.resize = function (xwidth, xheight) {
+        this.panelObj.css("width", 300 + (310 * xwidth)).css("height", 650 + (295 * xheight));
     }
 }
