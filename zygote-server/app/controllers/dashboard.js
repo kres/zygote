@@ -43,8 +43,8 @@ exports.config = function (req, res){
 //hold all the events specific to the widget type
 //used by the dashboard
 var event_map = {
-	"button" : ["click"],
-	"slider" : ["slide"]
+	"colorPicker" : ["color-change"],
+	"toggleButton" : ["toggle"]
 };
 
 exports.events = function(req, res){
