@@ -74,4 +74,6 @@ spec.res['wifi-temp'] = {"service" : "wifi", "count" : "0"}
 spec.res['wifi-bell'] = {"service" : "wifi", "count" : "0", "events" : ['bell']};
 spec.res['wifi-dist'] = {"service" : "wifi", "count" : "0", "events" : ['dist']};
 spec.res['wifi-rgb']  = {"service" : "wifi", "count" : "0"};
+spec.res['wifi-ldr']  = {"service" : "wifi", "count" : "0"};
+
 module.exports = spec;
