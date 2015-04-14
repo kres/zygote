@@ -64,7 +64,7 @@ dal.db.deleteWidget = function(panel_id, widget){
 	}
 };
 
-dal.db.getJOSN = function(){
+dal.db.getJSON = function(){
 	return db_data;
 };
 
