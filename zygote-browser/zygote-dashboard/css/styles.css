@@ -51,6 +51,13 @@
 .gauge .panel-body {
     padding: 0px;
     overflow: visible;
+    color: #FEFEFE;
+}
+
+.sparkline .panel-body {
+    padding: 0px;
+    height : 230px;
+    color: #FEFEFE;
 }
 
 

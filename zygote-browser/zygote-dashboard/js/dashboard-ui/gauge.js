@@ -38,10 +38,14 @@ function addGauge(widget, widgetOptions) {
             show: false
         }
     });
+    
+    $(".c3-chart-arcs-background").css("fill", "#000").css("stroke", "none");
+    $(".c3-arc-data").css("stroke", "none");
     $(".c3-chart-arcs-gauge-min").css("font-size", "10").css("fill", "#FEFEFE");
     $(".c3-chart-arcs-gauge-max").css("font-size", "10").css("fill", "#FEFEFE");
     $(".c3-chart-arcs-gauge-unit").css("font-size", "10").css("fill", "#FEFEFE");
     $(".c3-chart-arc text").css("fill", "#FEFEFE");
+    
     return gauge;
    
 }

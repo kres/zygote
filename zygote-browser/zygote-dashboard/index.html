@@ -7,6 +7,7 @@
         <link type="text/css" rel="stylesheet" href="css/slate.bootstrap.min.css" />
         <link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css" />
         <link type="text/css" rel="stylesheet" href="css/bootstrap-toggle.min.css" />
+        <link type="text/css" rel="stylesheet" href="css/c3.min.css" />
         
         <link type="text/css" rel="stylesheet" href="css/styles.css" />
 
@@ -25,6 +26,7 @@
 
         <script type="text/javascript" src="js/dashboard-ui/togglebutton.js"></script>
         <script type="text/javascript" src="js/dashboard-ui/gauge.js"></script>
+        <script type="text/javascript" src="js/dashboard-ui/sparkline.js"></script>
         
         <title>Zygote Dashboard</title>
         
@@ -36,15 +38,27 @@
                 container.addPanel("Panel1");
                 
                 var panel = container.getPanel("Panel1");
+                panel.resize(1,0);
                 panel.addWidget("Widget1", "Gauge", {});
                 panel.addWidget("Widget2", "Toggle Button", {});
                 panel.addWidget("Widget3", "Toggle Button", {});
+                panel.addWidget("Widget4", "Sparkline", {});
                 
                 var gauge = panel.getWidget("Widget1");
                 setTimeout(function () {gauge.write({value: 7})}, 2000);
                 setTimeout(function () {gauge.write({value: 82})}, 4000);
                 setTimeout(function () {gauge.write({value: 48})}, 6000);
                 setTimeout(function () {gauge.write({value: 100})}, 8000);
+                
+                var sparkline = panel.getWidget("Widget4");
+                setTimeout(function () {sparkline.write({value: 26})}, 1000);
+                setTimeout(function () {sparkline.write({value: 24})}, 2000);
+                setTimeout(function () {sparkline.write({value: 22})}, 3000);
+                setTimeout(function () {sparkline.write({value: 20})}, 4000);
+                setTimeout(function () {sparkline.write({value: 23})}, 5000);
+                setTimeout(function () {sparkline.write({value: 28})}, 6000);
+                setTimeout(function () {sparkline.write({value: 21})}, 7000);
+                setTimeout(function () {sparkline.write({value: 25})}, 8000)
             });
         </script>
     </head>

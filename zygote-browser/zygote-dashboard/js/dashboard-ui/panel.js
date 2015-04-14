@@ -98,4 +98,7 @@ function Panel(panelID) {
         console.log(this.getWidgets());
         
     }
+    this.resize = function (xwidth, xheight) {
+        this.panelObj.css("width", 300 + (310 * xwidth)).css("height", 650 + (295 * xheight));
+    }
 }
