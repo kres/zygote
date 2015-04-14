@@ -102,8 +102,6 @@ function GaugeWidget(widgetID) {
         
         setWidgetOptions(this, widgetOptions);
         
-        console.log(this.options);
-        
         if(this.gauge != undefined)
             this.gauge = this.gauge.destroy();
         

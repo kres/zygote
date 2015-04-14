@@ -72,10 +72,8 @@ function addWidgetModal() {
         backdrop: "",
         show : false
     });
-    console.log('here');
     
     add.on("click", function() {
-        console.log( $("#widgetType").val());
         $("#addWidgetModal").data("trigger").addWidget($("#widgetID").val(), $("#widgetType").val(), JSON.parse($("#addWidgetOptions").val()));
 
         modal.modal('hide');
@@ -138,7 +136,6 @@ function editWidgetModal() {
     });
     
     edit.on("click", function() {
-        console.log( $("#widgetType").val());
         ($("#editWidgetModal").data("trigger")).config(JSON.parse($("#editWidgetOptions").val()));
         modal.modal('hide');
     });

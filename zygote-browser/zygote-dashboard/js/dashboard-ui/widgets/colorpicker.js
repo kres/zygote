@@ -11,7 +11,6 @@ function colorPickerChange (event) {
     var widget = $(event.target).data("widget");
     changePreviewColor(widget);
     widget.emitEvent("color-change", widget.read());
-    console.log(widget.read());
 }
 
 

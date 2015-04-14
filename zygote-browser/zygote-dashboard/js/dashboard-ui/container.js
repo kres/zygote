@@ -90,7 +90,6 @@ function addPanelModal(container) {
 
 function setContainerListeners(container) {
     container.containerObj.find(".btn.add").on("click", function () {
-        console.log("Adding panel...")
         container.containerObj.find("#addPanelModal").modal('show');
     });
 }
@@ -135,8 +134,6 @@ function Container(containerID) {
         var panel = new Panel(panelID);
         this.panels[panelID] = panel.create(this);
         
-        console.log(this.getPanels());
-        
         //Emit event: panel-added
         this.emitEvent("panel-added", [panel]);
         
@@ -148,8 +145,6 @@ function Container(containerID) {
         
         this.panels[panelID].panelObj.remove();
         delete this.panels[panelID];
-        
-        console.log(this.getPanels());
         
     }
     

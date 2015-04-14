@@ -103,7 +103,6 @@ function SparklineWidget(widgetID) {
     
     this.write = function (data) {
         var current = new Date().toLocaleTimeString().split(" ")[0]
-        console.log(current);
         
         this.sparkline.flow({
             columns : [
@@ -121,8 +120,6 @@ function SparklineWidget(widgetID) {
     this.config = function (widgetOptions) {
         
         setWidgetOptions(this, widgetOptions);
-        
-        console.log(this.options);
         
         if(this.sparkline != undefined)
             this.sparkline = this.sparkline.destroy();

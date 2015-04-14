@@ -56,8 +56,6 @@ function ToggleButtonWidget(widgetID) {
         
         setWidgetOptions(this, widgetOptions);
         
-        console.log(this.options)
-        
         this.toggleButton.bootstrapToggle('destroy');
         
         this.toggleButton.bootstrapToggle({
@@ -70,7 +68,6 @@ function ToggleButtonWidget(widgetID) {
         
         this.toggleButton.change(function (event) {
             var widget = $(event.target).data("widget");
-            console.log(widget.read());
             widget.emitEvent("toggle", [{value: widget.read()}]) 
         });
     

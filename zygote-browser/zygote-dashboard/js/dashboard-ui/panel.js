@@ -82,8 +82,6 @@ function Panel(panelID) {
         var widget = new widgets[widgetType].class(widgetID);
         this.widgets[widgetID] = widget.create(this, widgetOptions);
         
-        console.log(this.getWidgets());
-        
         //Emit event: widget-added
         this.emitEvent("widget-added", [widget])
     }
@@ -94,8 +92,6 @@ function Panel(panelID) {
         
         this.widgets[widgetID].widgetObj.remove();
         delete this.widgets[widgetID];
-        
-        console.log(this.getWidgets());
         
     }
     this.resize = function (xwidth, xheight) {
