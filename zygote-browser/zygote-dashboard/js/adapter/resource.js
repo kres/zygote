@@ -9,7 +9,7 @@ function Resource(container, path){
 	if(container == "dashboard"){
 		this.panel = path.split("/")[0];
 		this.widget = path.split("/")[1];
-		this.obj = dal.db.getWidget(panel, widget);
+		this.obj = dal.db.getWidget(this.panel, this.widget);
 	}
 	else{
 		this.ep = path;
