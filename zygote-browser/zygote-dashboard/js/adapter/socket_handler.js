@@ -17,7 +17,7 @@ socket.on('connect', function(){
 	 */
 	socket.on("spec", function(rpc_struct, callback){
 		console.log("spec request to WSkt");
-		var struct = dal.getJSON();
+		var struct = dal.db.getJSON();
 		callback(struct);
 	});
 
