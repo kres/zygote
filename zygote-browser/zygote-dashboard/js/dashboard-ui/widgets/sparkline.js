@@ -65,8 +65,6 @@ function SparklineWidget(widgetID) {
     $.extend(SparklineWidget.prototype, EventEmitter.prototype);
     
     this.widgetID = widgetID;
-    this.id = widgetID;
-    this.type = "sparkline";
     this.widgetObj = undefined;
     this.panel = undefined;
     
@@ -103,7 +101,7 @@ function SparklineWidget(widgetID) {
         
     }
     
-    this.write = function (data) {
+    this.write = function (data, callback) {
         var current = new Date().toLocaleTimeString().split(" ")[0]
         
         this.sparkline.flow({
@@ -116,7 +114,7 @@ function SparklineWidget(widgetID) {
         
         this.label.find(".sparkline-data").html(data.value);
         this.label.find(".sparkline-timestamp").html(current);
-        
+        callback();
     }
     
     this.config = function (widgetOptions) {

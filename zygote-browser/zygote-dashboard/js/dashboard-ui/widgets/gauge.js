@@ -55,8 +55,6 @@ function GaugeWidget(widgetID) {
     $.extend(GaugeWidget.prototype, EventEmitter.prototype);
     
     this.widgetID = widgetID;
-    this.id = widgetID;
-    this.type = "gauge";
     this.widgetObj = undefined;
     this.panel = undefined;
     
@@ -91,13 +89,15 @@ function GaugeWidget(widgetID) {
         
     }
     
-    this.write = function (data) {
+    this.write = function (data,callback) {
         
         this.gauge.load({
             columns: [['data', data.value]]
         });
         
         this.data = data;
+        
+        callback();
     }
     
     this.config = function (widgetOptions) {
