@@ -1,0 +1,11 @@
+{   
+    "Panel1" : {
+        "Widget1" : "Toggle Button",
+        "Widget2" : "Gauge"
+    },
+    "Panel2" : {
+        "Widget3" : "Color Picker",
+        "Widget4" : "Sparkline"
+    }
+    
+}

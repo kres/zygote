@@ -102,7 +102,7 @@ body {
     color: #FEFEFE;
 }
 
-.resource {
+.resource, .dashboard-resource {
     width: 150px;
     height: 50px;
     border: 1px solid black;

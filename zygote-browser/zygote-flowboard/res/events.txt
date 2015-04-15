@@ -1,0 +1,4 @@
+{
+	"Toggle Button" : ["toggle"],
+	"Color Picker" : ["color-change"]
+}

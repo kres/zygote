@@ -2,6 +2,7 @@ var resCounter = 1;
 var funcCounter = 1;
 
 var res = {};
+var dres = {};
 var func = {};
 
 var script="";
@@ -14,6 +15,11 @@ function parseFlow(elem, prev) {
     if(elem.hasClass("resource")) {
         res["_r"+(resCounter)] = resources[elem.html().split("<")[0]];
         res["_r"+(resCounter)].id = elem.attr("id");
+        parsed = "_r"+(resCounter++)
+    }
+    if(elem.hasClass("dashboard-resource")) {
+        dres["_r"+(resCounter)] = dashboardResources[elem.html().split("<")[0]];
+        dres["_r"+(resCounter)].id = elem.attr("id");
         parsed = "_r"+(resCounter++)
     }
     if(elem.hasClass("function")) {
@@ -43,6 +49,17 @@ function defineResources() {
     }
 }
 
+function defineDashboardResources() {
+    for (item in dres){
+        
+        var container = "dashboard";
+        var url = dres[item].url;
+        
+        var definition = "var " + item + " = new Resource('" + container + "', '" + url + "'); \n"
+        script += definition;
+    }
+}
+
 function defineFunctions() {
     for (item in func) {
         var name = func[item].name;
@@ -57,6 +74,12 @@ function defineFunctions() {
             if(func[item].next[i] != undefined) {
                 for (r in res) {
                     if (func[item].next[i][1] == res[r].id) {
+                        endpoints.push(r);
+                        break;
+                    }
+                }
+                for (r in dres) {
+                    if (func[item].next[i][1] == dres[r].id) {
                         endpoints.push(r);
                         break;
                     }
@@ -90,7 +113,7 @@ function passOnOutput(fn) {
     for(var i = 0; i < func[fn].endpointList.length; ++i) {
         var ep = func[fn].endpointList[i];
         console.log("ep: " + ep);
-        if(Object.keys(res).indexOf(ep) > -1) {
+        if((Object.keys(res).indexOf(ep) > -1) || (Object.keys(dres).indexOf(ep) > -1) ){
             var write = "if (" + fn + "_output[" + i + "] != null) {\n" + ep + ".write(" + fn + "_output[" + i + "], function () {});\n}\n"; 
             script += write;
         }
@@ -124,7 +147,7 @@ function generateDataFlow(elem) {
         console.log(Object.keys(res))
         var call;
         
-        if (Object.keys(res).indexOf(prev) > -1) {
+        if ((Object.keys(res).indexOf(prev) > -1) || (Object.keys(dres).indexOf(prev) > -1)){
             
             //Get data and call function.
             call = prev + ".read({}, function(" + prev + "_data) { \n var " + fn + "_output = " + fn + "(" + prev + "_data); \n"
@@ -165,6 +188,7 @@ function generateScript(startElem) {
     console.log(JSON.stringify(func));
     
     defineResources();
+    defineDashboardResources();
     defineFunctions();
     console.log(script);
     

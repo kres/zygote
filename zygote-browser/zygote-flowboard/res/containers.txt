@@ -1,1 +1,1 @@
-{"containers": ["rpi", "bbb"]}
+{"containers": ["dashboard","rpi", "bbb"]}

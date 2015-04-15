@@ -5,6 +5,10 @@ var resources = {};
 var functions = {};
 var triggers = {};
 
+var dashboardEvents = {};
+var dashboardResources = {};
+var dashboardTriggerResources = {};
+
 function setInfoText() {
     var elem =$(this);
     
@@ -24,6 +28,9 @@ function setInfoText() {
     }
     else if(elem.hasClass("resource")) {
         displayData = resources[graph.elements[elem.attr("id")].html];
+    }
+    else if(elem.hasClass("dashboard-resource")) {
+        displayData = dashboardResources[graph.elements[elem.attr("id")].html];
     }
     
     if(displayData != undefined) {
@@ -122,7 +129,7 @@ function editElement(){
     $("#wheel-menu").css("visibility", "hidden");
     
     var node = $(".wheel-button.active").closest(".node");
-    if ((node.hasClass("resource")) || (node.hasClass("stop"))) {
+    if ((node.hasClass("resource")) || (node.hasClass("stop")) || (node.hasClass("dashboard-resource"))) {
         alert("This element cannot be edited.");
     }
     else if(node.hasClass("start")) {
@@ -150,7 +157,7 @@ function addEndpointsToElement(elem) {
 
     var instance = $("body").data("instance");
     
-    if((elem.hasClass("resource")) || (elem.hasClass("function"))){
+    if((elem.hasClass("resource")) || (elem.hasClass("function")) || (elem.hasClass("dashboard-resource"))){
         instance.addEndpoint(elem, { isSource:false, isTarget:true, anchor:"Left" });
         instance.addEndpoint(elem, { isSource:true, isTarget:false, anchor:"Right" });
         
@@ -280,15 +287,18 @@ function createResourceType(resourceType, container){
 }
 function setFormOptions() {
     
+    var hardwareContainers = containers.slice(1);
+    console.log(hardwareContainers);
+    
     $("#container-select").empty()
-    $.each(containers, function(index, value) {
+    $.each(hardwareContainers, function(index, value) {
         option = $(document.createElement("option"));
         option.attr("value", value);
         option.html(value);
         $("#container-select").append(option);
     });
     
-    var container = containers[0];
+    var container = hardwareContainers[0];
     console.log(container);
     
     $("#type-select").empty()
@@ -533,8 +543,64 @@ function setTriggerFormOptions() {
                 resSelect.change(function (){
 
                     var r = resources[$(this).val()];
-
+                    eventSelect.empty();
                     $.each(specs[r.container].res[r.type].events, function(index, value){
+                        option = $(document.createElement("option"));
+                        option.attr("value", value);
+                        option.html(value);
+                        eventSelect.append(option);
+                    });
+                })
+            }
+            
+            else if (trigger == "dashboard-event") {
+
+                var resLabel = $(document.createElement("label"));
+                resLabel.attr("for", "dashboard-res-select");
+                resLabel.html("Dashboard Resource ");
+
+                var resSelect = $(document.createElement("select"));
+                resSelect.attr("id", "dashboard-res-select");
+                resSelect.attr("name", " dashboard-res-select");
+
+                $.each(Object.keys(dashboardTriggerResources), function(index, value){
+                        option = $(document.createElement("option"));
+                        option.attr("value", value);
+                        option.html(value);
+                        resSelect.append(option);
+                });
+
+                form.append(document.createElement("br"));
+                form.append(resLabel);
+                form.append(resSelect);
+
+                var eventLabel = $(document.createElement("label"));
+                eventLabel.attr("for", "event-select");
+                eventLabel.html("Event ");
+
+                var eventSelect = $(document.createElement("select"));
+                eventSelect.attr("id", "event-select");
+                eventSelect.attr("name", " event-select");
+
+                var r = dashboardTriggerResources[$(resSelect.children("option")[0]).val()]
+                console.log(r);
+                
+                $.each(dashboardEvents[r.type], function(index, value){
+                    option = $(document.createElement("option"));
+                    option.attr("value", value);
+                    option.html(value);
+                    eventSelect.append(option);
+                });
+                
+                form.append(document.createElement("br"));
+                form.append(eventLabel);
+                form.append(eventSelect)
+                
+                resSelect.change(function (){
+
+                    var r = dashboardTriggerResources[$(this).val()];
+                    eventSelect.empty();
+                    $.each(dashboardEvents[r.type], function(index, value){
                         option = $(document.createElement("option"));
                         option.attr("value", value);
                         option.html(value);
@@ -566,6 +632,12 @@ function setTrigger() {
         trigger.res = $("#res-select").val();
         trigger.target = resources[trigger.res].container
         trigger.val = resources[trigger.res].url;
+        trigger.event = $("#event-select").val();
+    }
+    else if (trigger.type == "dashboard-event"){
+        trigger.res = $("#dashboard-res-select").val();
+        trigger.target = "dashboard"
+        trigger.val = dashboardTriggerResources[trigger.res].url;
         trigger.event = $("#event-select").val();
     }
     
@@ -653,6 +725,10 @@ function loadTriggerParams() {
             $("#res-select").val(triggers[id].res);
             $("#event-select").val(triggers[id].event);
         }
+        else if (triggers[id].type == "dashboard-event") {
+            $("#dashboard-res-select").val(triggers[id].res);
+            $("#event-select").val(triggers[id].event);
+        }
      }
     
 }
@@ -722,9 +798,67 @@ function showDropdown() {
     
 }
 
+function createDashboardResource(type, widgetID, panelID) {
+    
+    var listItem = $(document.createElement("li"));
+    listItem.addClass("list-group-item");
+    
+    var res = $(document.createElement("div"));
+    res.addClass("node dashboard-resource")
+    res.html(widgetID);
+    
+    res.draggable({
+        revert: "invalid",
+        scope: "chart",
+        appendTo: "#chart",
+        helper: "clone"
+    });
+    
+    listItem.append(res);
+    $(".list-group.dashboard").append(listItem);
+    
+    dashboardResources[widgetID] = {
+        type : type,
+        url : panelID + "/" + widgetID
+    }
+}
 
+function loadDashboardResources() {
+    
+    //"../res/events.txt"
+    //"/dashboard/events/"
+    $.getJSON("/dashboard/events/", function (data) {
+        dashboardEvents = data;
+        
+        console.log(specs["dashboard"])
+        
+        var ulist =$(document.createElement("ul"));
+        ulist.addClass("list-group dashboard");
+        
+        $("#dashboard-block .panel-body").append(ulist);
+        
+        $.each(Object.keys(specs["dashboard"]), function (index, panelID) {
+            console.log(panelID)
+            $.each(Object.keys(specs["dashboard"][panelID]), function (index, widgetID) {
+                console.log(widgetID)
+                if(Object.keys(dashboardEvents).indexOf(specs["dashboard"][panelID][widgetID]) == -1) {
+                    console.log("createResource")
+                    createDashboardResource(specs["dashboard"][panelID][widgetID], widgetID, panelID);
+                }
+                else {
+                    dashboardTriggerResources[widgetID] = {
+                        type : specs["dashboard"][panelID][widgetID],
+                        url : panelID + "/" + widgetID
+                    }
+                }
+            })
+        })
+    })
+}
 function initializePalette() {
+    
     //"../res/containers.txt"
+    //"/containers/"
     $.getJSON("/containers/", function(data) {
         containers = data.containers;
         console.log(containers)
@@ -734,13 +868,21 @@ function initializePalette() {
             createBlock(containervalue);
             
             //"../res/specsample-" + containervalue + ".txt"
-            $.getJSON("/containers/", {container: containervalue, refresh: "true"},  function(data) {
+            //"/containers/", {container: containervalue, refresh: "true"}
+            $.getJSON("../res/specsample-" + containervalue + ".txt",  function(data) {
                 specs[containervalue] = data;
                 
-                $.each(Object.keys(specs[containervalue].res), function(index, value) {
-                    createResourceType(value,containervalue)
-                })
-                loadResources();
+                if (containervalue == "dashboard") {
+                    console.log(containervalue)
+                    loadDashboardResources();
+                }
+                else {
+                    
+                    $.each(Object.keys(specs[containervalue].res), function(index, value) {
+                        createResourceType(value,containervalue)
+                    })
+                    loadResources();
+                }
             })
             
             $("#" + containervalue + "-block .panel-body").hide();
