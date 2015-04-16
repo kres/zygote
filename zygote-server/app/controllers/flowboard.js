@@ -33,7 +33,7 @@ exports.post = function(req, res){
 		console.log("Flow id : " +flow_id);
 		var target = flow_set[flow_id]['target'];
 
-		if(target in data.spec){
+		if(target in data.spec || target == "dashboard"){
 			sc.execute(target, flow_set, function(data){
 				res.json(data);
 			});
@@ -60,7 +60,7 @@ exports.delete = function(req, res){
 	var flow_id = req.body['flow_id'];
 	var target = req.body['target'];
 
-	if(target in data.spec){
+	if(target in data.spec || target == "dashboard"){
 		sc.delete_flow(target, flow_id, function(data){
 			res.json(data);
 		});
