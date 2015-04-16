@@ -1,15 +1,17 @@
-function addPanelToolbar(panelObj) {
+function addPanelToolbar(panel) {
     var toolbar = $(document.createElement("div"));
     toolbar.addClass("panel-heading");
     
+    var name =  $(document.createElement("h4")).addClass("panel-name").html(panel.panelID);
     var rfr = $(document.createElement("button")).addClass("btn btn-info panel-btn refresh").append($(document.createElement("span")).addClass("fa fa-refresh fa-lg"));
     var rmv = $(document.createElement("button")).addClass("btn btn-danger panel-btn remove").append($(document.createElement("span")).addClass("fa fa-remove fa-lg"));
     var add = $(document.createElement("button")).addClass("btn btn-success panel-btn add").append($(document.createElement("span")).addClass("fa fa-plus fa-lg"));
     
+    toolbar.append(name);
     toolbar.append(rfr)
     toolbar.append(rmv)
     toolbar.append(add)
-    panelObj.append(toolbar);
+    panel.panelObj.append(toolbar);
     
 }
 
@@ -51,7 +53,7 @@ function Panel(panelID) {
         this.panelObj.css("width", "300px").css("height", "650px");
         
         //Create a menu/toolbar.
-        addPanelToolbar(this.panelObj)
+        addPanelToolbar(this)
         setPanelListeners(this);
         
         this.panelObj.resizable({

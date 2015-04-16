@@ -51,25 +51,25 @@
 
                 container.on("panel-added", function(panel){
 
-                    console.log("New panel has been created");
+                    console.log("New panel added!");
                     dal.db.addPanel(panel);
 
                     panel.on("widget-added", function(widget){
-                        console.log("New widget created!");
+                        console.log("New widget added!");
                         dal.db.addWidget(panel.id, widget);
                         dal.res.addResource(panel.id + "/" + widget.id);
                     });
 
                     //should delete be a event on panel or on widget??
                     panel.on("widget-removed", function(widget){
-                        console.log("Deleteing widget");
+                        console.log("Removing widget.");
                         dal.db.deleteWidget(panel.id, widget);
                         dal.res.deleteResource(panel.id + "/" + widget.id);
                     });
                 });
 
                 container.on("panel-removed", function(panel){
-                    console.log("Panel deleted");
+                    console.log("Removing panel.");
                     dal.db.deletePanel(panel);
                 });
                     

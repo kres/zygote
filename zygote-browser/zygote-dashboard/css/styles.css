@@ -28,6 +28,15 @@
 .panel-btn {
     float : right;
 }
+.panel-name {
+    width: 100px;
+    height: 100%;
+    margin: 0px;
+    float: left;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 40px;
+}
 
 .widget-toolbar {
     height: 45px;
