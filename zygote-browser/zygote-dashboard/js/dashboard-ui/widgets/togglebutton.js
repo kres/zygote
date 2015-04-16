@@ -32,7 +32,7 @@ function ToggleButtonWidget(widgetID) {
         this.widgetObj.attr("id", this.widgetID);
         this.widgetObj.css("width", "290px").css("height", "120px").css("margin", "5px")
         
-        addWidgetToolbar(this.widgetObj);
+        addWidgetToolbar(this);
         setWidgetListeners(this);
         this.widgetObj.append($(document.createElement("div")).addClass("panel-body"));
         this.toggleButton = addToggleButton(this);
