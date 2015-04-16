@@ -8,6 +8,15 @@ dal['flows'] = {};
 
 //these actually holds the data
 var db_data 	= {};
+/*
+db_data : {
+	panel_id : {
+		widget_id : <widget-obj>
+		...
+	},
+	...
+}
+*/
 var res_data	= {};
 var flow_data	= {};
 
@@ -29,7 +38,7 @@ dal.db.addWidget = function(panel_id, widget){
 	if(panel_id in db_data){
 		// panel-1/widget-1 : slider
 		// panel-2/widget-2 : gauge
-		db_data[panel_id][widget.id] = widget.type;
+		db_data[panel_id][widget.id] = widget;
 	}
 	else{
 		console.log("Adding widget to non existing panel");
@@ -64,8 +73,24 @@ dal.db.deleteWidget = function(panel_id, widget){
 	}
 };
 
+/* The getJSON func returns data in following format
+db_data : {
+	panel_id : {
+		widget_id : "widget_type";
+		...
+	},
+	...
+}
+*/
 dal.db.getJSON = function(){
-	return db_data;
+	var json = {};
+	for(var panel_id in db_data){
+		json[panel_id] = {};
+		for(var widget_id in db_data[panel_id]){
+			json[panel_id][widget_id] = db_data[panel_id][widget_id].type;
+		}
+	}
+	return json;
 };
 
 //res (resource)
