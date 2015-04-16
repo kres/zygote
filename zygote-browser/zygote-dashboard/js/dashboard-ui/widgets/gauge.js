@@ -55,6 +55,8 @@ function GaugeWidget(widgetID) {
     $.extend(GaugeWidget.prototype, EventEmitter.prototype);
     
     this.widgetID = widgetID;
+    this.id = widgetID;
+    this.type = "gauge";
     this.widgetObj = undefined;
     this.panel = undefined;
     
@@ -86,18 +88,18 @@ function GaugeWidget(widgetID) {
     }
     
     this.read = function () {
-        
+        return {"error" : "cannot read res"};
     }
     
-    this.write = function (data,callback) {
-        
+    this.write = function (data) {
+        //incase it's a string, confert to number
+        data.value = parseInt(data.value);
         this.gauge.load({
             columns: [['data', data.value]]
         });
         
         this.data = data;
-        
-        callback();
+        return data;
     }
     
     this.config = function (widgetOptions) {
@@ -108,7 +110,7 @@ function GaugeWidget(widgetID) {
             this.gauge = this.gauge.destroy();
         
         this.gauge = addGauge(this, this.options);
-        
+        return widgetOptions;   
     }
     
 }

@@ -65,6 +65,8 @@ function SparklineWidget(widgetID) {
     $.extend(SparklineWidget.prototype, EventEmitter.prototype);
     
     this.widgetID = widgetID;
+    this.id = widgetID;
+    this.type = "sparkline";
     this.widgetObj = undefined;
     this.panel = undefined;
     
@@ -98,10 +100,13 @@ function SparklineWidget(widgetID) {
     }
     
     this.read = function () {
-        
+        return {"error": "cannot read resource"};
     }
     
-    this.write = function (data, callback) {
+    this.write = function (data) {
+        //incase it's a string, confert to number
+        data.value = parseInt(data.value);
+        
         var current = new Date().toLocaleTimeString().split(" ")[0]
         
         this.sparkline.flow({
@@ -114,7 +119,7 @@ function SparklineWidget(widgetID) {
         
         this.label.find(".sparkline-data").html(data.value);
         this.label.find(".sparkline-timestamp").html(current);
-        callback();
+        return data;
     }
     
     this.config = function (widgetOptions) {
@@ -128,7 +133,8 @@ function SparklineWidget(widgetID) {
         
         this.label.find(".sparkline-data").html("0");
         this.label.find(".sparkline-timestamp").html("00:00:00");
-        this.label.find(".sparkline-units").html(this.options.units)
+        this.label.find(".sparkline-units").html(this.options.units);
+        return widgetOptions;
     }
     
 }

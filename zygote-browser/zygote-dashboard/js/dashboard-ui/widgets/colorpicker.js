@@ -107,11 +107,11 @@ function ColorPickerWidget(widgetID) {
     }
     
     this.write = function () {
-        
+        return {"error" : "cannot write to res"};
     }
     
     this.config = function (widgetOptions) {
-    
+         return {"error" : "cannot config res"};
     }
     
 }

@@ -46,12 +46,12 @@ function ToggleButtonWidget(widgetID) {
     
     this.read = function () {
         
-        return (this.toggleButton.prop("checked"))?1:0;
+        return {"value" : (this.toggleButton.prop("checked"))?"1":"0"};
     }
     
     this.write = function () {
         //Cannot write to this widget.
-        
+        return {"error" : "cannot write to res"};
     }
     
     this.config = function (widgetOptions) {
@@ -70,9 +70,9 @@ function ToggleButtonWidget(widgetID) {
         
         this.toggleButton.change(function (event) {
             var widget = $(event.target).data("widget");
-            widget.emitEvent("toggle", [{value: widget.read()}]) 
+            widget.emitEvent("toggle", [widget.read()]) 
         });
-    
+        return widgetOptions;
     }
     
 }
