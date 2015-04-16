@@ -21,7 +21,8 @@ function Resource(container, path){
 
 Resource.prototype.read = function(args, callback){
 	if(this.container == "dashboard"){
-		this.obj.read(args, callback);
+		var val = this.obj.read(args);
+		callback(val);
 	}
 	else{
 		sh.read({ "container" 	: this.container
@@ -32,7 +33,8 @@ Resource.prototype.read = function(args, callback){
 
 Resource.prototype.write = function(args, callback){
 	if(this.container == "dashboard"){
-		this.obj.write(args, callback);
+		var val = this.obj.write(args);
+		callback(val);
 	}
 	else{
 		sh.write({ "container" 	: this.container
@@ -43,7 +45,8 @@ Resource.prototype.write = function(args, callback){
 
 Resource.prototype.config = function(args, callback){
 	if(this.container == "dashboard"){
-		this.obj.config(args, callback);
+		var val = this.obj.config(args);
+		callback(val);
 	}
 	else{
 		sh.config({ "container" : this.container
