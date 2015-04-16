@@ -57,7 +57,7 @@ socket.on('connect', function(){
 	socket.on("flow-create", function(flow_set, callback){
 		console.log("flow-create request to WSkt");
 		for(flow_id in flow_set){
-			exe_unit.execute(flow_id, flow_set[flow_id]);
+			exe_unit.create(flow_id, flow_set[flow_id]);
 			break; //only one key is expected
 		}
 		callback({"status" : "ok"});
@@ -69,7 +69,7 @@ socket.on('connect', function(){
 	 */
 	socket.on("flow-delete", function(flow_ids, callback){
 		console.log("flow-delete request to WSkt");
-		exe_unit.destroy(flow_ids[0], flow_set[flow_id]);
+		exe_unit.destroy(flow_ids[0]);
 		callback({"status" : "ok"});
 	});
 });
