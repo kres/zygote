@@ -29,85 +29,130 @@
         <script type="text/javascript" src="js/dashboard-ui/widgets/sparkline.js"></script>
         <script type="text/javascript" src="js/dashboard-ui/widgets/colorpicker.js"></script>
         
+
+        <!--
+            The adapter code follows
+        -->
+        <script type="text/javascript" src="lib/socket.io.js"></script>
+        <script type="text/javascript" src="js/adapter/socket_handler.js"></script>
+       <!-- <script type="text/javascript" src="js/adapter/ui_adapter.js"></script>-->
+        <script type="text/javascript" src="js/adapter/dal.js"></script>
+        <script type="text/javascript" src="js/adapter/exe_unit.js"></script>
+        <script type="text/javascript" src="js/adapter/resource.js"></script>
+
         <title>Zygote Dashboard</title>
         
         <script>
             $(document).ready(function () {
                 initializeDashboard();
-                
+                //var container = getDefaultContainer();
+                //adding the ui adapter code here directly!
                 var container = getDefaultContainer();
-                
-                container.on("panel-added", function (panel) {
-                    console.log("Panel added.\n");
+
+                container.on("panel-added", function(panel){
+
+                    console.log("New panel has been created");
+                    dal.db.addPanel(panel);
+
+                    panel.on("widget-added", function(widget){
+                        console.log("New widget created!");
+                        dal.db.addWidget(panel.id, widget);
+                        dal.res.addResource(panel.id + "/" + widget.id);
+                    });
+
+                    //should delete be a event on panel or on widget??
+                    panel.on("widget-removed", function(widget){
+                        console.log("Deleteing widget");
+                        dal.db.deleteWidget(panel.id, widget);
+                        dal.res.deleteResource(panel.id + "/" + widget.id);
+                    });
                 });
-                container.on("panel-removed", function (panel) {
-                    console.log("Panel removed.\n");
+
+                container.on("panel-removed", function(panel){
+                    console.log("Panel deleted");
+                    dal.db.deletePanel(panel);
                 });
-                
-                container.addPanel("Panel1");
-                container.addPanel("Panel2");
-                
-                var panel1 = container.getPanel("Panel1");
-                
-                panel1.on("widget-added", function (widget) {
-                    console.log("Widget added.\n");
-                });
-                panel1.on("widget-removed", function (widget) {
-                    console.log("Widget removed.\n");
-                });
-                
-                panel1.resize(1,0);
-                panel1.addWidget("Widget1", "Gauge", {});
-                panel1.addWidget("Widget2", "Toggle Button", {});
-                panel1.addWidget("Widget3", "Toggle Button", {});
-                panel1.addWidget("Widget4", "Sparkline", {});
-                
-                var panel2 = container.getPanel("Panel2");
-                panel2.on("widget-added", function (widget) {
-                    console.log("Widget added.\n");
-                });
-                panel2.on("widget-removed", function (widget) {
-                    console.log("Widget removed.\n");
-                });
-                panel2.resize(1,0);
-                panel2.addWidget("Widget5", "Color Picker", {});
-                panel2.addWidget("Widget6", "Color Picker", {});
-                
-                var gauge = panel1.getWidget("Widget1");
-                setTimeout(function () {gauge.write({value: 7},function () {})}, 2000);
-                setTimeout(function () {gauge.write({value: 82},function () {})}, 4000);
-                setTimeout(function () {gauge.write({value: 48},function () {})}, 6000);
-                setTimeout(function () {gauge.write({value: 100},function () {})}, 8000);
-                
-                var toggle1 = panel1.getWidget("Widget2");
-                toggle1.on("toggle", function (data) {
-                    console.log("Toggle.\n");
-                });
-                var toggle2 = panel1.getWidget("Widget3");
-                toggle2.on("toggle", function (data) {
-                    console.log("Toggle.\n");
-                });
-                
-                var sparkline = panel1.getWidget("Widget4");
-                setTimeout(function () {sparkline.write({value: 26},function () {})}, 1000);
-                setTimeout(function () {sparkline.write({value: 24},function () {})}, 2000);
-                setTimeout(function () {sparkline.write({value: 22},function () {})}, 3000);
-                setTimeout(function () {sparkline.write({value: 20},function () {})}, 4000);
-                setTimeout(function () {sparkline.write({value: 23},function () {})}, 5000);
-                setTimeout(function () {sparkline.write({value: 28},function () {})}, 6000);
-                setTimeout(function () {sparkline.write({value: 21},function () {})}, 7000);
-                setTimeout(function () {sparkline.write({value: 25},function () {})}, 8000);
-                
-                var colorPicker1 = panel2.getWidget("Widget5");
-                colorPicker1.on("color-change", function (data) {
-                    console.log("Color change..\n");
-                });
-                var colorPicker2 = panel2.getWidget("Widget6");
-                colorPicker2.on("color-change", function (data) {
-                    console.log("Color change..\n");
-                });
-                
+                    
             });
+
+            //below only for demo
+            if(false){
+                $(document).ready(function () {
+                    initializeDashboard();
+                    
+                    var container = getDefaultContainer();
+                    
+                    container.on("panel-added", function (panel) {
+                        console.log("Panel added.\n");
+                    });
+                    container.on("panel-removed", function (panel) {
+                        console.log("Panel removed.\n");
+                    });
+                    
+                    container.addPanel("Panel1");
+                    container.addPanel("Panel2");
+                    
+                    var panel1 = container.getPanel("Panel1");
+                    
+                    panel1.on("widget-added", function (widget) {
+                        console.log("Widget added.\n");
+                    });
+                    panel1.on("widget-removed", function (widget) {
+                        console.log("Widget removed.\n");
+                    });
+                    
+                    panel1.resize(1,0);
+                    panel1.addWidget("Widget1", "Gauge", {});
+                    panel1.addWidget("Widget2", "Toggle Button", {});
+                    panel1.addWidget("Widget3", "Toggle Button", {});
+                    panel1.addWidget("Widget4", "Sparkline", {});
+                    
+                    var panel2 = container.getPanel("Panel2");
+                    panel2.on("widget-added", function (widget) {
+                        console.log("Widget added.\n");
+                    });
+                    panel2.on("widget-removed", function (widget) {
+                        console.log("Widget removed.\n");
+                    });
+                    panel2.resize(1,0);
+                    panel2.addWidget("Widget5", "Color Picker", {});
+                    panel2.addWidget("Widget6", "Color Picker", {});
+                    
+                    var gauge = panel1.getWidget("Widget1");
+                    setTimeout(function () {gauge.write({value: 7})}, 2000);
+                    setTimeout(function () {gauge.write({value: 82})}, 4000);
+                    setTimeout(function () {gauge.write({value: 48})}, 6000);
+                    setTimeout(function () {gauge.write({value: 100})}, 8000);
+                    
+                    var toggle1 = panel1.getWidget("Widget2");
+                    toggle1.on("toggle", function (data) {
+                        console.log("Toggle.\n");
+                    });
+                    var toggle2 = panel1.getWidget("Widget3");
+                    toggle2.on("toggle", function (data) {
+                        console.log("Toggle.\n");
+                    });
+                    
+                    var sparkline = panel1.getWidget("Widget4");
+                    setTimeout(function () {sparkline.write({value: 26})}, 1000);
+                    setTimeout(function () {sparkline.write({value: 24})}, 2000);
+                    setTimeout(function () {sparkline.write({value: 22})}, 3000);
+                    setTimeout(function () {sparkline.write({value: 20})}, 4000);
+                    setTimeout(function () {sparkline.write({value: 23})}, 5000);
+                    setTimeout(function () {sparkline.write({value: 28})}, 6000);
+                    setTimeout(function () {sparkline.write({value: 21})}, 7000);
+                    setTimeout(function () {sparkline.write({value: 25})}, 8000);
+                    
+                    var colorPicker1 = panel2.getWidget("Widget5");
+                    colorPicker1.on("color-change", function (data) {
+                        console.log("Color change..\n");
+                    });
+                    var colorPicker2 = panel2.getWidget("Widget6");
+                    colorPicker2.on("color-change", function (data) {
+                        console.log("Color change..\n");
+                    });
+                });
+            }
         </script>
     </head>
     
