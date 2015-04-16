@@ -49,7 +49,14 @@ function addPanelModal(container) {
     input.attr("type", "text");
     input.attr("name", "panelID");
     input.attr("id", "panelID");
-    modalBody.append(label).append(input);
+    
+    var errorAlert = $(document.createElement("div"));
+    errorAlert.attr("id","panel-error-alert");
+    errorAlert.addClass("alert alert-danger");
+    errorAlert.css("display", "none");
+    errorAlert.html("Sorry, that panel ID already exists.");
+    
+    modalBody.append(label).append(input).append(errorAlert);
     
     var modalFooter = $(document.createElement("div")).addClass("modal-footer");
     var cancel = $(document.createElement("button"))
@@ -73,17 +80,24 @@ function addPanelModal(container) {
     modal.append(modalDialog);
 
     container.containerObj.append(modal);
+    
     modal.modal({
         backdrop: "",
         show : false
     });
     
     add.on("click", function() {
-        container.addPanel($("#panelID").val());
-        modal.modal('hide');
+        if(Object.keys(container.getPanels()).indexOf($("#panelID").val()) > -1)
+            $("#panel-error-alert").show();
+        else {
+            container.addPanel($("#panelID").val());
+            $("#panel-error-alert").hide();
+            modal.modal('hide');
+        }
     });
     
     cancel.on("click", function() {
+        $("#panel-error-alert").hide();
         modal.modal('hide');
     });
 }
