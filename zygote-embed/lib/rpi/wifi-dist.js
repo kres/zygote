@@ -24,7 +24,7 @@ function init(ep, opts, callback){
 		//add emitter here?
 		myObj.sock.on('data', function(data){
 			console.log("Wifi dist : ", data.toString());
-			myObj.emit("dist", data.toString());
+			myObj.emit("dist", {value : data.toString()});
 		});
 	});
 
