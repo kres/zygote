@@ -40,10 +40,16 @@ function addWidgetModal() {
     var widgetOptions = $(document.createElement("textarea"));
     widgetOptions.attr("id", "addWidgetOptions");
     
+    var errorAlert = $(document.createElement("div"));
+    errorAlert.attr("id","widget-error-alert");
+    errorAlert.addClass("alert alert-danger");
+    errorAlert.css("display", "none");
+    errorAlert.html("Sorry, that widget ID already exists.");
     
     modalBody.append(label).append(input).append($(document.createElement("br")))
     modalBody.append(selectLabel).append(select).append($(document.createElement("br")))
     modalBody.append(optionsLabel).append(widgetOptions);
+    modalBody.append(errorAlert);
     
     var modalFooter = $(document.createElement("div")).addClass("modal-footer");
     var cancel = $(document.createElement("button"))
@@ -74,13 +80,18 @@ function addWidgetModal() {
     });
     
     add.on("click", function() {
-        $("#addWidgetModal").data("trigger").addWidget($("#widgetID").val(), $("#widgetType").val(), JSON.parse($("#addWidgetOptions").val()));
-
-        modal.modal('hide');
+        var panel = $("#addWidgetModal").data("trigger")
+        if(Object.keys(panel.getWidgets()).indexOf($("#widgetID").val()) > -1)
+            $("#widget-error-alert").show();
+        else {  
+            $("#widget-error-alert").hide();
+            panel.addWidget($("#widgetID").val(), $("#widgetType").val(), JSON.parse($("#addWidgetOptions").val()));
+            modal.modal('hide');
+        }
     });
     
     cancel.on("click", function() {
-        
+        $("#widget-error-alert").hide();
         modal.modal('hide');
     })
     
