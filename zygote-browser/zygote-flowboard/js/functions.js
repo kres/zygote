@@ -753,8 +753,8 @@ function addFunction() {
 }
 
 function clearPalette() {
-    $("#palette").html('<div class="panel panel-default"><ul class="list-group"><li class="list-group-item"><div class="start"><div class="init"></div></div></li>' + 
-                       '<li class="list-group-item"><div class="stop"></div></li><li class="list-group-item"><div class="function">Function</div></li></ul></div>');
+    $("#palette").html('<div class="panel panel-default"><ul class="list-group"><li class="list-group-item"><div class="node start"><div class="init"></div></div></li>' + 
+                       '<li class="list-group-item"><div class="node stop"><div class="end"></div></li><li class="list-group-item"><div class="node function">Function</div></li></ul></div>');
     $(".start").draggable({
         revert: "invalid",
         scope: "chart",
@@ -869,7 +869,7 @@ function initializePalette() {
             
             //"../res/specsample-" + containervalue + ".txt"
             //"/containers/", {container: containervalue, refresh: "true"}
-            $.getJSON("../res/specsample-" + containervalue + ".txt",  function(data) {
+            $.getJSON("/containers/", {container: containervalue, refresh: "true"},  function(data) {
                 specs[containervalue] = data;
                 
                 if (containervalue == "dashboard") {

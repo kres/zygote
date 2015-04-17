@@ -201,7 +201,7 @@ function generateScript(startElem) {
     flowData.target = triggers[startElem.attr("id")].target;
     
     flowData.trigger = {}
-    flowData.trigger.type = triggers[startElem.attr("id")].type;
+    flowData.trigger.type = triggers[startElem.attr("id")].type == "timer"?"timer":"event";
     flowData.trigger.val = triggers[startElem.attr("id")].val;
     if (flowData.trigger.type == "event") {
         flowData.trigger.event = triggers[startElem.attr("id")].event;
