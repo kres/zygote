@@ -24,8 +24,6 @@ exe_unit.create = function(flow_id, flow_struct){
 		eval(flow_str);
 	};
 
-	dal.flows.addFlow(flow_id, flow_struct);
-
 	//check if trigger is okay
 	if(flow_struct.trigger['type'] == 'timer'){
 		console.log("TIMER TRIGGER");
@@ -60,6 +58,8 @@ exe_unit.create = function(flow_id, flow_struct){
 		return;
 	}
 
+	dal.flows.addFlow(flow_id, flow_struct);
+	
 	//flow_struct['flow'] would be something like
 	/*
 		var r1 = new Resource('rpi', 'gpio/1');
