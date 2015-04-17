@@ -12,7 +12,9 @@ exports.get = function (req, res) {
 		if(cont in data.spec || cont == "dashboard"){
 			if('refresh' in req.query){
 				sc.refresh(cont, function(spec){
-					data.spec[cont] = spec;
+					if(cont != "dashboard"){
+						data.spec[cont] = spec;
+					}
 					res.json(spec);
 				});
 			}
@@ -28,7 +30,11 @@ exports.get = function (req, res) {
 	//case to just list various connected containers
 	else{
 		var list = [];
+		if (sc.sock_map["dashboard"]){
+			list.push("dashboard");
+		}
 		for(var container in data.spec){
+			console.log(Object.keys(data.spec));
 			list.push(container);
 		}
 		res.json({"containers" : list});
