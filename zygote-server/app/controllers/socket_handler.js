@@ -4,6 +4,7 @@ var data = require('./data.js');
 
 //contains container name to socket object mapping
 var sock_map = {};
+exports.sock_map = sock_map;
 
 exports.startSocket = function(server){
 	//create the web-socket manager
