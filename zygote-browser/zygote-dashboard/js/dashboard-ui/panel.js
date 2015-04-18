@@ -97,7 +97,12 @@ function Panel(panelID) {
         delete this.widgets[widgetID];
         
     }
-    this.resize = function (xwidth, xheight) {
-        this.panelObj.css("width", 300 + (310 * xwidth)).css("height", 650 + (295 * xheight));
+    
+    this.resizeWidth = function (xwidth) {
+        this.panelObj.css("width", 300 + (310 * xwidth));
+    }
+    
+    this.resizeHeight = function (xheight){
+        this.panelObj.css("height", 650 + (295 * xheight));
     }
 }

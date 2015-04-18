@@ -101,7 +101,7 @@
                         console.log("Widget removed.\n");
                     });
                     
-                    panel1.resize(1,0);
+                    panel1.resizeWidth(1);
                     panel1.addWidget("Widget1", "Gauge", {});
                     panel1.addWidget("Widget2", "Toggle Button", {});
                     panel1.addWidget("Widget3", "Toggle Button", {});
@@ -114,7 +114,7 @@
                     panel2.on("widget-removed", function (widget) {
                         console.log("Widget removed.\n");
                     });
-                    panel2.resize(1,0);
+                    panel2.resizeWidth(1);
                     panel2.addWidget("Widget5", "Color Picker", {});
                     panel2.addWidget("Widget6", "Color Picker", {});
                     

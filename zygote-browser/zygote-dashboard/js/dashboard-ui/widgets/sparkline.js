@@ -78,13 +78,21 @@ function SparklineWidget(widgetID) {
         
         this.panel = panel;
         
+        var widgetWidth = 590;
+        var widgetHeight = 275;
+        
         this.widgetObj = $(document.createElement("div"));
         this.widgetObj.addClass("panel panel-primary sparkline");
         this.widgetObj.attr("id", this.widgetID);
-        this.widgetObj.css("width", "590px").css("height", "275px").css("margin", "5px")
+        this.widgetObj.css("width", widgetWidth).css("height", widgetHeight).css("margin", "5px")
         
         addWidgetToolbar(this);
         setWidgetListeners(this);
+        
+        var panelWidth = (this.panel.panelObj.css("width").split("p")[0]);
+        var panelHeight = (this.panel.panelObj.css("height").split("p")[0]);
+        if(panelWidth < widgetWidth)
+            this.panel.resizeWidth(1);
         
         this.widgetObj.append($(document.createElement("div")).addClass("panel-body"));
         this.panel.panelObj.find(".widget-container").append(this.widgetObj);
