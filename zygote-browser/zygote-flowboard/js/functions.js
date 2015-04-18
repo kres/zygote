@@ -807,7 +807,7 @@ function createDashboardResource(type, widgetID, panelID) {
     
     var res = $(document.createElement("div"));
     res.addClass("node dashboard-resource")
-    res.html(widgetID);
+    res.html(panelId + "/" + widgetID);
     
     res.draggable({
         revert: "invalid",
@@ -829,7 +829,7 @@ function loadDashboardResources() {
     
     //"../res/events.txt"
     //"/dashboard/events/"
-    $.getJSON("../res/events.txt", function (data) {
+    $.getJSON("/dashboard/events/", function (data) {
         dashboardEvents = data;
         
         console.log(specs["dashboard"])
@@ -861,7 +861,7 @@ function initializePalette() {
     
     //"../res/containers.txt"
     //"/containers/"
-    $.getJSON("../res/containers.txt", function(data) {
+    $.getJSON("/containers/", function(data) {
         containers = data.containers;
         console.log(containers)
         
@@ -871,7 +871,7 @@ function initializePalette() {
             
             //"../res/specsample-" + containervalue + ".txt"
             //"/containers/", {container: containervalue, refresh: "true"}
-            $.getJSON("../res/specsample-" + containervalue + ".txt",  function(data) {
+            $.getJSON("/containers/", {container: containervalue, refresh: "true"},  function(data) {
                 specs[containervalue] = data;
                 
                 if (containervalue == "dashboard") {
