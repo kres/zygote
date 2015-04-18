@@ -85,7 +85,8 @@ function addWidgetModal() {
             $("#widget-error-alert").show();
         else {  
             $("#widget-error-alert").hide();
-            panel.addWidget($("#widgetID").val(), $("#widgetType").val(), JSON.parse($("#addWidgetOptions").val()));
+            var options = $("#addWidgetOptions").val()? $("#addWidgetOptions").val():"{}";
+            panel.addWidget($("#widgetID").val(), $("#widgetType").val(), JSON.parse(options));
             modal.modal('hide');
         }
     });
@@ -147,7 +148,8 @@ function editWidgetModal() {
     });
     
     edit.on("click", function() {
-        ($("#editWidgetModal").data("trigger")).config(JSON.parse($("#editWidgetOptions").val()));
+        var options = $("#editWidgetOptions").val()?$("#editWidgetOptions").val():"{}" 
+        ($("#editWidgetModal").data("trigger")).config(JSON.parse(options));
         modal.modal('hide');
     });
     
