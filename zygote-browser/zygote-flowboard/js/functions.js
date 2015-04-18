@@ -807,7 +807,7 @@ function createDashboardResource(type, widgetID, panelID) {
     
     var res = $(document.createElement("div"));
     res.addClass("node dashboard-resource")
-    res.html(panelId + "/" + widgetID);
+    res.html(panelID + "/" + widgetID);
     
     res.draggable({
         revert: "invalid",
