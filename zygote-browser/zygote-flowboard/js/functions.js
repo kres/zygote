@@ -753,23 +753,25 @@ function addFunction() {
 }
 
 function clearPalette() {
+    
     $("#palette").html('<div class="panel panel-default"><ul class="list-group"><li class="list-group-item"><div class="node start"><div class="init"></div></div></li>' + 
                        '<li class="list-group-item"><div class="node stop"><div class="end"></div></li><li class="list-group-item"><div class="node function">Function</div></li></ul></div>');
-    $(".start").draggable({
+    
+    $("#palette").find(".start").draggable({
         revert: "invalid",
         scope: "chart",
         appendTo: "#chart",
         helper: "clone"
     });
     
-    $(".stop").draggable({
+    $("#palette").find(".stop").draggable({
         revert: "invalid",
         scope: "chart",
         appendTo: "#chart",
         helper: "clone"
     });
     
-    $(".function").draggable({
+    $("#palette").find(".function").draggable({
         revert: "invalid",
         scope: "chart",
         appendTo: "#chart",
@@ -827,7 +829,7 @@ function loadDashboardResources() {
     
     //"../res/events.txt"
     //"/dashboard/events/"
-    $.getJSON("/dashboard/events/", function (data) {
+    $.getJSON("../res/events.txt", function (data) {
         dashboardEvents = data;
         
         console.log(specs["dashboard"])
@@ -859,7 +861,7 @@ function initializePalette() {
     
     //"../res/containers.txt"
     //"/containers/"
-    $.getJSON("/containers/", function(data) {
+    $.getJSON("../res/containers.txt", function(data) {
         containers = data.containers;
         console.log(containers)
         
@@ -869,7 +871,7 @@ function initializePalette() {
             
             //"../res/specsample-" + containervalue + ".txt"
             //"/containers/", {container: containervalue, refresh: "true"}
-            $.getJSON("/containers/", {container: containervalue, refresh: "true"},  function(data) {
+            $.getJSON("../res/specsample-" + containervalue + ".txt",  function(data) {
                 specs[containervalue] = data;
                 
                 if (containervalue == "dashboard") {

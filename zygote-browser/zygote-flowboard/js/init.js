@@ -25,24 +25,11 @@ jsPlumb.ready(function () {
     }
     
     function exportJSON() {
-        localStorage.setItem("flow",JSON.stringify(getJSONData()));
-        alert("Flow Exported.");
+        
     }
     
     function importJSON() {
-        clearWorkspace();
-        JSONData = JSON.parse(localStorage.getItem("flow"))
-        graph = JSONData["graph"];
-        resources = JSONData["resources"];
-        functions = JSONData["functions"];
-        
-        refreshResources();
-        loadResources();
-        loadElements(graph.elements, instance);
-        loadConnections(graph.connections, instance)
-        
-        alert($("#chart")[0].outerHTML);
-        alert("Flow Loaded");
+    
     }
 
     $(".start").draggable({
