@@ -178,7 +178,13 @@ function addListenersToElement(elem) {
     
     if (elem.hasClass("start")){
         elem.children().on("click", function(event) {
-            generateScript(elem);
+            postFlow(elem);
+            event.stopPropagation();
+        });
+    }
+    if (elem.hasClass("stop")){
+        elem.children().on("click", function(event) {
+            deleteFlow(elem);
             event.stopPropagation();
         });
     }

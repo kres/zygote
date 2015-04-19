@@ -176,7 +176,7 @@ function generateDataFlow(elem) {
     }
 }
 
-function generateScript(startElem) {
+function postFlow(startElem) {
     console.log("Script generation...")
     
     res = {};
@@ -218,4 +218,40 @@ function generateScript(startElem) {
         data: flows
     });
     
+}
+
+function deleteFlow(stopElem) {
+    
+    var elemID = stopElem.attr("id");
+    
+    
+    while((!$("#"+elemID).hasClass("start")) && (elemID)) {
+        var connected = false;
+        for (connID in graph.connections) {
+            if (graph.connections[connID].targetId == elemID) {
+                elemID = graph.connections[connID].sourceId;
+                connected = true;
+                break;
+            }
+        }
+        if(!connected) {
+            alert("This flow is incomplete.")
+            elemID = undefined;
+            break;
+        }
+    }
+    
+    if (elemID) {
+        
+        var trigger = triggers[elemID];
+        
+        console.log(trigger.flowname);
+        
+        $.ajax({
+            method: "DELETE",
+            url: "/flowboard/",
+            data: {"flow_id" : trigger.flowname, "target": trigger.target}
+        });
+        
+    }
 }
