@@ -18,7 +18,7 @@ function parseFlow(elem, prev) {
         parsed = "_r"+(resCounter++)
     }
     if(elem.hasClass("dashboard-resource")) {
-        dres["_r"+(resCounter)] = dashboardResources[elem.html().split("<")[0]];
+        dres["_r"+(resCounter)] = dashboardResources[(elem.html().split("<")[0]).split("/")[1]];
         dres["_r"+(resCounter)].id = elem.attr("id");
         parsed = "_r"+(resCounter++)
     }
