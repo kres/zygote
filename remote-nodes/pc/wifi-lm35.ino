@@ -14,6 +14,6 @@ void loop(){
     //read adc val
     temp = analogRead(tempPin);
     temp = temp * 0.48828125;
-    Serial.print(temp);
+    Serial.println(temp);
   }
 }
