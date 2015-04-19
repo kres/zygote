@@ -54,5 +54,6 @@ spec.res['wifi-write'] = {"service" : "wifi", "count" : "0"};
 spec.res['wifi-dist'] = {"service" : "wifi", "count" : "0", "events" : ['dist']};
 spec.res['wifi-rgb']  = {"service" : "wifi", "count" : "0"};
 spec.res['wifi-ldr']  = {"service" : "wifi", "count" : "0"};
+spec.res['wifi-lm35'] = {"service" : "wifi", "count" : "0"};
 
 module.exports = spec;
