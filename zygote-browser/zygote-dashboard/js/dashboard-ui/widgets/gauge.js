@@ -106,10 +106,11 @@ function GaugeWidget(widgetID) {
         
         setWidgetOptions(this, widgetOptions);
         
-        if(this.gauge != undefined)
+        if(this.gauge)
             this.gauge = this.gauge.destroy();
         
         this.gauge = addGauge(this, this.options);
+        
         return widgetOptions;   
     }
     
