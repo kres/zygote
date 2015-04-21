@@ -134,7 +134,7 @@ function SparklineWidget(widgetID) {
         
         setWidgetOptions(this, widgetOptions);
         
-        if(this.sparkline != undefined)
+        if(this.sparkline)
             this.sparkline = this.sparkline.destroy();
         
         this.sparkline = addSparkline(this, this.options);
