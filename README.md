@@ -17,4 +17,8 @@ As of now the sensor nodes are Wifi based, but soon will support popular protoco
 Coming soon ;)
 
 ##Demo UI
-![Zygote Flowboard](http://i.imgur.com/tE8FDIX.png)
+###Flow to vizualize temperature sensor values
+![temp1](https://cloud.githubusercontent.com/assets/3639811/7278090/0ea8a20a-e931-11e4-9516-f372c349fced.png)
+
+###Visulization of data (result of flow)
+![temp](https://cloud.githubusercontent.com/assets/3639811/7278081/089775f8-e931-11e4-9c50-61c19b1c99b2.png)
