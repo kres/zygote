@@ -14,7 +14,22 @@ As of now the sensor nodes are Wifi based, but soon will support popular protoco
 
 ##How
 
-Coming soon ;)
+There are four components to the project
+  * **Zygote Server**
+  
+    This acts as the router for exchange of data and events between hardware endpoints (Zygote Embed instances) and software endpoints (Dashboard). This is basically the interconnect fabric.
+
+  * **Zygote Embed**
+  
+    This is the Node.js software that runs on the end hardware. It grabs the spec file from the hardware and send it to the server. Then it establishes a Websocket connection to the server. This enables two way transfer of data, events and commands.
+
+  * **Zygote Flowboard**
+  
+    This is the authoring interface used to create resources and create logical flows between them. Flows can be event triggered or interval based. 
+
+  * **Zygote Dashboard**
+  
+    This is the data visualization and control tool which enables developers to collect data graphically and to control actuators.
 
 ##Demo UI
 ###Flow to vizualize temperature sensor values
