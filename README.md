@@ -12,6 +12,24 @@ Interconnecting things is **hard**. It takes knowledge of underlying hardware, w
 The framework will support fully graphics based logic generation across various sensor nodes.
 As of now the sensor nodes are Wifi based, but soon will support popular protocols such as BLE, Zigbee, Z-wave etc.
 
+ **Among nodes**
+ 
+ 
+ *Hardware*
+>   * Ultrasonic sensor
+>   * RGB LED
+>   * Temperature sensor
+>   * Light sensor
+>   * GPIO
+>   * PWM/Servo
+
+*Software Widgets*
+>   * Gauge
+>   * Sparkline 
+>   * RGB Color picker
+>   * Toggle button
+ 
+
 ##How
 
 There are four components to the project
