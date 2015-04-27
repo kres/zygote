@@ -28,18 +28,11 @@ function createResourceModal() {
     pinLabel.html("Pin: ");
     var pinSelect = $(document.createElement("select")).attr("id", "pin-select").attr("name", "pin-select");
     
-    
-    var custom = $(document.createElement("input")).attr("id", "custom-pin").attr("name", "custom-pin").attr("type", "checkbox");
-    var customLabel = $(document.createElement("label")).attr("for", "custom-pin-value");
-    customLabel.html("Custom Pin: ");
-    var customValue = $(document.createElement("input")).attr("id", "custom-pin-value").attr("name", "custom-pin-value");
-    
-    
     resourceForm.append(nameLabel).append(nameInput).append($(document.createElement("br")));
     resourceForm.append(containerLabel).append(containerSelect).append($(document.createElement("br")));
     resourceForm.append(typeLabel).append(typeSelect).append($(document.createElement("br")));
-    resourceForm.append(pinLabel).append(pinSelect).append($(document.createElement("br")));
-    resourceForm.append(custom).append(customLabel).append(customValue);
+    resourceForm.append(pinLabel).append(pinSelect);
+    
     modalBody.append(resourceForm);
     
     var modalFooter = $(document.createElement("div")).addClass("modal-footer");
