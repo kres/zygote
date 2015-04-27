@@ -148,7 +148,7 @@ function editWidgetModal() {
     });
     
     edit.on("click", function() {
-        var options = $("#editWidgetOptions").val()?$("#editWidgetOptions").val():"{}" 
+        var options = $("#editWidgetOptions").val()?$("#editWidgetOptions").val():"{}";
         ($("#editWidgetModal").data("trigger")).config(JSON.parse(options));
         modal.modal('hide');
     });

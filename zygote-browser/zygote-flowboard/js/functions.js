@@ -330,6 +330,7 @@ function setFormOptions() {
             option.html(value);
             $("#pin-select").append(option);
         });
+        
     }
     else {
         $.each(Object.keys(specs[container].res[type].ep), function(index, value){
@@ -670,7 +671,7 @@ function addResource() {
     
     var container = $("#container-select").val();
     var type = $("#type-select").val();
-    var pin = $("#pin-select").val();
+    var pin = $("#custom-pin").prop("checked")? $("#custom-pin-value").val() : $("#pin-select").val();
     
     listItem.append(res);
     $(".list-group." + container + "." + type).append(listItem);
@@ -690,7 +691,6 @@ function addResource() {
                     url: data.ep
                 }
                 
-                resourceDialog.dialog("close");
             }
             console.log(data)
         }
@@ -702,7 +702,7 @@ function addResource() {
         pin: pin,
         url: type + '/' + pin
     }
-    resourceDialog.dialog("close");*/
+    */
     
 }
 
