@@ -7,7 +7,9 @@
 //the exe_unit namespace
 var exe_unit = {}
 
-exe_unit.create = function(flow_id, flow_struct){
+exe_unit.create = function(flow_id, flow_struct2){
+	var flow_struct = JSON.parse(JSON.stringify(flow_struct2));
+	
 	console.log('executing script : ', flow_id);
 	console.log(flow_struct);
 	console.log("===================");
