@@ -133,12 +133,14 @@ function editElement(){
         alert("This element cannot be edited.");
     }
     else if(node.hasClass("start")) {
-        triggerDialog.data("opener", node);
-        triggerDialog.dialog("open");
+        triggerModal.data("opener", node);
+        setTriggerFormOptions()
+        triggerModal.modal("show");
     }
     else if(node.hasClass("function")) {
-        functionDialog.data("opener", node);
-        functionDialog.dialog("open");
+        functionModal.data("opener", node);
+        loadFunctionParams();
+        functionModal.modal("show");
     }
 }
 
@@ -146,11 +148,8 @@ function deleteElement() {
     var instance = $("body").data("instance");
     
     $("#wheel-menu").css("visibility", "hidden");
-    
-    if(confirm("Delete this node?")){
-        console.log($(".wheel-button.active"))
-        instance.remove($(".wheel-button.active").closest(".node").attr("id"));
-    }
+
+    instance.remove($(".wheel-button.active").closest(".node").attr("id"));
 }
 
 function addEndpointsToElement(elem) {
@@ -238,13 +237,15 @@ function configureElement(elem) {
     addListenersToElement(elem);
     
     if(elem.hasClass("function")) {
-        functionDialog.data("opener",elem);
-        functionDialog.dialog("open");
+        functionModal.data("opener",elem);
+        loadFunctionParams();
+        functionModal.modal("show");
     }
     
     if (elem.hasClass("start")){
-        triggerDialog.data("opener", elem);
-        triggerDialog.dialog("open");
+        triggerModal.data("opener", elem);
+        setTriggerFormOptions();
+        triggerModal.modal("show");
     }
     
     addMenu(elem);
@@ -411,13 +412,13 @@ function setFormOptions() {
 
 function setTriggerFormOptions() {
     
-    console.log(triggerDialog.data("opener").attr("id"));
+    console.log(triggerModal.data("opener").attr("id"));
     console.log(Object.keys(triggers))
     
-    if (Object.keys(triggers).indexOf(triggerDialog.data("opener").attr("id")) < 0 ) {
+    if (Object.keys(triggers).indexOf(triggerModal.data("opener").attr("id")) < 0 ) {
         console.log("Here");
         
-        var form = $("#trigger-form fieldset");
+        var form = $("#trigger-form");
         
         while (form.children().length > 5) {
                 console.log(form.last());
@@ -459,8 +460,9 @@ function setTriggerFormOptions() {
         $("#trigger-type").change( function() {
             var trigger = $(this).val();
             console.log("trigger");
-            var form = $("#trigger-form fieldset");
-
+            var form = $("#trigger-form");
+            
+            console.log(form.children.length)
             while (form.children().length > 5) {
                 console.log(form.last());
                 form.children().last().remove();
@@ -622,7 +624,7 @@ function setTriggerFormOptions() {
 }
     
 function setTrigger() {
-    var id = triggerDialog.data("opener").attr("id");
+    var id = triggerModal.data("opener").attr("id");
     var form = $(this);
     
     var trigger = {};
@@ -648,8 +650,6 @@ function setTrigger() {
     }
     
     triggers[id] = trigger;
-    
-    triggerDialog.dialog("close");
     
 }
 function addResource() {
@@ -708,7 +708,7 @@ function addResource() {
 
 function loadFunctionParams() {
     
-    var id = functionDialog.data("opener").attr("id");
+    var id = functionModal.data("opener").attr("id");
     if(functions[id] != undefined) {
         $("#fname").val(functions[id].name);
         $("#fendpoints").val(functions[id].endpoints);
@@ -718,7 +718,7 @@ function loadFunctionParams() {
 }
 
 function loadTriggerParams() {
-    var id = triggerDialog.data("opener").attr("id");
+    var id = triggerModal.data("opener").attr("id");
     
     if(triggers[id] != undefined) {
         $("#flowname").val(triggers[id].flowname);
@@ -745,17 +745,16 @@ function addFunction() {
     var endpoints = $("#fendpoints").val();
     var definition = $("#fdef").val();
     
-    functions[functionDialog.data("opener").attr("id")] = {
+    functions[functionModal.data("opener").attr("id")] = {
         name: name,
         endpoints: endpoints,
         definition: definition
     }
     
-    editFunctionEndpoints(functionDialog.data("opener"));
+    editFunctionEndpoints(functionModal.data("opener"));
     
-    functionDialog.data("opener").html(name);
-    addMenu(functionDialog.data("opener"));
-    functionDialog.dialog("close"); 
+    functionModal.data("opener").html(name);
+    addMenu(functionModal.data("opener"));
 }
 
 function clearPalette() {
@@ -835,7 +834,7 @@ function loadDashboardResources() {
     
     //"../res/events.txt"
     //"/dashboard/events/"
-    $.getJSON("/dashboard/events/", function (data) {
+    $.getJSON("../res/events.txt", function (data) {
         dashboardEvents = data;
         
         console.log(specs["dashboard"])
@@ -867,7 +866,7 @@ function initializePalette() {
     
     //"../res/containers.txt"
     //"/containers/"
-    $.getJSON("/containers/", function(data) {
+    $.getJSON("../res/containers.txt", function(data) {
         containers = data.containers;
         console.log(containers)
         
@@ -877,7 +876,7 @@ function initializePalette() {
             
             //"../res/specsample-" + containervalue + ".txt"
             //"/containers/", {container: containervalue, refresh: "true"}
-            $.getJSON("/containers/", {container: containervalue, refresh: "true"},  function(data) {
+            $.getJSON("../res/specsample-" + containervalue + ".txt",  function(data) {
                 specs[containervalue] = data;
                 
                 if (containervalue == "dashboard") {

@@ -19,6 +19,7 @@
         <script type="text/javascript" src="lib/jquery.wheelmenu.min.js"></script>
         
         <script type="text/javascript" src="js/functions.js"></script>
+        <script type="text/javascript" src="js/modals.js"></script>
         <script type="text/javascript" src="js/save-load-json.js"></script>
         <script type="text/javascript" src="js/script-gen.js"></script>
         <script type="text/javascript" src="js/init.js"></script>
@@ -77,61 +78,6 @@
                             </li>
                         </ul>
                     </div>
-                </div>
-                
-                <div id="resource-dialog" title="Add a Resource">
-                    <form id="resource-form">
-                        <fieldset>
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all" />
-                            <br />
-                            <label for="container-select">Container</label>
-                            <select name="container-select" id="container-select">
-                            </select>
-                            <br />
-                            <label for="type-select">Type</label>
-                            <select name="type-select" id="type-select">
-                            </select>
-                            <br />
-                            <label for="pin-select">Pins</label>
-                            <select name="pin-select" id="pin-select">
-                            </select>
-                            <br />
-                            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-                        </fieldset>
-                    </form>
-                </div>
-                
-                <div id="function-dialog" title="Edit the Function">
-                    <form id="function-form">
-                        <fieldset>
-                            <label for="fname">Name</label>
-                            <input type="text" name="fname" id="fname" class="text ui-widget-content ui-corner-all" />
-                            <br />
-                            <label for="fendpoints">Endpoints</label>
-                            <input type="number" name="fendpoints" id="fendpoints" class="number ui-widget-content ui-corner-all" min="1" max="4" />
-                            <br />
-                            <textarea name="fdef" id= "fdef" form="function-form" rows="10" cols="50"></textarea>
-                            <br />
-                            <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
-                        </fieldset>
-                    </form>
-                </div>
-                
-                <div id="trigger-dialog" title="Set the flow trigger.">
-                    <form id="trigger-form">
-                        <fieldset>
-                            <label for="flowname">Name</label>
-                            <input type="text" name="flowname" id="flowname" class="text ui-widget-content ui-corner-all" />
-                            <br />
-                            <label for="trigger-type">Type</label>
-                            <select name="trigger-type" id="trigger-type">
-                                <option value="timer">Timer</option>
-                                <option value="event">Event</option>
-                                <option value="dashboard-event">Dashboard Event</option>
-                            </select>
-                        </fieldset>
-                    </form>
                 </div>
                 
             </div>

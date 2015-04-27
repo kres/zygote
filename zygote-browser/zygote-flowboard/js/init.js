@@ -75,74 +75,11 @@ jsPlumb.ready(function () {
         delete graph.connections[info.connection.id];
     });
     
-    resourceDialog = $("#resource-dialog").dialog({
-        autoOpen: false,
-        modal: true,
-        buttons: {
-            "Create Resource": addResource,
-            Cancel: function() {
-                resourceDialog.dialog("close");
-            }
-        },
-        close: function() {
-            document.forms[0].reset();
-        }
-    })
+    resourceModal = createResourceModal();
     
-    resourceForm = resourceDialog.find( "#resource-form" ).on( "submit", function( event ) {
-      event.preventDefault();
-      addResource();
-    });
+    functionModal = editFunctionModal();
     
-    functionDialog = $("#function-dialog").dialog({
-        autoOpen: false,
-        height: "auto",
-        width: "auto",
-        modal: true,
-        buttons: {
-            "Done": addFunction,
-            Cancel: function() {
-                $("#function-dialog").dialog("close");
-            }
-        },
-        open: function() {
-            console.log("Open");
-            loadFunctionParams();
-        },
-        close: function() {
-            document.forms[1].reset();
-        }
-    });
-
-    functionForm = functionDialog.find( "#function-form" ).on( "submit", function( event ) {
-      event.preventDefault();
-      addFunction();
-    });
-    
-   triggerDialog = $("#trigger-dialog").dialog({
-        autoOpen: false,
-        height: "auto",
-        width: "auto",
-        modal: true,
-        buttons: {
-            "Done": setTrigger,
-            Cancel: function() {
-                $("#function-dialog").dialog("close");
-            }
-        },
-        open: function() {
-            console.log("Open");
-            setTriggerFormOptions();
-        },
-        close: function() {
-            document.forms[2].reset();
-        }
-    });
-
-    triggerForm = triggerDialog.find( "#trigger-form" ).on( "submit", function( event ) {
-      event.preventDefault();
-      setTrigger();
-    });
+    triggerModal = setTriggerModal();
 
     
     initializePalette();
@@ -154,7 +91,7 @@ jsPlumb.ready(function () {
     $("#clearButton").on("click", clearWorkspace);
     $("#addButton").on("click", function() {
         setFormOptions();
-        resourceDialog.dialog("open");
+        resourceModal.modal("show");
     })
     
 });
