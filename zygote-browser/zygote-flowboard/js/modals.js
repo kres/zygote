@@ -66,7 +66,7 @@ function createResourceModal() {
     $("#palette").append(modal);
     
     modal.modal({
-        backdrop: "",
+        backdrop: false,
         show : false
     });
     
@@ -142,7 +142,7 @@ function editFunctionModal() {
     $("#palette").append(modal);
     
     modal.modal({
-        backdrop: "",
+        backdrop: false,
         show : false
     });
     
@@ -220,7 +220,7 @@ function setTriggerModal() {
     $("#palette").append(modal);
     
     modal.modal({
-        backdrop: "",
+        backdrop: false,
         show : false
     });
     
