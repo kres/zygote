@@ -670,7 +670,7 @@ function addResource() {
     
     var container = $("#container-select").val();
     var type = $("#type-select").val();
-    var pin = $("#pin-select").val();
+    var pin = $("#custom-pin").prop("checked")? $("#custom-pin-value").val():$("#pin-select").val();
     
     listItem.append(res);
     $(".list-group." + container + "." + type).append(listItem);
