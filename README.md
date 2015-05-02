@@ -55,3 +55,15 @@ There are four components to the project
 
 ###Visulization of data (result of flow)
 ![temp](https://cloud.githubusercontent.com/assets/3639811/7278081/089775f8-e931-11e4-9c50-61c19b1c99b2.png)
+
+##How to use
+* Start the server in the Zygote-Server folder by typing 
+  > $node server.js
+  
+ int the command line. This will start the server on the system's IP address on port 3000
+* Get the Beagleboard online, there go to zygote-embed and type
+ 
+  > $node main.js \<name-of-node\>:bbb   \<ip-addr\>:\<port\>
+ 
+  The name-of-node choice is yours, 'bbb' indicates the board type, 'ip-addr' and 'port' is the address and port of the server respectively.
+* Open the Flowboard and Dashboard in your browser (it is being served by zygote-server). You should be able to create widgets on the dashboard and see them as resources in the flowboard. You can now start developing your IoT app.
