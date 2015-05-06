@@ -61,7 +61,7 @@ There are four components to the project
   > $node server.js
   
  int the command line. This will start the server on the system's IP address on port 3000
-* Get the Beagleboard online, there go to zygote-embed and type
+* Get the Beagleboard online, there go to zygote-embed and type 
  
   > $node main.js \<name-of-node\>:bbb   \<ip-addr\>:\<port\>
  
