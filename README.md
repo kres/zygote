@@ -67,3 +67,20 @@ There are four components to the project
  
   The name-of-node choice is yours, 'bbb' indicates the board type, 'ip-addr' and 'port' is the address and port of the server respectively.
 * Open the Flowboard and Dashboard in your browser (it is being served by zygote-server). You should be able to create widgets on the dashboard and see them as resources in the flowboard. You can now start developing your IoT app.
+
+
+#What it  does
+The framework is more than merely visual programming, in fact visual authoring is not even one of the core features!!
+
+Lets start off with what is expected of a IoT framework that is meant to support any generic IoT application -
+* If I have two IoT based devices, they should be able to talk to each other seamlessly - irrespective of protocol each device uses.
+* Each sensor attached to the device running the framework, should be available across the internet via the cloud, preferably via a REST API. eg. ```GET api/board/temp/1``` will return the temperature data as a JSON object.
+* The developer should be able to execute a flow of instructions on an occurrence of a certain event, i.e. set event triggers.
+* The framework should enable the developer to create flows between an input and output device. eg. The output of a humidity sensor should be able to be made the input to a visualization element such as a graph plot.
+* The developer should be able to dynamically reconfigure the IoT system without any downtime. 
+* The framework should enable programmatic control of the sensors and actuators connected to it (other than the REST API), and execute the code while the system is running.
+* A generic resource abstraction, i.e. each sensor/actuator should have a generic way of of being accessed so as to make it simpler to use.
+* Platform agnostic, the framework should provide hardware specific drivers so that the external interface works in the same manner whether the system is running on a Beaglebone Black or an Intel Edison.
+* Cross node access of sensor and actuator data must be seamless. i.e. one node running the framework (and connected to the cloud) should be able to coordinate with sister nodes (connected to the cloud), and access the remote resources on the other node.
+
+The zygote platform enables **all** the above mentioned features!!
