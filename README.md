@@ -84,3 +84,5 @@ Lets start off with what is expected of a IoT framework that is meant to support
 * Cross node access of sensor and actuator data must be seamless. i.e. one node running the framework (and connected to the cloud) should be able to coordinate with sister nodes (connected to the cloud), and access the remote resources on the other node.
 
 The zygote platform enables **all** the above mentioned features!!
+
+[Project zygote was presented at IEEE zygote](https://raw.githubusercontent.com/wiki/kres/zygote/Zygote-ADCOM.pdf)
