@@ -85,4 +85,6 @@ Lets start off with what is expected of a IoT framework that is meant to support
 
 The zygote platform enables **all** the above mentioned features!!
 
-[Project zygote was presented at IEEE ADCOM 2015](https://raw.githubusercontent.com/wiki/kres/zygote/Zygote-ADCOM.pdf)
+Project zygote was presented at [IEEE ADCOM 2015](http://accsindia.org/category/adcom/), the slide deck is available [online](https://raw.githubusercontent.com/wiki/kres/zygote/Zygote-ADCOM.pdf)
+
+Please note that there are a few typos in the slides which I corrected before the presentation, but have not updated the slide set here. 
