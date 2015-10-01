@@ -87,4 +87,4 @@ The zygote platform enables **all** the above mentioned features!!
 
 Project zygote was presented at [IEEE ADCOM 2015](http://accsindia.org/category/adcom/), the slide deck is available [online](https://raw.githubusercontent.com/wiki/kres/zygote/Zygote-ADCOM.pdf)
 
-Please note that there are a few typos in the slides which I corrected before the presentation, but have not updated the slide set here. (page 8, first para is incomplete)
+Please note that there are a few typos in the slides which I corrected before the presentation, but have not updated the slide set here. (slide 8, first para is incomplete)
