@@ -3,7 +3,7 @@ Project Zygote
 The visual Internet of Things framework powered by Node.js, Express, D3 and jsPlumb.
 
 ##What
-Project Zygote is an end to end IoT framework which enables developers, makers and hobbyists to rapidly prototype and deploy their IoT application. Makers and hackers should be able to seamlessly interconnect hardware resources (sensors, actuators) between themselves or to software components (graphs, gauges, etc.). The framework is platform neutral, meaning you can run it on the Beaglebone Black, the Raspberry Pi or any damn thing that runs Node.js (maybe even tessel!). Everything is accessible and configurable through the browser, no complex installations. 
+Project Zygote is an end to end IoT framework which enables developers, makers and hobbyists to rapidly prototype and deploy their IoT application. Makers and hackers should be able to seamlessly interconnect hardware resources (sensors, actuators) between themselves or to software components (graphs, gauges, etc.). The framework is platform neutral, meaning you can run it on the Beaglebone Black, the Raspberry Pi or any hardware that runs Node.js (maybe even tessel!). Everything is accessible and configurable through the browser, no complex installations. 
 
 ##Why
 Interconnecting things is **hard**. It takes knowledge of underlying hardware, working of sensors, installing tools, knowing programming, connecting the 'thing' to the internet etc. It makes it even worse when people want to visualize the data or give visual input. Project Zygote simplifies all these tasks by providing a DRY (Do not repeat yourself) framework. 
@@ -30,7 +30,7 @@ As of now the sensor nodes are Wifi based, but soon will support popular protoco
 >   * Toggle button
  
 
-##How
+#How
 
 There are four components to the project
   * **Zygote Server**
@@ -49,7 +49,16 @@ There are four components to the project
   
     This is the data visualization and control tool which enables developers to collect data graphically and to control actuators.
 
-##Demo UI
+**High level architecture**
+
+![zygote-arch](https://cloud.githubusercontent.com/assets/3639811/20110455/71570616-a60a-11e6-8c4f-bf7e02f81d0c.png)
+
+####More details can be found in this presentation [here](https://goo.gl/CjXvXc).
+####For even more detail, please refer our [paper](http://ieeexplore.ieee.org/document/7529813/), or the [pre-published version](https://drive.google.com/file/d/0B8Pib9n32qUvVEtkZlpGN21Mckk/view?usp=sharing) (for free)
+
+---------
+
+#Demo UI
 ###Flow to vizualize temperature sensor values
 ![temp1](https://cloud.githubusercontent.com/assets/3639811/7278090/0ea8a20a-e931-11e4-9516-f372c349fced.png)
 
