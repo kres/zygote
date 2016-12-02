@@ -48,8 +48,10 @@ There are four components to the project
   * **Zygote Dashboard**
   
     This is the data visualization and control tool which enables developers to collect data graphically and to control actuators.
+    
+### Working of zygote in six steps : [here](https://goo.gl/Z1VSN7)
 
-**High level architecture**
+### High level architecture
 
 ![zygote-arch](https://cloud.githubusercontent.com/assets/3639811/20110455/71570616-a60a-11e6-8c4f-bf7e02f81d0c.png)
 
